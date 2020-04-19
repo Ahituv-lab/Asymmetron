@@ -91,6 +91,7 @@ def asymmetries_single(path,window_min,window_max,bins=0):
 	Minimum and maximum distances between consecutive instances.
 	Number of bins to divide the signal in (optional). Default, no binning.
 	"""
+	# Reads the file and sorts it by ascending order of start (and chrom)
         DataL = BedTool(path).sort().to_dataframe()
         Chromosome = list(DataL.iloc[:,0])
         Start = list(DataL.iloc[:,1])
@@ -105,7 +106,7 @@ def asymmetries_single(path,window_min,window_max,bins=0):
 	for i in range(0,len(DataL)-1):
                 chrom_up,start_up,end_up,name1,strand1=Chromosome[i],Start[i],End[i],Name[i],Strand[i]
                 chrom_down,start_down,end_down,name2,strand2=Chromosome[i+1],Start[i+1],End[i+1],Name[i+1],Strand[i+1]
-		distance = max(0,int(start_down)-int(end_up))
+		distance = abs(int(start_down)-int(end_up))
 		if distance>=window_min and distance<window_max:
 			if chrom_up==chrom_down:
 				Strand1.append(strand1)
