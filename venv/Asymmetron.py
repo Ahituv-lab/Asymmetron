@@ -21,6 +21,7 @@ if __name__ == "__main__":
     # """
     parser = argparse.ArgumentParser()
     parser.parse_args()
+    print(test)
 
     # if sys.argv[1] == "FUN1":
     #     # Can modify later to allow for multiple paths
