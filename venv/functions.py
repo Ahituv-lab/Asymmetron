@@ -91,7 +91,12 @@ def asymmetries_single(path,window_min,window_max,bins=0):
 	Minimum and maximum distances between consecutive instances.
 	Number of bins to divide the signal in (optional). Default, no binning.
 	"""
-	DataL = BedTool(path).sort()
+        DataL = BedTool(path).sort().to_dataframe()
+        Chromosome = list(DataL.iloc[:,0])
+        Start = list(DataL.iloc[:,1])
+        End = list(DataL.iloc[:,2])
+        Name = list(DataL.iloc[:,3])
+        Strand =  list(DataL.iloc[:,4])
 	Strand1=[]
 	Strand2=[]
 	DistancesL=[]
@@ -99,9 +104,9 @@ def asymmetries_single(path,window_min,window_max,bins=0):
 	# Also if we want to calculate statistics of consecutive e.g. +/+/+/+ the current format is not very good. 
 	# Need to reconsider how we do the calculation in this function. For consecutive case the p-value for x consecutive being same is p-val= min(1,((0.5)**x)*number of lines in file))?
 	for i in range(0,len(DataL)-1):
-		chrom_up,start_up,end_up,name1,strand1=DataL[i][0:5]
-		chrom_down,start_down,end_down,name2,strand2=DataL[i+1][0:5]
-		distance = min(0,int(start_down)-int(end_up))
+                chrom_up,start_up,end_up,name1,strand1=Chromosome[i],Start[i],End[i],Name[i],Strand[i]
+                chrom_down,start_down,end_down,name2,strand2=Chromosome[i+1],Start[i+1],End[i+1],Name[i+1],Strand[i+1]
+		distance = max(0,int(start_down)-int(end_up))
 		if distance>=window_min and distance<window_max:
 			if chrom_up==chrom_down:
 				Strand1.append(strand1)
