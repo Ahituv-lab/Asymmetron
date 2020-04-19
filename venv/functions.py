@@ -100,7 +100,6 @@ def asymmetries_single(path,window_min,window_max,bins=0):
 	Strand1=[]
 	Strand2=[]
 	DistancesL=[]
-	# This part is extremely slow
 	# Also if we want to calculate statistics of consecutive e.g. +/+/+/+ the current format is not very good. 
 	# Need to reconsider how we do the calculation in this function. For consecutive case the p-value for x consecutive being same is p-val= min(1,((0.5)**x)*number of lines in file))?
 	for i in range(0,len(DataL)-1):
