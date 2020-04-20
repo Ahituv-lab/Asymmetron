@@ -134,7 +134,7 @@ def strand_annotate_third_BED_overlap(unnotated_path,annotated_path):
 	Start = list(Overlap_strand_df.iloc[:,1])
 	End = list(Overlap_strand_df.iloc[:,2])
 	ID = list(Overlap_strand_df.iloc[:,3])
-	Strand = list(Overlap_strand_df.iloc[:,9])
+	Strand = list(Overlap_strand_df.iloc[:,-2])
 	Chromosome,Start,End,ID,Strand = zip(*((chrom, start, end,id_used,strand) for chrom, start, end, id_used, strand in zip(Chromosome, Start, End, ID, Strand) if strand in ["+","-"]))
 	# Convert them in List of ListsL format
 	DataL=[];
