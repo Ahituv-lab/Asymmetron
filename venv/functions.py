@@ -23,15 +23,14 @@ def read_BED(path,last_col=False):
 	The idea of the last column is to sub-divide the  file  into groups based on the scores and do separate the analysis in each of them
 	"""
 	if last_col==False:
-		Data = []
+		Data = [];
 		with open(path) as f:
 			for line in f:
 				Data.append(line.strip().split()[:5])
 		return Data
 
 	elif last_col==True:
-		Data = []
-		Score = []
+		Data = [];Score = [];
 		with open(path) as f:
 			for line in f:
 				Data.append(line.strip().split()[:5])
@@ -45,7 +44,7 @@ def readVCFtoBED(path):
 	This function converts a VCF file to BED
 	Not important, just for compatibility with multiple input types
 	"""
-	DataBED=[]
+	DataBED=[];
 	with open(path)as f:
 		for line in f:
 			if line[0] == "#":
@@ -91,17 +90,20 @@ def asymmetries_single(path,window_min,window_max,bins=0):
 	Minimum and maximum distances between consecutive instances.
 	Number of bins to divide the signal in (optional). Default, no binning.
 	"""
-	DataL = BedTool(path).sort()
-	Strand1=[]
-	Strand2=[]
-	DistancesL=[]
-	# This part is extremely slow
+	# Reads the file and sorts it by ascending order of start (and chrom)
+        DataL = BedTool(path).sort().to_dataframe()
+        Chromosome = list(DataL.iloc[:,0])
+        Start = list(DataL.iloc[:,1])
+        End = list(DataL.iloc[:,2])
+        Name = list(DataL.iloc[:,3])
+        Strand =  list(DataL.iloc[:,4])
+	Strand1=[];Strand2=[];DistancesL=[];
 	# Also if we want to calculate statistics of consecutive e.g. +/+/+/+ the current format is not very good. 
 	# Need to reconsider how we do the calculation in this function. For consecutive case the p-value for x consecutive being same is p-val= min(1,((0.5)**x)*number of lines in file))?
 	for i in range(0,len(DataL)-1):
-		chrom_up,start_up,end_up,name1,strand1=DataL[i][0:5]
-		chrom_down,start_down,end_down,name2,strand2=DataL[i+1][0:5]
-		distance = min(0,int(start_down)-int(end_up))
+                chrom_up,start_up,end_up,name1,strand1=Chromosome[i],Start[i],End[i],Name[i],Strand[i]
+                chrom_down,start_down,end_down,name2,strand2=Chromosome[i+1],Start[i+1],End[i+1],Name[i+1],Strand[i+1]
+		distance = abs(int(start_down)-int(end_up))
 		if distance>=window_min and distance<window_max:
 			if chrom_up==chrom_down:
 				Strand1.append(strand1)
@@ -115,6 +117,7 @@ def asymmetries_single(path,window_min,window_max,bins=0):
 	elif bins>0:
 		p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL=asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L)
 		return p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL
+
 
 def strand_annotate_third_BED_overlap(unnotated_path,annotated_path):
 	"""
@@ -130,11 +133,11 @@ def strand_annotate_third_BED_overlap(unnotated_path,annotated_path):
 	Chromosome = list(Overlap_strand_df.iloc[:,0])
 	Start = list(Overlap_strand_df.iloc[:,1])
 	End = list(Overlap_strand_df.iloc[:,2])
-	ID = list(Overlap_strand_df.ilLoc[:,3])
-	Strand = list(Overlap_strand_df.iloc[:,9])
+	ID = list(Overlap_strand_df.iloc[:,3])
+	Strand = list(Overlap_strand_df.iloc[:,-2])
 	Chromosome,Start,End,ID,Strand = zip(*((chrom, start, end,id_used,strand) for chrom, start, end, id_used, strand in zip(Chromosome, Start, End, ID, Strand) if strand in ["+","-"]))
 	# Convert them in List of ListsL format
-	DataL=[]
+	DataL=[];
 	for i in range(len(Chromosome)):
 		DataL.append([Chromosome[i],Start[i],End[i],ID[i],Strand[i]])
 	return DataL
