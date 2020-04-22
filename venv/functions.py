@@ -119,6 +119,75 @@ def asymmetries_single(path,window_min,window_max,bins=0):
 		return p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL
 
 
+def calc_consecutive(DataL,window_min,window_max):
+        """
+        This function takes as input a list of strand signs.
+        It returns the number of consecutive occurrences in the plus and minus orientation.
+        We should also include alternating occurrences
+        """
+        from random import shuffle
+        DistancesL=[]
+        plus_consecutive=[];minus_consecutive=[];same_strand=[]
+        plus_consecutiveR=[];minus_consecutiveR=[];same_strandR=[]
+        StrandsL=[k[4] for k in DataL]
+        for index,line in enumerate(DataL):
+                if index==0:
+                        counts=1;
+
+                else:
+                        chrom_up,start_up,end_up,name1,strand_previous=DataL[index-1][0:5]
+                        chrom_down,start_down,end_down,name2,strand=DataL[index][0:5]
+                        distance = abs(int(start_down)-int(end_up))
+                        DistancesL+=[distance]
+                        if distance>=window_min and distance<window_max:
+                                if strand==strand_previous:
+                                        counts+=1
+                                else:
+                                        if strand_previous=="+":
+                                                plus_consecutive+=[counts]
+                                                same_strand+=[counts]
+                                        elif strand_previous=="-":
+                                                minus_consecutive+=[counts]
+                                                same_strand+=[counts]
+                                        counts=1
+
+                        else:
+                                if strand_previous=="+":
+                                        plus_consecutive+=[counts]
+                                        same_strand+=[counts]
+                                elif strand_previous=="-":
+                                        minus_consecutive+=[counts]
+                                        same_strand+=[counts]
+                                counts=1
+
+        shuffle(DistancesL)
+        for index,line in enumerate(DataL):
+                if index==0:
+                        counts_control=1;
+                else:
+                        chrom_up,start_up,end_up,name1,strand_previous=DataL[index-1][0:5]
+                        chrom_down,start_down,end_down,name2,strand=DataL[index][0:5]
+                        distance = DistancesL[index-1]
+                        if distance>=window_min and distance<window_max:
+                                if strand==strand_previous:
+                                        counts_control+=1;
+                                else:
+                                        if strand_previous=="+":
+                                                plus_consecutiveR+=[counts_control]
+                                                same_strandR+=[counts_control]
+                                        elif strand_previous=="-":
+                                                minus_consecutive+=[counts_control]
+                                                same_strandR+=[counts_control]
+                        else:
+                                if strand_previous=="+":
+                                        plus_consecutiveR+=[counts_control]
+                                        same_strandR+=[counts_control]
+                                elif strand_previous=="-":
+                                        minus_consecutiveR+=[counts_control]
+                                        same_strandR+=[counts_control]
+                                counts_control=1;
+        return same_strand,same_strandR
+
 def strand_annotate_third_BED_overlap(unnotated_path,annotated_path):
 	"""
 	For a third file that doesn't have its own annotation e.g. mutation files since mutations are on both strands
