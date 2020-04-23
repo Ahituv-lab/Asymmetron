@@ -21,6 +21,25 @@ Optional inputs:
 	-min_dist: Minimum distance of consecutive occurrences to consider in the analysis. Default is 0.
 	-max_dist: Maximum distance of consecutive occurrences to consider in the analysis. Default is 100.
 	-patterns: Patterns to search, comma separated. Default is ++,--,+-,-+.
+	-bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
+	-plots: Returns the associated plots of the asymmetries for each file.
+	
+
+2. contained_asymmetries.py
+Input requirements:
+	-regions: One or more BED-formatted files, containing the regions within which to estimate motif asymmetries.
+	-motifs: One or more BED-formatted files, for each of which the asymmetries are calculated.
+Optional inputs:
+	--names_A: The name of each of the inputted BED-formatted region files. 
+	--names_B: The name of each of the inputted BED-formatted motif files.
+	--expected_asym: The expected asymmetry bias between the regions and the factors. Default is 0.5.
+	--expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the factors. Default is 0.5.
+	--score: For region files, uses the last column to subdivide the analysis into quartiles. Default is not to perform this.
+	--quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.
+	--plots: Returns the associated plots of the asymmetries for each file.
+
+3.
+
 4.	
 Input requirements:
 
