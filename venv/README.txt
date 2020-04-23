@@ -1,11 +1,11 @@
 ===========
-#Asymmetron
+# Asymmetron
 ===========
 
 Copyright 2020. All rights reserved.
 Repository:
 
-##Installation
+## Installation
 
 ##Summary: Asymmetron is a toolkit for the identifcation of asymmetry patterns in biological sequences.
 It encompasses four functions:
@@ -15,7 +15,7 @@ It encompasses four functions:
 4.	orientation.py			Orients an unnanotated BED file relative to overlapping instances of a second, annotated BED file.
 
 
-###1. consecutive_patterns.py
+### 1. consecutive_patterns.py
 Input requirements:
 	-motifs: One or more BED-formatted files
 Optional inputs:
@@ -27,7 +27,7 @@ Optional inputs:
 	-plots: Returns the associated plots of the asymmetries for each file.
 	
 
-###2. contained_asymmetries.py
+### 2. contained_asymmetries.py
 Input requirements:
 	-regions: One or more BED-formatted files, containing the regions within which to estimate motif asymmetries.
 	-motifs: One or more BED-formatted files, for each of which the asymmetries are calculated.
@@ -40,14 +40,14 @@ Optional inputs:
 	--quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.
 	--plots: Returns the associated plots of the asymmetries for each file.
 
-###3. pairwise_asymmetries.py
+### 3. pairwise_asymmetries.py
 Input requirements:
 	-motifsA: One or more BED-formatted files
 	-motifsB: One or more BED-formatted files
 Optional inputs:
 	
 
-###4. orientation.py 	
+### 4. orientation.py 	
 Input requirements:
 
 
