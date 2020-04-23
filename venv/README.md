@@ -53,13 +53,15 @@ It encompasses four functions:
 	-quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.
 	-plots: Returns the associated plots of the asymmetries for each file.
 #### Outputs:
-	Table containing strand asymmetries of ++/+-/-+/-- orientations, same-strand, opposite strand, p-value, p-value with Binomial correction.
-	Histograms of strand asymmetries for each pair of comparisons.
+	-Table containing strand asymmetries of ++/+-/-+/-- orientations, same-strand, opposite strand, p-value, p-value with Binomial correction.
+	-Histograms of strand asymmetries for each pair of comparisons.
+	-Barplot of strand-asymmetries across the quartiles.
+	-Barplot of strand-asymmetries across the bins.
 
 ### 3. pairwise_asymmetries.py
 #### Input requirements:
-	-motifsA: One or more BED-formatted files\
-	-motifsB: One or more BED-formatted files\
+	-motifsA: One or more BED-formatted files
+	-motifsB: One or more BED-formatted files
 #### Optional inputs:
 	-names_A: The name of each of the inputted BED-formatted motif A files.
 	-names_B: The name of each of the inputted BED-formatted motif B files.
@@ -70,10 +72,14 @@ It encompasses four functions:
 	-max_dist: Maximum distance to consider in the analysis. Default is 100.
 	-bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
 	-plots: Returns the associated plots of the asymmetries for each file.
-
+#### Outputs:
+	-Table containing strand asymmetries of ++/+-/-+/-- orientations, same-strand, opposite strand, p-value, p-value with Binomial correction.
+	-Histograms of strand asymmetries for each pair of comparisons.
+	-Barplot of strand-asymmetries across the bins.
 
 ### 4. orientation.py 	
 #### Input requirements:
 	-motif_no_annotation
 	-motif_annotation
-	
+#### Output:
+	-Un-annotated BED formatted motif with annotation based on -motif_annotation file.
