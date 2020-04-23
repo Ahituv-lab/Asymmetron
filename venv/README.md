@@ -3,7 +3,6 @@
 ===========
 
 Copyright 2020. All rights reserved.
-Repository:
 
 ## Installation
 
