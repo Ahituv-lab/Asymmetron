@@ -38,29 +38,32 @@ It encompasses four functions:
 	-regions: One or more BED-formatted files, containing the regions within which to estimate motif asymmetries.\
 	-motifs: One or more BED-formatted files, for each of which the asymmetries are calculated.\
 #### Optional inputs:
-	--names_A: The name of each of the inputted BED-formatted region files.\
-	--names_B: The name of each of the inputted BED-formatted motif files.\
+	-names_A: The name of each of the inputted BED-formatted region files.\
+	-names_B: The name of each of the inputted BED-formatted motif files.\
 	-orientation: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
-	--expected_asym: The expected asymmetry bias between the regions and the factors. Default is 0.5.\
-	--expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the factors. Default is 0.5.\
-	--score: For region files, uses the last column to subdivide the analysis into quartiles. Default is not to perform this.\
-	--quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.\
-	--plots: Returns the associated plots of the asymmetries for each file.
+	-expected_asym: The expected asymmetry bias between the regions and the motifs. Default is 0.5.\
+	-expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the motifs. Default is 0.5.\
+	-score: For region files, uses the last column to subdivide the analysis into quartiles. Default is not to perform this.\
+	-quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.\
+	-plots: Returns the associated plots of the asymmetries for each file.
 
 ### 3. pairwise_asymmetries.py
 #### Input requirements:
 	-motifsA: One or more BED-formatted files\
 	-motifsB: One or more BED-formatted files\
 #### Optional inputs:
-	--names_A: The name of each of the inputted BED-formatted motif A files.\
-	--names_B: The name of each of the inputted BED-formatted motif B files.\
+	-names_A: The name of each of the inputted BED-formatted motif A files.\
+	-names_B: The name of each of the inputted BED-formatted motif B files.\
+	-orientation: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
+	-expected_asym: The expected asymmetry bias between the pairs of motifs. Default is 0.5.\
+        -expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the pairs of motifs. Default is 0.5.\
 	-min_dist: Minimum distance to consider in the analysis. Default is 0.\
 	-max_dist: Maximum distance to consider in the analysis. Default is 100.\
 	-bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.\
-
+	-plots: Returns the associated plots of the asymmetries for each file.
 
 ### 4. orientation.py 	
 #### Input requirements:
-	--motif_no_annotation
-	--motif_annotation
-
+	-motif_no_annotation\
+	-motif_annotation
+	
