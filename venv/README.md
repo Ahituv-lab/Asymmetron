@@ -18,6 +18,7 @@ It encompasses four functions:
 3.	pairwise_asymmetries.py		Estimates the asymmetry biases between two motifs.
 4.	orientation.py			Orients an un-annotated BED file relative to overlapping instances of a second, annotated BED file.
 
+## Instructions for each function
 
 ### 1. consecutive_patterns.py
 #### Input requirements:
