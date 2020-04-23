@@ -16,15 +16,15 @@ It encompasses four functions:
 
 
 ### 1. consecutive_patterns.py
-Input requirements:
-	-motifs: One or more BED-formatted files
-Optional inputs:
-	-names: The name or each of the inputted BED-formatted files
-	-min_dist: Minimum distance of consecutive occurrences to consider in the analysis. Default is 0.
-	-max_dist: Maximum distance of consecutive occurrences to consider in the analysis. Default is 100.
-	-patterns: Patterns to search, comma separated. Default is ++,--,+-,-+.
-	-bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
-	-plots: Returns the associated plots of the asymmetries for each file.
+Input requirements:\
+	-motifs: One or more BED-formatted files\
+Optional inputs:\
+	-names: The name or each of the inputted BED-formatted files\
+	-min_dist: Minimum distance of consecutive occurrences to consider in the analysis. Default is 0.\
+	-max_dist: Maximum distance of consecutive occurrences to consider in the analysis. Default is 100.\
+	-patterns: Patterns to search, comma separated. Default is ++,--,+-,-+.\
+	-bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.\
+	-plots: Returns the associated plots of the asymmetries for each file.\
 	
 
 ### 2. contained_asymmetries.py
@@ -46,6 +46,8 @@ Input requirements:
 	-motifsB: One or more BED-formatted files
 Optional inputs:
 	
+
+
 
 ### 4. orientation.py 	
 Input requirements:
