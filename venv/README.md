@@ -17,9 +17,9 @@ It encompasses four functions:
 
 
 ### 1. consecutive_patterns.py
-#### Input requirements:\
+#### Input requirements:
 	-motifs: One or more BED-formatted files\
-#### Optional inputs:\
+#### Optional inputs:
 	-names: The name or each of the inputted BED-formatted files\
 	-min_dist: Minimum distance of consecutive occurrences to consider in the analysis. Default is 0.\
 	-max_dist: Maximum distance of consecutive occurrences to consider in the analysis. Default is 100.\
@@ -30,10 +30,10 @@ It encompasses four functions:
 	
 
 ### 2. contained_asymmetries.py
-#### Input requirements:\
+#### Input requirements:
 	-regions: One or more BED-formatted files, containing the regions within which to estimate motif asymmetries.\
 	-motifs: One or more BED-formatted files, for each of which the asymmetries are calculated.\
-#### Optional inputs:\
+#### Optional inputs:
 	--names_A: The name of each of the inputted BED-formatted region files.\
 	--names_B: The name of each of the inputted BED-formatted motif files.\
 	-orientation: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
@@ -44,10 +44,10 @@ It encompasses four functions:
 	--plots: Returns the associated plots of the asymmetries for each file.
 
 ### 3. pairwise_asymmetries.py
-#### Input requirements:\
+#### Input requirements:
 	-motifsA: One or more BED-formatted files\
 	-motifsB: One or more BED-formatted files\
-#### Optional inputs:\
+#### Optional inputs:
 	--names_A: The name of each of the inputted BED-formatted motif A files.\
 	--names_B: The name of each of the inputted BED-formatted motif B files.\
 	-min_dist: Minimum distance to consider in the analysis. Default is 0.\
