@@ -28,23 +28,23 @@ Optional inputs:\
 	
 
 ### 2. contained_asymmetries.py
-Input requirements:
-	-regions: One or more BED-formatted files, containing the regions within which to estimate motif asymmetries.
-	-motifs: One or more BED-formatted files, for each of which the asymmetries are calculated.
-Optional inputs:
-	--names_A: The name of each of the inputted BED-formatted region files. 
-	--names_B: The name of each of the inputted BED-formatted motif files.
-	--expected_asym: The expected asymmetry bias between the regions and the factors. Default is 0.5.
-	--expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the factors. Default is 0.5.
-	--score: For region files, uses the last column to subdivide the analysis into quartiles. Default is not to perform this.
-	--quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.
-	--plots: Returns the associated plots of the asymmetries for each file.
+Input requirements:\
+	-regions: One or more BED-formatted files, containing the regions within which to estimate motif asymmetries.\
+	-motifs: One or more BED-formatted files, for each of which the asymmetries are calculated.\
+Optional inputs:\
+	--names_A: The name of each of the inputted BED-formatted region files.\
+	--names_B: The name of each of the inputted BED-formatted motif files.\
+	--expected_asym: The expected asymmetry bias between the regions and the factors. Default is 0.5.\
+	--expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the factors. Default is 0.5.\
+	--score: For region files, uses the last column to subdivide the analysis into quartiles. Default is not to perform this.\
+	--quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.\
+	--plots: Returns the associated plots of the asymmetries for each file.\
 
 ### 3. pairwise_asymmetries.py
-Input requirements:
-	-motifsA: One or more BED-formatted files
-	-motifsB: One or more BED-formatted files
-Optional inputs:
+Input requirements:\
+	-motifsA: One or more BED-formatted files\
+	-motifsB: One or more BED-formatted files\
+Optional inputs:\
 	
 
 
