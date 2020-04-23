@@ -39,7 +39,8 @@ It encompasses four functions:
 #### Optional inputs:
 	-names_A: The name of each of the inputted BED-formatted region files.
 	-names_B: The name of each of the inputted BED-formatted motif files.
-	-orientation: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
+	-orientation_region: Orient file(s) relative to annotated BED-formated region file(s) and perform the analysis for the un-annoated file with the new annotations.
+	-orientation_motif: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
 	-expected_asym: The expected asymmetry bias between the regions and the motifs. Default is 0.5.
 	-expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the motifs. Default is 0.5.
 	-score: For region files, uses the last column to subdivide the analysis into quartiles. Default is not to perform this.
