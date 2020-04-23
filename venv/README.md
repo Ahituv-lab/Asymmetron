@@ -10,7 +10,7 @@ Repository:
 
 ## Summary 
 
-Asymmetron is a toolkit for the identifcation of asymmetry patterns in biological sequences.\
+Asymmetron is a toolkit for the identifcation of asymmetry patterns in biological sequences.
 
 It encompasses four functions:
 1.	consecutive_patterns.py:	Estimates the asymmetry biases within consecutive occurrences of a single motif.
@@ -27,24 +27,24 @@ It encompasses four functions:
 	-names: The name or each of the inputted BED-formatted files
 	-min_dist: Minimum distance of consecutive occurrences to consider in the analysis. Default is 0.
 	-max_dist: Maximum distance of consecutive occurrences to consider in the analysis. Default is 100.
-	-patterns: Patterns to search, comma separated. Default is ++,--,+-,-+.\
+	-patterns: Patterns to search, comma separated. Default is ++,--,+-,-+.
 	-orientation: Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations.
-	-bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.\
+	-bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
 	-plots: Returns the associated plots of the asymmetries for each file.
 	
 
 ### 2. contained_asymmetries.py
 #### Input requirements:
-	-regions: One or more BED-formatted files, containing the regions within which to estimate motif asymmetries.\
-	-motifs: One or more BED-formatted files, for each of which the asymmetries are calculated.\
+	-regions: One or more BED-formatted files, containing the regions within which to estimate motif asymmetries.
+	-motifs: One or more BED-formatted files, for each of which the asymmetries are calculated.
 #### Optional inputs:
-	-names_A: The name of each of the inputted BED-formatted region files.\
-	-names_B: The name of each of the inputted BED-formatted motif files.\
+	-names_A: The name of each of the inputted BED-formatted region files.
+	-names_B: The name of each of the inputted BED-formatted motif files.
 	-orientation: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
-	-expected_asym: The expected asymmetry bias between the regions and the motifs. Default is 0.5.\
-	-expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the motifs. Default is 0.5.\
-	-score: For region files, uses the last column to subdivide the analysis into quartiles. Default is not to perform this.\
-	-quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.\
+	-expected_asym: The expected asymmetry bias between the regions and the motifs. Default is 0.5.
+	-expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the motifs. Default is 0.5.
+	-score: For region files, uses the last column to subdivide the analysis into quartiles. Default is not to perform this.
+	-quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.
 	-plots: Returns the associated plots of the asymmetries for each file.
 
 ### 3. pairwise_asymmetries.py
