@@ -29,8 +29,12 @@ It encompasses four functions:
 	-patterns: Patterns to search, comma separated. Default is ++,--,+-,-+.
 	-orientation: Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations.
 	-bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
+	-threshold: Threshold of p-value of consecutive patterns to save in new BED file.
 	-plots: Returns the associated plots of the asymmetries for each file.
-	
+#### Outputs:
+	-Table of strand asymmetries for all patterns for each motif.
+	-BED files with the statistically significant consecutive regions. One file for each pattern for each file inputted.
+	-Histogram of expected and observed distribution of consecutive patterns.
 
 ### 2. contained_asymmetries.py
 #### Input requirements:
@@ -48,7 +52,9 @@ It encompasses four functions:
 	-score: For region files, uses the last column to subdivide the analysis into quartiles. Default is not to perform this.
 	-quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.
 	-plots: Returns the associated plots of the asymmetries for each file.
-
+#### Outputs:
+	Table containing strand asymmetries of ++/+-/-+/-- orientations, same-strand, opposite strand, p-value, p-value with Binomial correction.
+	Histograms of strand asymmetries for each pair of comparisons.
 
 ### 3. pairwise_asymmetries.py
 #### Input requirements:
