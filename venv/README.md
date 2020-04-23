@@ -7,7 +7,8 @@ Repository:
 
 ## Installation
 \
-##Summary: Asymmetron is a toolkit for the identifcation of asymmetry patterns in biological sequences.
+
+## Summary: Asymmetron is a toolkit for the identifcation of asymmetry patterns in biological sequences.
 It encompasses four functions:
 1.	consecutive_patterns.py:	Estimates the asymmetry biases within consecutive occurrences of a single motif.
 2.	contained_asymmetries.py	Estimates the asymmetry biases of a motif within an encompassing region.	
