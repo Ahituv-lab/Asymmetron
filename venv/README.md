@@ -39,6 +39,8 @@ It encompasses four functions:
 #### Optional inputs:
 	-names_A: The name of each of the inputted BED-formatted region files.
 	-names_B: The name of each of the inputted BED-formatted motif files.
+	-upstream: Only look for occurrences of motif A upstream of motif B
+	-downstream: Only look for occurrences of motif A downstream of motif B
 	-orientation_region: Orient file(s) relative to annotated BED-formated region file(s) and perform the analysis for the un-annoated file with the new annotations.
 	-orientation_motif: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
 	-expected_asym: The expected asymmetry bias between the regions and the motifs. Default is 0.5.
@@ -46,6 +48,7 @@ It encompasses four functions:
 	-score: For region files, uses the last column to subdivide the analysis into quartiles. Default is not to perform this.
 	-quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.
 	-plots: Returns the associated plots of the asymmetries for each file.
+
 
 ### 3. pairwise_asymmetries.py
 #### Input requirements:
@@ -61,6 +64,7 @@ It encompasses four functions:
 	-max_dist: Maximum distance to consider in the analysis. Default is 100.
 	-bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
 	-plots: Returns the associated plots of the asymmetries for each file.
+
 
 ### 4. orientation.py 	
 #### Input requirements:
