@@ -10,6 +10,7 @@ Copyright 2020. All rights reserved.
 ## Summary 
 
 Asymmetron is a toolkit for the identifcation of asymmetry patterns in biological sequences. Asymmetron can identify strand asymmetries within consecutive occurrences of a single genomic element and for pairs of overlapping and non-overlapping genomic elements. It can also measure strand asymmetries of genomic elements relative to transcriptional and replicative orientations. Asymmetron can assign strand orientation to third features such as mutations, by orienting them relative to other genomic elements. 
+!Schematic_Asymmetron.png
 
 It encompasses four functions:
 1.	consecutive_patterns.py:	Estimates the asymmetry biases within consecutive occurrences of a single motif.
