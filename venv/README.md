@@ -21,12 +21,12 @@ It encompasses four functions:
 ## Instructions for each function
 
 ### 1. consecutive_patterns.py
-#### Input requirements:
+#### Required input:
 	-motifs: One or more BED-formatted files
 #### Optional inputs:
-	-names: The name or each of the inputted BED-formatted files
-	-min_dist: Minimum distance of consecutive occurrences to consider in the analysis. Default is 0.
-	-max_dist: Maximum distance of consecutive occurrences to consider in the analysis. Default is 100.
+	-names: Assign a name for each of the inputted BED-formatted files to allow for more human readable output
+	-min_dist: Minimum distance between consecutive occurrences to consider in the analysis. Default is 0.
+	-max_dist: Maximum distance between consecutive occurrences to consider in the analysis. Default is 100.
 	-patterns: Patterns to search, comma separated. Default is ++,--,+-,-+.
 	-orientation: Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations.
 	-bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
@@ -38,14 +38,14 @@ It encompasses four functions:
 	-Histogram of expected and observed distribution of consecutive patterns.
 
 ### 2. contained_asymmetries.py
-#### Input requirements:
+#### Required inputs:
 	-regions: One or more BED-formatted files, containing the regions within which to estimate motif asymmetries.
 	-motifs: One or more BED-formatted files, for each of which the asymmetries are calculated.
 #### Optional inputs:
-	-names_A: The name of each of the inputted BED-formatted region files.
-	-names_B: The name of each of the inputted BED-formatted motif files.
-	-upstream: Only look for occurrences of motif A upstream of motif B
-	-downstream: Only look for occurrences of motif A downstream of motif B
+	-names_A: Assign a name for each of the BED-formatted region files to allow for more human readable output
+	-names_B: Assign a name for each of the BED-formatted motif files to allow for more human readable output
+	-upstream: Only look for occurrences of motif A upstream of motif B. Incompattible with -downstream
+	-downstream: Only look for occurrences of motif A downstream of motif B. Incompatible with -upstream
 	-orientation_region: Orient file(s) relative to annotated BED-formated region file(s) and perform the analysis for the un-annoated file with the new annotations.
 	-orientation_motif: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
 	-expected_asym: The expected asymmetry bias between the regions and the motifs. Default is 0.5.
@@ -60,7 +60,7 @@ It encompasses four functions:
 	-Barplot of strand-asymmetries across the bins.
 
 ### 3. pairwise_asymmetries.py
-#### Input requirements:
+#### Required inputs:
 	-motifsA: One or more BED-formatted files
 	-motifsB: One or more BED-formatted files
 #### Optional inputs:
