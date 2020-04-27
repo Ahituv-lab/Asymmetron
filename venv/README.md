@@ -50,8 +50,8 @@ It encompasses four functions:
 	-orientation_motif: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
 	-expected_asym: The expected asymmetry bias between the regions and the motifs. Default is 0.5.
 	-expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the motifs. Default is 0.5.
-	-score: For region files, uses the last column to subdivide the analysis into quartiles. Default is not to perform this.
-	-quartiles: Number of quartiles to subdivide the score into. Only runs when --score is provided. Default value is 10.
+	-score: Optional flag. If provided, assumes the last column of the region files is a scoring metric and uses it to subdivide the analysis into bins.
+	-bins: Number of bins to subdivide the results into. Only runs when --score is provided. Default value is 10.
 	-plots: Returns the associated plots of the asymmetries for each file.
 #### Outputs:
 	-Table containing strand asymmetries of ++/+-/-+/-- orientations, same-strand, opposite strand, p-value, p-value with Binomial correction.
