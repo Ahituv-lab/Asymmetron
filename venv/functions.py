@@ -57,7 +57,7 @@ def readVCFtoBED(path):
 
 def separate_on_score(ScoreL,DataL,number_of_bins):
 	"""
-	Idea to have another possibility for the user to select a column with values, and do relative asymmetry relative to those.
+	Idea to have another possibility for the user to select a column with values, and do asymmetry analysis relative to those.
 	This would require binning this feature and calculating the asymmetry at each bin of this column values. 
 	This would be useful e.g. if we want to see if expression levels are associated with mutational strand asymmetry or if replication timing is.
 
@@ -69,11 +69,9 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 	score_max = int(math.ceil(max(ScoreL)))
 	SizeBins= int((score_max-score_min)/ number_of_bins)
 	StepsL = range(score_min,score_max,SizeBins)
-	DataStepsL=[]
-	ScoresStepsL=[]
+	DataStepsL=[];ScoresStepsL=[];
 	for step in StepsL:
-		DataStep=[]
-		ScoreStep=[]
+		DataStep=[];ScoreStep=[];
 		for i in range(len(ScoreL)):
 			if ScoreL[i]>=step and ScoreL[i]<step+SizeBins:
 				DataStep+=[DataL[i]]
@@ -419,5 +417,4 @@ if __name__ == "__main__":
 #print len(Strand1),len(Strand2),len(DistancesL)
 #print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
 
-# testing ### VERY VERY SLOW ####
 asymmetries_single(read_BED("All_G4.bed"),0,1000,bins=0)
