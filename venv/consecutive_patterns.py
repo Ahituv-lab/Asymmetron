@@ -27,7 +27,18 @@ def name_splitter(names):
     return names
 
 
-def fun1():
+def fun1(args):
+    paths = path_checker(args.path)  # Converts the input to a list of paths. List can include only one element, if one path is given by the user
+    # Converts the input to a list of path for the orientation files. If this optional argument was not given, the variable is set to None
+    try:
+        orientation_paths = path_checker(args.orientation)
+    except AttributeError:
+        orientation_paths = None
+    # Converts the input to a list of names. If this optional argument was not given, the variable is set to none
+    try:
+        names = name_splitter(args.names)
+    except AttributeError:
+        names = None
     return
 
 
@@ -45,17 +56,8 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--orientation", help="Optional argument. Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations. Can enter multiple paths as a comma separated string, e.g. \"path1, path2\"")
     parser.add_argument("-t", "--threshold", help="Optional argument. Threshold of p-value of consecutive patterns to save in new BED file.", type=int)
     args = parser.parse_args()
-    paths = path_checker(args.path)  # Converts the input to a list of paths. List can include only one element, if one path is given by the user
-    # Converts the input to a list of path for the orientation files. If this optional argument was not given, the variable is set to None
-    try:
-        orientation_paths = path_checker(args.orientation)
-    except AttributeError:
-        orientation_paths = None
-    # Converts the input to a list of names. If this optional argument was not given, the variable is set to none
-    try:
-        names = name_splitter(args.names)
-    except AttributeError:
-        names = None
+
+    fun1(args)
 
 
 
