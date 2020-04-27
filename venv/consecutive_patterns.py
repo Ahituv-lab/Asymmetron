@@ -1,7 +1,6 @@
 import sys
 #import functions
 import argparse
-import os
 import wrapper_functions as wf
 
 
