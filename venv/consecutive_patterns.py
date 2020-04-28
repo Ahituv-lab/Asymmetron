@@ -6,7 +6,7 @@ import wrapper_functions as wf
 
 def fun1(args):
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
-    #functions.asymmetries_single(path,window_min,window_max,bins=0)
+        #functions.asymmetries_single(path,window_min,window_max,bins=0)
     return
 
 
