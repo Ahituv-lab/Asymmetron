@@ -1,4 +1,4 @@
-#convergenti## ASYMMETRON ###
+## ASYMMETRON ###
 import itertools,math
 import numpy as np
 from scipy.stats import binom_test

@@ -24,6 +24,8 @@ def name_splitter(names):
     namesL = [x.strip() for x in names.split(',')]
     return names
 
+# Should we move the pairs_generator(pathL1,pathL2,NamesL1,NamesL2) here from functions.py?
+
 def sanitize(paths, orientation, names):
     paths = path_checker(paths)  # Converts the input to a list of paths. List can include only one element, if one path is given by the user
     # Converts the input to a list of path for the orientation files. If this optional argument was not given, the variable is set to None

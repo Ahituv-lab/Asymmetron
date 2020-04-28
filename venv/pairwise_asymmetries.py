@@ -5,6 +5,7 @@ import wrapper_functions as wf
 
 def fun3(args):
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
+    #proximal(path1,path2,window_min,window_max,upstream=False,downstream=False,in_parts=False)
     return
 
 if __name__ == "__main__":
