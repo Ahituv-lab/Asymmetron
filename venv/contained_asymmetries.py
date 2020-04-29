@@ -6,8 +6,12 @@ import wrapper_functions as wf
 def fun2(args):
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
     p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.overlap(motifs,regions)
-    
-    # I think for this function we will need to add within it all the extra steps e.g. stats, plotting or make a new function for that
+    #same vs opposite analysis
+    Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
+    # convergent vs divergent analysis
+    Ratio_conv_diverg,p_val_conv_diverg,p_val_conv_diver_Bonferoni=functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
+    # generates table <- this should be done for all pairs.
+   
     return
 
 if __name__ == "__main__":
