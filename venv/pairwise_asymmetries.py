@@ -10,9 +10,9 @@ def fun3(args):
     if bins==False:
         p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.proximal(path1,path2,min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,in_parts=bins)
         #same vs opposite analysis
-        functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
+        Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
         # convergent vs divergent analysis
-        functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
+        Ratio_conv_diverg,p_val_conv_diverg,p_val_conv_diver_Bonferoni=functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
         # generates table <- this should be done for all pairs.
 	if plots:
             # generates histogram same opposite, we need to decide the output1
