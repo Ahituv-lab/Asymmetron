@@ -59,7 +59,7 @@ def binner(ListofNumbers,bin_no):
 	min_size = min(ListofNumbers)
 	max_size = max(ListofNumbers)
 	bin_size = float(max_size-min_size)/float(bin_no)
-	Bins = (min_size+bin_size*k,min_size+bin_size*(k+1) for k in range(1,len(bin_no)+1))
+	Bins =[(min_size+bin_size*k,min_size+bin_size*(k+1)) for k in range(1,bin_no+1)]
 	return Bins
 
 def separate_on_score(ScoreL,DataL,number_of_bins):
@@ -365,8 +365,8 @@ if __name__ == "__main__":
 #works
 #print strand_annotate_third_BED_overlap(read_BED("Myeloid.indels"),read_BED("Ensembl.genes_hg19_TSSs.bed"))
 #works
-DataL,ScoreL=read_BED("MCF7_RepliStrand.leading_lagging.bed",True)
-separate_on_score(ScoreL,DataL,10)
+#DataL,ScoreL=read_BED("MCF7_RepliStrand.leading_lagging.bed",True)
+#separate_on_score(ScoreL,DataL,10)
 # works - minor error with extra bin, needs fixing
 #Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),0,500,False,False,True)
 #print len(Strand1),len(Strand2),len(DistancesL)
