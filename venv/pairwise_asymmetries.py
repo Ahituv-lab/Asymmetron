@@ -6,7 +6,8 @@ import wrapper_functions as wf
 def fun3(args):
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
     # for a pair of files
-    proximal(path1,path2,min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,in_parts=bins)
+    if bins==False:
+        p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.proximal(path1,path2,min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,in_parts=bins)
     return
 
 if __name__ == "__main__":
