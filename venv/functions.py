@@ -93,8 +93,10 @@ def asymmetries_single(path,window_min,window_max,patterns,bins=0):
         DataL = BedTool(path).sort().to_dataframe()
 	if patterns==False:
 		patterns = ['++','--','+-','-+']
-		for pattern in patterns:
-			Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern)
+
+	for pattern in patterns:
+		Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern)
+			
 	# If we divide the signal by bin (since we use almost the same binning strategy downstream, probably we should turn this into an independent function, binning)
 	if bins>0:
 		Bin_Distances = binner(window_min,window_max,bins)
