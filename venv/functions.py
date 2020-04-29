@@ -4,7 +4,6 @@ import numpy as np
 from scipy.stats import binom_test
 from pybedtools import BedTool
 
-
 # Google drive linke with the draft https://docs.google.com/document/d/1elnyyHShRcY5X406qk9O2-odU5yb7F15vWtwmSzrmrw/edit
 def pairs_generator(pathL1,pathL2,NamesL1,NamesL2):
 	"""
@@ -57,10 +56,9 @@ def readVCFtoBED(path):
 
 def separate_on_score(ScoreL,DataL,number_of_bins):
 	"""
-	Idea to have another possibility for the user to select a column with values, and do asymmetry analysis relative to those.
-	This would require binning this feature and calculating the asymmetry at each bin of this column values. 
+	Score list is ordered as DataL list of lists and the first is used to bin the second.
+	This requires binning this feature and calculating the asymmetry at each bin of this column values. 
 	This would be useful e.g. if we want to see if expression levels are associated with mutational strand asymmetry or if replication timing is.
-
 	This function should divide a list of lists representing a file to list of lists (DataL) based on
 	the Score bins 
 	We should check Score to be integer / float in our checks
@@ -80,7 +78,7 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 		ScoresStepsL+=[ScoreStep]
 	return zip(StepsL,ScoresStepsL,DataStepsL)
 
-def asymmetries_single(path,window_min,window_max,bins=0):
+def asymmetries_single(path,window_min,window_max,patterns,bins=0):
 	"""
 	This function calculates the strand asymmetry biases in a single file.
 	Inputs. 
@@ -90,29 +88,12 @@ def asymmetries_single(path,window_min,window_max,bins=0):
 	"""
 	# Reads the file and sorts it by ascending order of start (and chrom)
         DataL = BedTool(path).sort().to_dataframe()
-        Chromosome = list(DataL.iloc[:,0])
-        Start = list(DataL.iloc[:,1])
-        End = list(DataL.iloc[:,2])
-        Name = list(DataL.iloc[:,3])
-        Strand =  list(DataL.iloc[:,4])
-	Strand1=[];Strand2=[];DistancesL=[];
-	# Also if we want to calculate statistics of consecutive e.g. +/+/+/+ the current format is not very good. 
-	# Need to reconsider how we do the calculation in this function. For consecutive case the p-value for x consecutive being same is p-val= min(1,((0.5)**x)*number of lines in file))?
-	for i in range(0,len(DataL)-1):
-                chrom_up,start_up,end_up,name1,strand1=Chromosome[i],Start[i],End[i],Name[i],Strand[i]
-                chrom_down,start_down,end_down,name2,strand2=Chromosome[i+1],Start[i+1],End[i+1],Name[i+1],Strand[i+1]
-		distance = abs(int(start_down)-int(end_up))
-		if distance>=window_min and distance<window_max:
-			if chrom_up==chrom_down:
-				Strand1.append(strand1)
-				Strand2.append(strand2)
-				DistancesL.append(distance)
-	# If we do not want to return the signal by bin
-	if bins==0:
-		p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=orientation(Strand1,Strand2)
-		return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
+	if patterns==False:
+		patterns = ['++','--','+-','-+']
+		for pattern in patterns:
+			Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern)
 	# If we divide the signal by bin (since we use almost the same binning strategy downstream, probably we should turn this into an independent function, binning)
-	elif bins>0:
+	if bins>0:
 		p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL=asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L)
 		return p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL
 
@@ -136,6 +117,7 @@ def calc_consecutive(DataL,window_min,window_max,pattern):
         We should also include alternating occurrences
         """
 	from random import shuffle #pottentially do Monte carlo instead
+	from collections import Counter
 	Signs='';
 	for i in range(len(DataL)-1):
 		chrom_up,start_up,end_up,name1,strand_previous=DataL[i][0:5]
@@ -154,7 +136,7 @@ def calc_consecutive(DataL,window_min,window_max,pattern):
 	Occs_pattern=extract_pattern(Signs,pattern)
 	Occs_pattern_control=extract_pattern(Signs_control,pattern)
 
-        return Occs_pattern,Occs_pattern_control
+        return Counter(Occs_pattern),Counter(Occs_pattern_control)
 
 def strand_annotate_third_BED_overlap(unnotated_path,annotated_path):
 	"""
