@@ -10,10 +10,9 @@ def fun4(args):
     motif_no_annotation = wf.path_checker(args.motif_no_annotation)
     motif_annotation = wf.path_checker(args.motif.annotation)
     Annotation_data=strand_annotate_third_BED_overlap(motif_no_annotation,motif_annotation)
-    datafile=open(output,"w")
-    for i in Annotation_data:
-        datafile.write('\t'.join([str(x) for x in i])+'\n')
-    datafile.close()
+    with open(motif_no_annotation+"_annotated", "w") as f:
+        for i in Annotation_data:
+            f.write('\t'.join([str(x) for x in i])+'\n')
     return
 
 
