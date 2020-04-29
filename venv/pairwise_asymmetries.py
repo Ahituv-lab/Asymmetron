@@ -5,7 +5,8 @@ import wrapper_functions as wf
 
 def fun3(args):
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
-    #proximal(path1,path2,window_min,window_max,upstream=False,downstream=False,in_parts=False)
+    # for a pair of files
+    proximal(path1,path2,min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,in_parts=bins)
     return
 
 if __name__ == "__main__":
@@ -21,6 +22,8 @@ if __name__ == "__main__":
     parser.add_argument("-ec", "--expected_asym_conv_div", help="Optional argument. The expected convergent / divergent asymmetry bias between the pairs of motifs Default is 0.5.", type=float)
     parser.add_argument("-min", "--min_distance", help="Two consecutive motifs with distance lower than the min_distance will not be considered as significant for the purpose of this analysis. Default = 0", type=int)
     parser.add_argument("-max", "--max_distance", help="Two consecutive motifs with distance higher than the max_distance will not be considered as significant for the purpose of this analysis. Default = 100", type=int)
+    parser.add_argument("-up", "--upstream_only", help="Perform the analysis only for occurrences of motif A upstream of occurrences of motif B, within the distance limits", type=int)
+    parser.add_argument("-down", "--downstream_only", help="Perform the analysis only for occurrences of motif A downstream of occurrences of motif B, within the distance limits", type=int)
     parser.add_argument("-b", "--bins", help="Optional argument. Split output data and graphs in the specified number of bins. Default = 1", type=int)  # Needs rephrasing
     args = parser.parse_args()
 
