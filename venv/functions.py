@@ -347,13 +347,11 @@ def barplot_gen(strand1,strand2,output):
 	"""
 	This should be an option for the user if he wants to generate vizualizations too.
 	"""
-	# same opposite orientation
 	import matplotlib.pyplot as plt
 	ax = plt.subplot(111)
 	plt.barplot(range(1,3),[strand1,strand2],align="center")
 	plt.ylabel("Occurrences")
 	plt.xlabel("Strand Orientation")
-	#plt.xticks(range(1,3),["Same","Opposite"])
 	ax.spines['right'].set_visible(False)
 	ax.spines['top'].set_visible(False)
 	ax.yaxis.set_ticks_position('left')
