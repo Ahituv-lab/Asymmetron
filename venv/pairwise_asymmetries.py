@@ -15,7 +15,10 @@ def fun3(args):
         functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
         # generates table
 
-        # generates histograms
+        # generates histogram same opposite, we need to decide the output1
+        barplot_gen(same_strand,opposite_strand,output1)
+        # generates historam covergent divergent, we need to decide the output2
+        barplot_gen(p_m,m_p,output2)
     return
 
 if __name__ == "__main__":
