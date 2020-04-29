@@ -301,15 +301,15 @@ def statistical_evaluation(occs_strand1,occs_strand2,number_of_files_scanned,exp
 	return Ratio_strand1_2,p_val_strand1_2,p_val_strand1_2_Bonferoni
 
 
-def table_gen(NamesL1,NamesL2,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL):
+def table_gen(NamesL_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_valsL_divergent_convergent,p_valsL_divergent_convergent_BonferoniL,RatiosL_divergent_convergent):
 	"""
 	accepts list of  pairs of files / Names (factors) as input, list of p-values, Ratios and returns table
 	This is more useful for multiple lists of files.
 	"""
 	datafile=open("statistics_asymmetry.txt","w")
-	datafile.write("Feature 1"+'\t'+"Feature 2"+"\t"+"plus-plus"+'\t'+"minus-minus"+'\t'+"plus-minus"+'\t'+"minus-plus"+'\t'+"p-value"+'\t'+"p-value Bonferoni corrected"+'\t'+"Ratio"+'\n')
+	datafile.write("Feature 1"+'\t'+"Feature 2"+"\t"+"plus-plus"+'\t'+"minus-minus"+'\t'+"plus-minus"+'\t'+"minus-plus"+'\t'+"p-value same opposite"+'\t'+"p-value same opposite Bonferoni corrected"+'\t'+"Ratio same opposite"+'\t'+"p-value divergent convergent"+'\t'+"p-value divergent convergent Bonferoni corrected"+'\t'+"Ratio divergent convergent"+'\n')
 	for i in range(len(NamesL)):
-		datafile.write(NamesL1[i]+'\t'+NamesL2[i]+'\t'+str(p_pL[i])+'\t'+str(m_mL[i])+'\t'+str(p_mL[i])+'\t'+str(m_pL[i])+'\t'+str(p_valsL[i])+'\t'+str(p_vals_BonferoniL[i])+'\t'+str(RatiosL[i])+'\n')
+		datafile.write(NamesL_pairs[i][0]+'\t'+NamesL_pairs[i][1]+'\t'+str(p_pL[i])+'\t'+str(m_mL[i])+'\t'+str(p_mL[i])+'\t'+str(m_pL[i])+'\t'+str(p_valsL[i])+'\t'+str(p_vals_BonferoniL[i])+'\t'+str(RatiosL[i])+'\t'+str(p_valsL_divergent_convergent[i])+'\t'+str(p_valsL_divergent_convergent_BonferoniL[i])+'\t'+str(RatiosL_divergent_converg[i])+'\n')
 	datafile.close()
 	return
 
