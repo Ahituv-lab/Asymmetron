@@ -5,7 +5,8 @@ import wrapper_functions as wf
 
 def fun2(args):
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
-    #functions.overlap(path1,path2)
+    p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.overlap(motifs,regions)
+    
     # I think for this function we will need to add within it all the extra steps e.g. stats, plotting or make a new function for that
     return
 
