@@ -117,74 +117,44 @@ def asymmetries_single(path,window_min,window_max,bins=0):
 		return p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL
 
 
-def calc_consecutive(DataL,window_min,window_max):
+def extract_pattern(signS,pattern):
+	occs=[];
+	counts=0
+	for i in range(0,len(signS)-len(pattern)):
+		if signS[i:i+len(pattern)]==pattern:
+			counts+=1
+		else:
+			if counts>0:
+				occs+=[counts]	
+				counts=0
+	return occs
+
+def calc_consecutive(DataL,window_min,window_max,pattern):
         """
         This function takes as input a list of strand signs.
         It returns the number of consecutive occurrences in the plus and minus orientation.
         We should also include alternating occurrences
         """
-        from random import shuffle
-        DistancesL=[]
-        plus_consecutive=[];minus_consecutive=[];same_strand=[]
-        plus_consecutiveR=[];minus_consecutiveR=[];same_strandR=[]
-        StrandsL=[k[4] for k in DataL]
-        for index,line in enumerate(DataL):
-                if index==0:
-                        counts=1;
+	from random import shuffle #pottentially do Monte carlo instead
+	Signs='';
+	for i in range(len(DataL)-1):
+		chrom_up,start_up,end_up,name1,strand_previous=DataL[i][0:5]
+		chrom_down,start_down,end_down,name2,strand=DataL[i+1][0:5]
+		distance = abs(int(start_down)-int(end_up))
+		if distance>=window_min and distance<window_max:
+			Signs+=strand_previous+strand
+		else:
+			 Signs+="_"
 
-                else:
-                        chrom_up,start_up,end_up,name1,strand_previous=DataL[index-1][0:5]
-                        chrom_down,start_down,end_down,name2,strand=DataL[index][0:5]
-                        distance = abs(int(start_down)-int(end_up))
-                        DistancesL+=[distance]
-                        if distance>=window_min and distance<window_max:
-                                if strand==strand_previous:
-                                        counts+=1
-                                else:
-                                        if strand_previous=="+":
-                                                plus_consecutive+=[counts]
-                                                same_strand+=[counts]
-                                        elif strand_previous=="-":
-                                                minus_consecutive+=[counts]
-                                                same_strand+=[counts]
-                                        counts=1
+	# Random control
+	Signs_control = list(Signs)
+	shuffle(Signs_control)
+	Signs_control = ''.join(Signs_control)
 
-                        else:
-                                if strand_previous=="+":
-                                        plus_consecutive+=[counts]
-                                        same_strand+=[counts]
-                                elif strand_previous=="-":
-                                        minus_consecutive+=[counts]
-                                        same_strand+=[counts]
-                                counts=1
+	Occs_pattern=extract_pattern(Signs,pattern)
+	Occs_pattern_control=extract_pattern(Signs_control,pattern)
 
-        shuffle(DistancesL)
-        for index,line in enumerate(DataL):
-                if index==0:
-                        counts_control=1;
-                else:
-                        chrom_up,start_up,end_up,name1,strand_previous=DataL[index-1][0:5]
-                        chrom_down,start_down,end_down,name2,strand=DataL[index][0:5]
-                        distance = DistancesL[index-1]
-                        if distance>=window_min and distance<window_max:
-                                if strand==strand_previous:
-                                        counts_control+=1;
-                                else:
-                                        if strand_previous=="+":
-                                                plus_consecutiveR+=[counts_control]
-                                                same_strandR+=[counts_control]
-                                        elif strand_previous=="-":
-                                                minus_consecutive+=[counts_control]
-                                                same_strandR+=[counts_control]
-                        else:
-                                if strand_previous=="+":
-                                        plus_consecutiveR+=[counts_control]
-                                        same_strandR+=[counts_control]
-                                elif strand_previous=="-":
-                                        minus_consecutiveR+=[counts_control]
-                                        same_strandR+=[counts_control]
-                                counts_control=1;
-        return same_strand,same_strandR
+        return Occs_pattern,Occs_pattern_control
 
 def strand_annotate_third_BED_overlap(unnotated_path,annotated_path):
 	"""
@@ -416,5 +386,4 @@ if __name__ == "__main__":
 #Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),0,500,False,False,True)
 #print len(Strand1),len(Strand2),len(DistancesL)
 #print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
-
-asymmetries_single(read_BED("All_G4.bed"),0,1000,bins=0)
+#asymmetries_single(read_BED("All_G4.bed"),0,1000,bins=0)
