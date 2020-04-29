@@ -5,7 +5,7 @@ import wrapper_functions as wf
 
 def fun3(args):
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
-    number_of_files= len(otifsA)*len(motifsB)
+    number_of_files= len(motifsA)*len(motifsB)
     # for a pair of files finds the orientations
     if bins==False:
         p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.proximal(path1,path2,min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,in_parts=bins)
@@ -13,12 +13,12 @@ def fun3(args):
         functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
         # convergent vs divergent analysis
         functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
-        # generates table
-
-        # generates histogram same opposite, we need to decide the output1
-        barplot_gen(same_strand,opposite_strand,output1)
-        # generates historam covergent divergent, we need to decide the output2
-        barplot_gen(p_m,m_p,output2)
+        # generates table <- this should be done for all pairs.
+	if plots:
+            # generates histogram same opposite, we need to decide the output1
+            functions.barplot_gen(same_strand,opposite_strand,output1)
+            # generates historam covergent divergent, we need to decide the output2
+            functions.barplot_gen(p_m,m_p,output2)
     return
 
 if __name__ == "__main__":
