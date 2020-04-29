@@ -55,9 +55,7 @@ def readVCFtoBED(path):
 	return DataBED
 
 
-def binner(ListofNumbers,bin_no):
-	min_size = min(ListofNumbers)
-	max_size = max(ListofNumbers)
+def binner(min_size,max_size,bin_no):
 	bin_size = float(max_size-min_size)/float(bin_no)
 	Bins =[(min_size+bin_size*k,min_size+bin_size*(k+1)) for k in range(1,bin_no+1)]
 	return Bins
@@ -71,7 +69,7 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 	the Score bins 
 	We should check Score to be integer / float in our checks
 	"""
-	StepsL = binner(ScoreL,number_of_bins)
+	StepsL = binner(min(ScoreL),max(ScoreL),number_of_bins)
 	DataStepsL=[];ScoresStepsL=[];
 	for step in StepsL:
 		DataStep=[];ScoreStep=[];
@@ -99,7 +97,9 @@ def asymmetries_single(path,window_min,window_max,patterns,bins=0):
 			Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern)
 	# If we divide the signal by bin (since we use almost the same binning strategy downstream, probably we should turn this into an independent function, binning)
 	if bins>0:
-		p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL=asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L)
+		Bin_Distances = binner(window_min,window_max,bins)
+		for min_dist,max_dist in Bin_Distances:
+			p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL=asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L)
 		return p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL
 
 
