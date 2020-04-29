@@ -54,6 +54,14 @@ def readVCFtoBED(path):
 				DataBED.append([chrom,pos-1,pos,ID])
 	return DataBED
 
+
+def binner(ListofNumbers,bin_no):
+	min_size = min(ListofNumbers)
+	max_size = max(ListofNumbers)
+	bin_size = float(max_size-min_size)/float(bin_no)
+	Bins = (min_size+bin_size*k,min_size+bin_size*(k+1) for k in range(1,len(bin_no)+1))
+	return Bins
+
 def separate_on_score(ScoreL,DataL,number_of_bins):
 	"""
 	Score list is ordered as DataL list of lists and the first is used to bin the second.
@@ -63,15 +71,12 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 	the Score bins 
 	We should check Score to be integer / float in our checks
 	"""
-	score_min = int(math.floor(min(ScoreL)))
-	score_max = int(math.ceil(max(ScoreL)))
-	SizeBins= int((score_max-score_min)/ number_of_bins)
-	StepsL = range(score_min,score_max,SizeBins)
+	StepsL = binner(ScoreL,number_of_bins)
 	DataStepsL=[];ScoresStepsL=[];
 	for step in StepsL:
 		DataStep=[];ScoreStep=[];
 		for i in range(len(ScoreL)):
-			if ScoreL[i]>=step and ScoreL[i]<step+SizeBins:
+			if ScoreL[i]>=step[0] and ScoreL[i]<step[1]:
 				DataStep+=[DataL[i]]
 				ScoreStep+=[DataL[i]]
 		DataStepsL+=[DataStep]
@@ -360,8 +365,8 @@ if __name__ == "__main__":
 #works
 #print strand_annotate_third_BED_overlap(read_BED("Myeloid.indels"),read_BED("Ensembl.genes_hg19_TSSs.bed"))
 #works
-#DataL,ScoreL=read_BED("MCF7_RepliStrand.leading_lagging.bed",True)
-#separate_on_score(ScoreL,DataL,10)
+DataL,ScoreL=read_BED("MCF7_RepliStrand.leading_lagging.bed",True)
+separate_on_score(ScoreL,DataL,10)
 # works - minor error with extra bin, needs fixing
 #Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),0,500,False,False,True)
 #print len(Strand1),len(Strand2),len(DistancesL)
