@@ -1,5 +1,5 @@
 import sys
-#import functions
+import functions
 import argparse
 import wrapper_functions as wf
 
@@ -10,10 +10,11 @@ def fun4(args):
     motif_no_annotation = wf.path_checker(args.motif_no_annotation)
     motif_annotation = wf.path_checker(args.motif_annotation)
     for path in motif_no_annotation:
-        Annotation_data=functions.strand_annotate_third_BED_overlap(motif_no_annotation,motif_annotation)
-        with open("ASYMMETRON_ANNOTATED" + path, "w") as f:
-            for i in Annotation_data:
-                f.write('\t'.join([str(x) for x in i])+'\n')
+        for path2 in motif_annotation:
+            Annotation_data=functions.strand_annotate_third_BED_overlap(path,path2)
+            with open(path+"_ASYMMETRON_ANNOTATED_"+path2, "w") as f:
+                for i in Annotation_data:
+                    f.write('\t'.join([str(x) for x in i])+'\n')
     return
 
 
