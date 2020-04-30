@@ -4,13 +4,29 @@ import argparse
 import wrapper_functions as wf
 
 def fun2(args):
+
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
-    p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.overlap(motifs,regions)
-    #same vs opposite analysis
-    Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
-    # convergent vs divergent analysis
-    Ratio_conv_diverg,p_val_conv_diverg,p_val_conv_diver_Bonferoni=functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
+    number_of_files= len(motifs)*len(regions)
+
+    directory = "outputs_contained_asymmetries"
+    if not os.path.exists(directory):
+        os.makedirs(directory
+  
+    motif_region_pairs,names_pairs=functions.pairs_generator(pathL1,pathL2,NamesL1,NamesL2)
+
+    p_pL=[];m_mL=[];p_mL=[];m_pL=[];same_strandL=[];opposite_strandL=[];convergentL=[];divergentL=[];
+    for i in range(len(motif_region_pairs)): 
+
+        p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.overlap(motifs,regions)
+        p_pL.apend(p_p);m_mL.append(m_m);p_mL.append(p_m);m_pL.append(m_pL);
+        same_strandL.append(same_strand);opposite_strandL.append(opposite_strand);convergentL.append(convergent);divergentL.append(divergent);
+        #same vs opposite analysis
+        Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
+        # convergent vs divergent analysis
+        Ratio_conv_diverg,p_val_conv_diverg,p_val_conv_diver_Bonferoni=functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
+
     # generates table <- this should be done for all pairs.
+    table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_val_conv_diver_BonferoniL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
    
     return
 

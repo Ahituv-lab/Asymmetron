@@ -20,7 +20,6 @@ def fun3(args):
     for i in range(len(motif_pairs)):
             # for a pair of files finds the orientations
             p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.proximal(path1,path2,min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,in_parts=bins)
-
             #same vs opposite analysis
             Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
             p_pL.append(p_p);m_mL.append(m_m); # same orientation data
@@ -37,14 +36,15 @@ def fun3(args):
                  functions.barplot_gen(same_strand,opposite_strand,os.path.join(directory, names_pairs[0]+"_"+names_pairs[1]+ "_same_opposite_orientations.png"))
                  # generates historam covergent divergent, we need to decide the output2
                  functions.barplot_gen(p_m,m_p,os.path.join(directory, names_pairs[0]+"_"+names_pairs[1]+ "_divergent_convergent_orientations.png"))
-           if bins:
+
+            if bins:
                  # Here we need to decide what is the outputs we want to provide since they can be too many and complicated or focus on the plots and a small table
                  pass
 
     # generates table <- this should be done for all pairs together.
     table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_val_conv_diver_BonferoniL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
-    return
 
+    return
 if __name__ == "__main__":
     # Note: Optional arguments have a - or -- in front of them
     parser = argparse.ArgumentParser()
