@@ -82,7 +82,7 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 
 	return zip(StepsL,ScoresStepsL,DataStepsL)
 
-def asymmetries_single(path,window_min,window_max,patterns,bins=0,plot):
+def asymmetries_single(path,window_min,window_max,patterns,bins=0,plot,threshold_probability,threshold):
 	"""
 	This function calculates the strand asymmetry biases in a single file.
 	Inputs. 
@@ -92,16 +92,19 @@ def asymmetries_single(path,window_min,window_max,patterns,bins=0,plot):
 	"""
 	# Reads the file and sorts it by ascending order of start (and chrom)
         DataL = BedTool(path).sort().to_dataframe()
+        Strand = list(DataL.iloc[:,-1])
+	total_plus = Strand.count("+")
+        total_minus = Strand.count("-")
+        probability["+"]=total_plus/float(total_plus+total_minus)
+        probability_minus["-"] = 1-probability_plus
+        probability_pattern = np.prod([probability[k] for k in list(pattern)])
+
 	if patterns==False:
 		patterns = ['++','--','+-','-+']
 
 	for pattern in patterns:
 
-                Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern)
-                total_plus = Counter_consecutive_real.count("+")
-                total_minus = Counter_consecutive_real.count("-")
-                probability_plus = total_plus/float(total_plus+total_minus)
-                probability_minus = 1-probability_plus
+                Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern,threshold)
 
                 if plot==True:
                     consecutive, times_found = zip(*Counter_consecutive_real.items())
@@ -134,7 +137,7 @@ def extract_pattern(signS,pattern):
 				counts=0
 	return occs
 
-def calc_consecutive(DataL,window_min,window_max,pattern):
+def calc_consecutive(DataL,window_min,window_max,pattern,threshold):
         """
         This function takes as input a list of strand signs.
         It returns the number of consecutive occurrences in the plus and minus orientation.
@@ -144,13 +147,20 @@ def calc_consecutive(DataL,window_min,window_max,pattern):
 	from collections import Counter
 	Signs='';
 	for i in range(len(DataL)-1):
+		if i==0:
+			counter=0	
+			Coordinates_Consecutive=[];
+		
 		chrom_up,start_up,end_up,name1,strand_up=DataL[i][0:5]
 		chrom_down,start_down,end_down,name2,strand_down=DataL[i+1][0:5]
 		distance = abs(int(start_down)-int(end_up))
 		if distance>=window_min and distance<window_max:
 			Signs+=strand
+			counter+=1
+			Coordinates_Consecutive+=[chrom_up,start_up,end_up,name1,strand_up]
 		else:
 			 Signs+="_"
+			counter=0
 
 	# Random control
 	Signs_control = list(Signs)
