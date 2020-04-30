@@ -1,34 +1,47 @@
-import sys
+import sys,os
 import functions
 import argparse
 import wrapper_functions as wf
 
 def fun3(args):
+
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
+
+    directory = "outputs_pairwise_asymmetries"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
     number_of_files= len(motifsA)*len(motifsB)
+
     motif_pairs,names_pairs=functions.pairs_generator(pathL1,pathL2,NamesL1,NamesL2)
+
     p_pL=[];m_mL=[];m_pL=[];p_mL=[];p_valsL=[];p_vals_BonferoniL=[];RatiosL=[];p_val_conv_divergL=[];p_val_conv_diver_BonferoniL=[];Ratio_conv_divergL=[];
+
     for i in range(len(motif_pairs)):
-        # for a pair of files finds the orientations
+            # for a pair of files finds the orientations
             p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.proximal(path1,path2,min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,in_parts=bins)
+
             #same vs opposite analysis
             Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
-            p_pL.append(p_p)
-            m_mL.append(m_m)
-            p_mL.append(p_m)
-            m_pL.append(m_p)
-            p_valsL.append(p_val_same_opposite)
-            p_val_same_opposite_BonferoniL.append(p_val_same_opposite_Bonferoni)
-            RatiosL.append(Ratio_same_opposite)
+            p_pL.append(p_p);m_mL.append(m_m); # same orientation data
+            p_mL.append(p_m);m_pL.append(m_p); # opposite orientation data
+            p_valsL.append(p_val_same_opposite);p_val_same_opposite_BonferoniL.append(p_val_same_opposite_Bonferoni); # p-values for same vs opposite
+            RatiosL.append(Ratio_same_opposite); # Ratio of asymmetry for same / opposite analysis
+
             # convergent vs divergent analysis
             Ratio_conv_diverg,p_val_conv_diverg,p_val_conv_diver_Bonferoni=functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
-            # generates table <- this should be done for all pairs together.
+            p_val_conv_divergL.append(p_val_conv_diverg);p_val_conv_diver_BonferoniL.append(p_val_conv_diver_BonferoniL);
+            Ratio_conv_divergL.append(Ratio_conv_diverg);
 	    if plots:
-             # generates histogram same opposite, we need to decide the output1
-             functions.barplot_gen(same_strand,opposite_strand,output1)
-             # generates historam covergent divergent, we need to decide the output2
-             functions.barplot_gen(p_m,m_p,output2)
+                 # generates histogram same opposite, we need to decide the output1
+                 functions.barplot_gen(same_strand,opposite_strand,os.path.join(directory, names_pairs[0]+"_"+names_pairs[1]+ "_same_opposite_orientations.png"))
+                 # generates historam covergent divergent, we need to decide the output2
+                 functions.barplot_gen(p_m,m_p,os.path.join(directory, names_pairs[0]+"_"+names_pairs[1]+ "_divergent_convergent_orientations.png"))
+           if bins:
+                 # Here we need to decide what is the outputs we want to provide since they can be too many and complicated or focus on the plots and a small table
+                 pass
 
+    # generates table <- this should be done for all pairs together.
     table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_val_conv_diver_BonferoniL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
     return
 
