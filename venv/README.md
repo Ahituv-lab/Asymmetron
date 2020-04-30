@@ -6,17 +6,16 @@ Copyright 2020. All rights reserved.
 
 ## Installation
 
+## Introduction
+DNA strand specificity can have a major effect on numerous biological functions, including DNA replication, mRNA transcription, transcription factor binding and many others.
+By studying systematically strand asymmetries we can identify novel DNA elements, improve our comprehension regarding their interactions with one another and advance our understanding regarding the contribution of underlying processes in mutagenesis and evolution. To date, there is no versatile tool to perform analysis of strand asymmetries across biological problems. 
 
 ## Summary 
 
 Asymmetron is a toolkit for the identifcation of asymmetry patterns in biological sequences. Asymmetron can identify strand asymmetries within consecutive occurrences of a single genomic element and for pairs of overlapping and non-overlapping genomic elements. It can also measure strand asymmetries of genomic elements relative to transcriptional and replicative orientations. Asymmetron can assign strand orientation to third features such as mutations, by orienting them relative to other genomic elements. \
 
-## Introduction
-DNA strand specificity can have a major effect on numerous biological functions, including DNA replication, mRNA transcription, transcription factor binding and many others.
-By studying systematically strand asymmetries we can identify novel DNA elements, improve our comprehension regarding their interactions with one another and advance our understanding regarding the contribution of underlying processes in mutagenesis and evolution. To date, there is no versatile tool to perform analysis of strand asymmetries across biological problems. 
-Asymmetron enables the estimation of strand biases in the orientation of consecutive occurrences in a single file. It also estimates strand asymmetries between pairs of files, either for a region with directionality such as a gene and a motif within it or between two motifs proximal to each other.
-
 ![Schematic_Asymmetron](Schematic_Asymmetron.png)
+
 
 It encompasses four functions:
 1.	consecutive_patterns.py:	Estimates the asymmetry biases within consecutive occurrences of a single motif.
