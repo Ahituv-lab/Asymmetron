@@ -98,13 +98,15 @@ def asymmetries_single(path,window_min,window_max,patterns,bins=0,plot,threshold
         probability["+"]=total_plus/float(total_plus+total_minus)
         probability_minus["-"] = 1-probability_plus
         probability_pattern = np.prod([probability[k] for k in list(pattern)])
+	consecutive_threshold= next(x for x, val in enumerate(probability_pattern) if val**x > threshold) 
+  
 
 	if patterns==False:
 		patterns = ['++','--','+-','-+']
 
 	for pattern in patterns:
 
-                Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern,threshold)
+                Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern,consecutive_threshold,output)
 
                 if plot==True:
                     consecutive, times_found = zip(*Counter_consecutive_real.items())
@@ -137,14 +139,15 @@ def extract_pattern(signS,pattern):
 				counts=0
 	return occs
 
-def calc_consecutive(DataL,window_min,window_max,pattern,threshold):
+def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,output):
         """
         This function takes as input a list of strand signs.
         It returns the number of consecutive occurrences in the plus and minus orientation.
         We should also include alternating occurrences
         """
 	from random import shuffle #pottentially do Monte carlo instead
-	from collections import Counter
+	from collections import Counter	
+	datafile=open(output,"w")
 	Signs='';
 	for i in range(len(DataL)-1):
 		if i==0:
@@ -160,7 +163,11 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold):
 			Coordinates_Consecutive+=[chrom_up,start_up,end_up,name1,strand_up]
 		else:
 			 Signs+="_"
-			counter=0
+			if threshold_consecutiveN<=counter:
+				for line in Coordinates_Consecutive:
+					datafile.write('\t'.join([str(x) for x in line])+'\n')
+	datafile.close()
+
 
 	# Random control
 	Signs_control = list(Signs)
