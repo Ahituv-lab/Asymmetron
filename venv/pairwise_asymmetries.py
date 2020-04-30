@@ -6,6 +6,8 @@ import wrapper_functions as wf
 def fun3(args):
 
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
+    
+    # I think orientation analysis if user points to file(s) should go here before we start the asymmetries estimations
 
     directory = "outputs_pairwise_asymmetries"
     if not os.path.exists(directory):
@@ -19,7 +21,7 @@ def fun3(args):
 
     for i in range(len(motif_pairs)):
             # for a pair of files finds the orientations
-            p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.proximal(path1,path2,min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,in_parts=bins)
+            p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.proximal(path1,path2,name1,name2,min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,in_parts=bins)
             #same vs opposite analysis
             Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
             p_pL.append(p_p);m_mL.append(m_m); # same orientation data
@@ -37,6 +39,7 @@ def fun3(args):
                  # generates historam covergent divergent, we need to decide the output2
                  functions.barplot_gen(p_m,m_p,os.path.join(directory, names_pairs[0]+"_"+names_pairs[1]+ "_divergent_convergent_orientations.png"))
 
+            # If bins is true I already put in functions.proximal that it generates two barplots. Also consider a table to be generated. Also, we need to put the output of that in the same directory as outputs_pairwise_asymmetries
             if bins:
                  # Here we need to decide what is the outputs we want to provide since they can be too many and complicated or focus on the plots and a small table
                  pass
@@ -45,6 +48,8 @@ def fun3(args):
     functions.table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
 
     return
+
+
 if __name__ == "__main__":
     # Note: Optional arguments have a - or -- in front of them
     parser = argparse.ArgumentParser()

@@ -181,13 +181,14 @@ def overlap(path1,path2):
 	p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=orientation(Strand1,Strand2)
 	return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
 
-def proximal(path1,path2,window_min,window_max,upstream=False,downstream=False,in_parts=False):
+def proximal(path1,path2,name1,name2,window_min,window_max,upstream=False,downstream=False,bins=False):
 	"""
-    Uses pybedtools closest function to find proximal coordinates
-Then calculates asymmetry through orientation function for proximal pairs
-# the flags it uses from here https://bedtools.readthedocs.io/en/latest/content/tools/closest.html
-if in_parts==True then return not the counts but the lists of counts to bin them
-    """
+       This is the main function of pairwise_asymmetries.py
+       Uses pybedtools closest function to find proximal coordinates
+       Then calculates asymmetry through orientation function for proximal pairs
+       # the flags it uses from here https://bedtools.readthedocs.io/en/latest/content/tools/closest.html
+       if bins==True then return not the counts but the lists of counts to bin them
+       """
 	DataL1 = BedTool(path1).sort()
 	DataL2 = BedTool(path2).sort()
 	if upstream==downstream and upstream==True:
@@ -204,11 +205,20 @@ if in_parts==True then return not the counts but the lists of counts to bin them
 	Strand2 = list(closest_df.iloc[:,9])
 	Distance = [abs(i) for i in list(closest_df.iloc[:,-1])]
 	Distance,Strand1,Strand2 = zip(*((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance, Strand1,Strand2) if dist <=window_max and dist>window_min))
-	if in_parts==False:
-		p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=orientation(Strand1,Strand2)
+
+	if bins==True:
+		p_pL_bin=[];m_mL_bin=[];p_mL_bin=[];m_pL_bin=[];same_strandL_bin=[];opposite_strandL_bin;convergentL_bin=[];divergentL_bin=[];
+		Bins=binner(window_min,window_max,bins)
+		for min_bin,max_bin in Bins:
+			p_p_bin,m_m_bin,p_m_bin,m_p_bin,same_strand_bin,opposite_strand_bin,convergent_bin,divergent_bin=orientation(Strand1,Strand2)
+			p_pL_bin.append(p_p_bin);m_mL_bin.append(m_m_bin);p_mL_bin.append(p_m_bin);m_pL_bin.append(m_p_bin);same_strandL_bin.append(same_strand_bin);opposite_strandL_bin.append(opposite_strand_bin);convergentL_bin.append(convergent_bin);divergentL_bin.append(divergent_bin)
+
+		# Same Opposite orientation
+		barplot_pair_lists_gen(Bins,same_strandL_bin,opposite_strandL_bin,name1,name2,"same_opposite_bins_"+name1+"_"+name2+".png")
+		# Convergent Divergent orientation
+		barplot_pair_lists_gen(Bins,convergentL_bin,divergentL_bin,name1,name2,"convergent_divergent_bins_"+name1+"_"+name2+".png")
+
 		return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
-	elif in_parts==True:
-		return Strand1,Strand2,Distance
 
 def asym_binned(window_min,window_max,Bins,DistancesL,Strand1L,Strand2L):
 	"""
@@ -349,6 +359,27 @@ def barplot_gen(strand1,strand2,output):
 	plt.savefig(output)
 	plt.close()
 	return
+
+def barplot_pair_lists_gen(bin_sizes_rangeL,List1,List2,name1,name2,output):
+        """
+        This should be an option for the user if he wants to generate vizualizations too.
+        """
+        import matplotlib.pyplot as plt
+        ax = plt.subplot(111)
+	plt.barplot(range(1,len(List1)*3,3),List1,label=name1,align="center")
+	plt.barplot(range(2,len(List2)*3,3),List2,label=name2,align="center")
+	plt.xticks(range(1,len(List1)*3,3),[bin_sizes_rangeL[k][0]+"-"+bin_sizes_rangeL[k][1] for k in range(len(bin_sizes_rangeL))])
+        plt.ylabel("Occurrences")
+        plt.xlabel("Bins")
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.yaxis.set_ticks_position('left')
+        ax.xaxis.set_ticks_position('bottom')
+	plt.legend(frameon=False)
+        plt.tight_layout()
+        plt.savefig(output)
+        plt.close()
+        return
 
 # Ensures that code below is not run when this file is imported into another file
 if __name__ == "__main__":
