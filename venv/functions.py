@@ -144,11 +144,11 @@ def calc_consecutive(DataL,window_min,window_max,pattern):
 	from collections import Counter
 	Signs='';
 	for i in range(len(DataL)-1):
-		chrom_up,start_up,end_up,name1,strand_previous=DataL[i][0:5]
-		chrom_down,start_down,end_down,name2,strand=DataL[i+1][0:5]
+		chrom_up,start_up,end_up,name1,strand_up=DataL[i][0:5]
+		chrom_down,start_down,end_down,name2,strand_down=DataL[i+1][0:5]
 		distance = abs(int(start_down)-int(end_up))
 		if distance>=window_min and distance<window_max:
-			Signs+=strand_previous+strand
+			Signs+=strand
 		else:
 			 Signs+="_"
 
@@ -160,7 +160,7 @@ def calc_consecutive(DataL,window_min,window_max,pattern):
 	Occs_pattern=extract_pattern(Signs,pattern)
 	Occs_pattern_control=extract_pattern(Signs_control,pattern)
 
-        return Counter(Occs_pattern),Counter(Occs_pattern_control)
+    	return Counter(Occs_pattern),Counter(Occs_pattern_control)
 
 def strand_annotate_third_BED_overlap(unnotated_path,annotated_path):
 	"""

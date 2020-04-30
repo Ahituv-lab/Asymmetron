@@ -12,7 +12,7 @@ def fun4(args):
     for path in motif_no_annotation:
         for path2 in motif_annotation:
             Annotation_data=functions.strand_annotate_third_BED_overlap(path,path2)
-            with open(path+"_ASYMMETRON_ANNOTATED_"+path2, "w") as f:
+            with open("ASYMMETRON"+path+"_ANNOTATED_"+path2, "w") as f:
                 for i in Annotation_data:
                     f.write('\t'.join([str(x) for x in i])+'\n')
     return
