@@ -1,5 +1,5 @@
 import sys
-#import functions
+import functions
 import argparse
 import wrapper_functions as wf
 
@@ -10,11 +10,12 @@ def fun2(args):
 
     directory = "outputs_contained_asymmetries"
     if not os.path.exists(directory):
-        os.makedirs(directory
+        os.makedirs(directory)
   
     motif_region_pairs,names_pairs=functions.pairs_generator(pathL1,pathL2,NamesL1,NamesL2)
 
     p_pL=[];m_mL=[];p_mL=[];m_pL=[];same_strandL=[];opposite_strandL=[];convergentL=[];divergentL=[];
+    p_valsL=[];p_vals_BonferoniL=[];RatiosL=[];p_val_conv_divergL=[];p_val_conv_diver_BonferoniL=[];Ratio_conv_divergL=[];
     for i in range(len(motif_region_pairs)): 
 
         p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.overlap(motifs,regions)
@@ -24,9 +25,16 @@ def fun2(args):
         Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
         # convergent vs divergent analysis
         Ratio_conv_diverg,p_val_conv_diverg,p_val_conv_diver_Bonferoni=functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
+        p_val_conv_divergL.append(p_val_conv_diverg);p_val_conv_divergL.append(p_val_conv_diver_Bonferoni);Ratio_conv_divergL.append(Ratio_conv_diverg);
+
+        if plots:
+            # generates histogram same opposite, we need to decide the output1
+            functions.barplot_gen(same_strand,opposite_strand,os.path.join(directory, names_pairs[0]+"_"+names_pairs[1]+ "_same_opposite_orientations.png"))
+            # generates historam covergent divergent, we need to decide the output2
+            functions.barplot_gen(p_m,m_p,os.path.join(directory, names_pairs[0]+"_"+names_pairs[1]+ "_divergent_convergent_orientations.png"))
 
     # generates table <- this should be done for all pairs.
-    table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_val_conv_diver_BonferoniL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
+    functions.table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
    
     return
 

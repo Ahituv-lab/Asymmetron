@@ -42,7 +42,7 @@ def fun3(args):
                  pass
 
     # generates table <- this should be done for all pairs together.
-    table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_val_conv_diver_BonferoniL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
+    functions.table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
 
     return
 if __name__ == "__main__":
