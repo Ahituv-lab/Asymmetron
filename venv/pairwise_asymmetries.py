@@ -15,10 +15,12 @@ def fun3(args):
 
     number_of_files= len(motifsA)*len(motifsB)
 
+    # Generates all pairs between motifsA and motifsB
     motif_pairs,names_pairs=functions.pairs_generator(pathL1,pathL2,NamesL1,NamesL2)
 
     p_pL=[];m_mL=[];m_pL=[];p_mL=[];p_valsL=[];p_vals_BonferoniL=[];RatiosL=[];p_val_conv_divergL=[];p_val_conv_diver_BonferoniL=[];Ratio_conv_divergL=[];
 
+    # Loops through all combinations
     for i in range(len(motif_pairs)):
             # for a pair of files finds the orientations
             p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.proximal(path1,path2,name1,name2,min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,in_parts=bins)
