@@ -82,7 +82,7 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 
 	return zip(StepsL,ScoresStepsL,DataStepsL)
 
-def asymmetries_single(path,window_min,window_max,patterns,bins=0,plot,threshold_probability,threshold):
+def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold_probability,threshold):
 	"""
 	This function calculates the strand asymmetry biases in a single file.
 	Inputs. 
@@ -114,7 +114,7 @@ def asymmetries_single(path,window_min,window_max,patterns,bins=0,plot,threshold
                     indexes = np.arange(len(consecutive_sorted))
                     plt.bar(indexes,consecutive_sorted)  
                     width = 1
-                    plt.xticks(indexes width * 0.5, times_found)
+                    plt.xticks(indexes+width * 0.5, times_found)
                     plt.savefig(pattern+output)
                     plt.close()
 
@@ -163,7 +163,7 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,
 			Coordinates_Consecutive+=[chrom_up,start_up,end_up,name1,strand_up]
 		else:
 			 Signs+="_"
-			if threshold_consecutiveN<=counter:
+			 if threshold_consecutiveN<=counter:
 				for line in Coordinates_Consecutive:
 					datafile.write('\t'.join([str(x) for x in line])+'\n')
 	datafile.close()
