@@ -96,7 +96,13 @@ def asymmetries_single(path,window_min,window_max,patterns,bins=0,plot):
 		patterns = ['++','--','+-','-+']
 
 	for pattern in patterns:
+
                 Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern)
+                total_plus = Counter_consecutive_real.count("+")
+                total_minus = Counter_consecutive_real.count("-")
+                probability_plus = total_plus/float(total_plus+total_minus)
+                probability_minus = 1-probability_plus
+
                 if plot==True:
                     consecutive, times_found = zip(*Counter_consecutive_real.items())
 		    consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
