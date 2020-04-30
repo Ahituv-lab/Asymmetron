@@ -7,7 +7,10 @@ import wrapper_functions as wf
 def fun1(args):
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
     for path in paths:
-        asymmetries_single(path,min_distance,max_distance,patterns,bins=0)
+        Counter_consecutive_real,Counter_consecutive_control=asymmetries_single(path,min_distance,max_distance,patterns,bins=0)
+        ## function to plot histogram expected / observed
+        ## function to generate files with statistical significant coordinates
+        
     return
 
 
