@@ -79,9 +79,10 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 				ScoreStep+=[DataL[i]]
 		DataStepsL+=[DataStep]
 		ScoresStepsL+=[ScoreStep]
+
 	return zip(StepsL,ScoresStepsL,DataStepsL)
 
-def asymmetries_single(path,window_min,window_max,patterns,bins=0):
+def asymmetries_single(path,window_min,window_max,patterns,bins=0,plot):
 	"""
 	This function calculates the strand asymmetry biases in a single file.
 	Inputs. 
@@ -95,14 +96,24 @@ def asymmetries_single(path,window_min,window_max,patterns,bins=0):
 		patterns = ['++','--','+-','-+']
 
 	for pattern in patterns:
-		Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern)
-			
+                Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern)
+                if plot==True:
+                    consecutive, times_found = zip(*Counter_consecutive_real.items())
+		    consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
+                    indexes = np.arange(len(consecutive_sorted))
+                    plt.bar(indexes,consecutive_sorted)  
+                    width = 1
+                    plt.xticks(indexes width * 0.5, times_found)
+                    plt.savefig(pattern+output)
+                    plt.close()
+
+	return 
 	# If we divide the signal by bin (since we use almost the same binning strategy downstream, probably we should turn this into an independent function, binning)
-	if bins>0:
-		Bin_Distances = binner(window_min,window_max,bins)
-		for min_dist,max_dist in Bin_Distances:
-			p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL=asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L)
-		return p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL
+	#if bins>0:
+	#	Bin_Distances = binner(window_min,window_max,bins)
+	#	for min_dist,max_dist in Bin_Distances:
+	#		p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL=asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L)
+	#	return p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL
 
 
 def extract_pattern(signS,pattern):
