@@ -6,6 +6,7 @@ import os
 # Patterns needs to only contain +/-
 # Threshold p-value, how do people insert very small p-values? How do we explain them how to do it?
 # Expected bias needs to be between 0 and 1
+# If user uses Scores it should be float or integer.
 
 class Error(Exception):
     """Base class for exceptions in this module."""
