@@ -10,7 +10,6 @@ def pairs_generator(pathL1,pathL2,NamesL1,NamesL2):
 	Takes as input two sets of lists (comma separated, provided by the user
 	Returns all the combinations of two between them
 	The idea would be to run something like python asymmetron.py -A path1,path2,path3 -B path4,path5,path6 -Names_A Name1,Name2,Name3 -Names_B Name4,Name5,Name6
-	*** Could we allow to split pair comparisons across CPUs? ***
 	"""
 	return list(itertools.product(pathL1, pathL2)), list(itertools.product(NamesL1, NamesL2))
 
@@ -56,6 +55,9 @@ def readVCFtoBED(path):
 
 
 def binner(min_size,max_size,bin_no):
+        """
+        Takes as input the distance range and number of bins and returns the bins in form (min,max) for every bin.
+        """
 	bin_size = float(max_size-min_size)/float(bin_no)
 	Bins =[(min_size+bin_size*k,min_size+bin_size*(k+1)) for k in range(1,bin_no+1)]
 	return Bins
@@ -67,8 +69,8 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 	This would be useful e.g. if we want to see if expression levels are associated with mutational strand asymmetry or if replication timing is.
 	This function should divide a list of lists representing a file to list of lists (DataL) based on
 	the Score bins 
-	We should check Score to be integer / float in our checks
 	"""
+	#We should check Score to be integer / float in our checks
 	StepsL = binner(min(ScoreL),max(ScoreL),number_of_bins)
 	DataStepsL=[];ScoresStepsL=[];
 	for step in StepsL:
@@ -76,21 +78,18 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 		for i in range(len(ScoreL)):
 			if ScoreL[i]>=step[0] and ScoreL[i]<step[1]:
 				DataStep+=[DataL[i]]
-				ScoreStep+=[DataL[i]]
+				ScoreStep+=[ScoreL[i]]
 		DataStepsL+=[DataStep]
 		ScoresStepsL+=[ScoreStep]
-
 	return zip(StepsL,ScoresStepsL,DataStepsL)
 
 def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,output):
 	"""
 	This function calculates the strand asymmetry biases in a single file.
-	Inputs. 
 	Input file (If multiple files are provided the analysis is done independently in each")
 	Minimum and maximum distances between consecutive instances.
 	Number of bins to divide the signal in (optional). Default, no binning.
 	"""
-	# Reads the file and sorts it by ascending order of start (and chrom)
         DataL = BedTool(path).sort()
 	Data_df=DataL.to_dataframe()
         Strand = list(Data_df.iloc[:,-1])
@@ -127,15 +126,14 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
 					if dist>=min_bin and dist<max_bin:
 						Occs_per_bin+=1
 				OccsL.append(Occs_per_bin)
-		# Plot barplot of occs consecutive in each bin
-
+			# Plot barplot of occs consecutive in each bin
+			indexes = np.arange(len(OccsL))
+			plt.bar(indexes,OccsL)
+			width = 1
+			plt.xticks(indexes+width * 0.5, Bins)
+			plt.savefig(pattern+"_binned_"+output)	
+			plt.close()
 	return 
-	# If we divide the signal by bin (since we use almost the same binning strategy downstream, probably we should turn this into an independent function, binning)
-	#if bins>0:
-	#	Bin_Distances = binner(window_min,window_max,bins)
-	#	for min_dist,max_dist in Bin_Distances:
-	#		p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL=asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L)
-	#	return p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL
 
 
 def extract_pattern(DataL,signS,pattern,threshold,is_real):
@@ -162,7 +160,7 @@ def extract_pattern(DataL,signS,pattern,threshold,is_real):
 
 def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,output):
         """
-        This function takes as input a list of strand signs.
+        This function takes as input the list of lists of the fle data, the range of distances to search, the p-value threshold and aa list of strand sign patterns.
         It returns the number of consecutive occurrences in the plus and minus orientation.
         We should also include alternating occurrences
         """
@@ -210,7 +208,6 @@ def strand_annotate_third_BED_overlap(unnotated_path,annotated_path):
 	ID = list(Overlap_strand_df.iloc[:,3])
 	Strand = list(Overlap_strand_df.iloc[:,-2])
 	Chromosome,Start,End,ID,Strand = zip(*((chrom, start, end,id_used,strand) for chrom, start, end, id_used, strand in zip(Chromosome, Start, End, ID, Strand) if strand in ["+","-"]))
-	# Convert them in List of ListsL format
 	DataL=[];
 	for i in range(len(Chromosome)):
 		DataL.append([Chromosome[i],Start[i],End[i],ID[i],Strand[i]])
@@ -269,6 +266,7 @@ def proximal(path1,path2,name1,name2,window_min,window_max,upstream=False,downst
 		return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
 
 def asym_binned(window_min,window_max,Bins,DistancesL,Strand1L,Strand2L):
+	# I need to fix this function
 	"""
 	This function should take as input:
 	window:Maximum distance to look into
@@ -309,28 +307,28 @@ def asym_binned(window_min,window_max,Bins,DistancesL,Strand1L,Strand2L):
 
 def orientation(sign1L,sign2L):
 	"""
-	Calculates the orientation 
+	Calculates the orientation combinations
 	Should only accept +/- signs
 	"""
-	p_p=0;m_m=0;p_m=0;m_p=0;same_strand=0;opposite_strand=0;convergent=0;divergent=0;
+	p_p=0;m_m=0;p_m=0;m_p=0;
 	for index in range(len(sign1L)):
 		sign1=sign1L[index]
 		sign2=sign2L[index]
 		if sign1 in ["+","-"] and sign2 in ["+","-"]:
 			if sign1==sign2:
-				same_strand+=1
 				if sign1=="+":
 					p_p+=1
 				elif sign1=="-":
 					m_m+=1
 			else:
-				opposite_strand+=1
 				if sign1=="+" and sign2=="-":
-					convergent+=1
 					p_m+=1
 				elif sign1=="-" and sign2=="+":
-					divergent+=1
 					m_p+=1
+	same_strand=p_p+m_m;
+	opposite_strand=p_m+m_p;
+	convergent=p_m;
+	divergent=m_p;
 	return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
 
 def ratio_calc(first_strandI,second_strandI):
@@ -355,7 +353,6 @@ def statistical_evaluation(occs_strand1,occs_strand2,number_of_files_scanned,exp
 	Ratio_strand1_2 = ratio_calc(occs_strand1,occs_strand2)
 	p_val_strand1_2 = binom_test(occs_strand1,occs_strand1+occs_strand2,expected_asym)
 	p_val_strand1_2_Bonferoni = min(1,p_val_strand1_2*number_of_files_scanned)
-
 	return Ratio_strand1_2,p_val_strand1_2,p_val_strand1_2_Bonferoni
 
 
@@ -432,8 +429,6 @@ def barplot_pair_lists_gen(bin_sizes_rangeL,List1,List2,name1,name2,output):
 # Ensures that code below is not run when this file is imported into another file
 if __name__ == "__main__":
 	pass
-# We need a cool vizualization across bins
-
 # test area
 #works
 #print overlap(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"))
@@ -452,4 +447,4 @@ if __name__ == "__main__":
 #Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),0,500,False,False,True)
 #print len(Strand1),len(Strand2),len(DistancesL)
 #print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
-asymmetries_single(read_BED("All_G4.bed"),0,1000,["++--"],0,False,0.0001,"test")
+#asymmetries_single(read_BED("All_G4.bed"),0,1000,["++--"],0,False,0.0001,"test")
