@@ -106,7 +106,7 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
 	for pattern in patterns:
         	probability_pattern = np.prod([probability[k] for k in list(pattern)])
         	consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if probability_pattern**x > threshold) 
-                Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern,consecutive_threshold,output)
+                Counter_consecutive_real,Counter_consecutive_control,DistancesL=calc_consecutive(DataL,window_min,window_max,pattern,consecutive_threshold,output)
 
                 if plot==True:
                     consecutive, times_found = zip(*Counter_consecutive_real.items())
@@ -117,6 +117,17 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
                     plt.xticks(indexes+width * 0.5, times_found)
                     plt.savefig(pattern+output)
                     plt.close()
+
+		if bins>1:
+			Bins=binner(window_min,window_max,bins)
+			OccsL=[];
+			for min_bin,max_bin in Bins:
+				Occs_per_bin=0
+				for dist in DistancesL:
+					if dist>=min_bin and dist<max_bin:
+						Occs_per_bin+=1
+				OccsL.append(Occs_per_bin)
+		# Plot barplot of occs consecutive in each bin
 
 	return 
 	# If we divide the signal by bin (since we use almost the same binning strategy downstream, probably we should turn this into an independent function, binning)
@@ -149,6 +160,7 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,
 	from collections import Counter	
 	datafile=open(output,"w")
 	Signs='';
+	Distances=[];
 	for i in range(len(DataL)-1):
 		if i==0:
 			counter=0	
@@ -157,6 +169,7 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,
 		chrom_down,start_down,end_down,name2,strand_down=DataL[i+1][0:5]
 		distance = abs(int(start_down)-int(end_up))
 		if distance>=window_min and distance<window_max:
+			Distances.append(distance)
 			Signs+=strand_up
 			counter+=1
 			Coordinates_Consecutive+=[[chrom_up,start_up,end_up,name1,strand_up]]
@@ -177,7 +190,7 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,
 	Occs_pattern=extract_pattern(Signs,pattern)
 	Occs_pattern_control=extract_pattern(Signs_control,pattern)
 
-    	return Counter(Occs_pattern),Counter(Occs_pattern_control)
+    	return Counter(Occs_pattern),Counter(Occs_pattern_control),Distances
 
 def strand_annotate_third_BED_overlap(unnotated_path,annotated_path):
 	"""
