@@ -106,7 +106,7 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
 	for pattern in patterns:
         	probability_pattern = np.prod([probability[k] for k in list(pattern)])
         	consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if probability_pattern**x > threshold) 
-                Counter_consecutive_real,Counter_consecutive_control,DistancesL=calc_consecutive(DataL,window_min,window_max,pattern,consecutive_threshold,output)
+                Counter_consecutive_real,Counter_consecutive_control,DistancesL=calc_consecutive(list(DataL),window_min,window_max,pattern,consecutive_threshold,output)
 
                 if plot==True:
                     consecutive, times_found = zip(*Counter_consecutive_real.items())
@@ -138,16 +138,26 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
 	#	return p_pL,m_mL,p_mL,m_pL,same_strandL,opposite_strandL,convergentL,divergentL
 
 
-def extract_pattern(signS,pattern):
-	occs=[];
-	counts=0
+def extract_pattern(DataL,signS,pattern,threshold,is_real):
+	occs=[];CoordinatesL=[];
+	counts=0;Coordinates=[];
 	for i in range(0,len(signS)-len(pattern)):
-		if signS[i:i+len(pattern)]==pattern:
+		if signS[i:i+len(pattern)]==pattern:	
+			for m in DataL[i:i+len(pattern)]:
+				Coordinates.append(m)
 			counts+=1
 		else:
 			if counts>0:
 				occs+=[counts]	
-				counts=0
+				if counts>=threshold:
+					CoordinatesL.append(Coordinates)
+				counts=0;Coordinates=[];
+	if is_real:
+		datafile=open("Consecutives_threshold_coordinates","w") # We need to somehow incorporate the naming here
+		for line in CoordinatesL:
+			datafile.write('\t'.join([str(x) for x in line])+'\n')
+		datafile.close()
+
 	return occs
 
 def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,output):
@@ -162,23 +172,15 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,
 	Signs='';
 	Distances=[];
 	for i in range(len(DataL)-1):
-		if i==0:
-			counter=0	
-			Coordinates_Consecutive=[];
 		chrom_up,start_up,end_up,name1,strand_up=DataL[i][0:5]
 		chrom_down,start_down,end_down,name2,strand_down=DataL[i+1][0:5]
 		distance = abs(int(start_down)-int(end_up))
 		if distance>=window_min and distance<window_max:
 			Distances.append(distance)
 			Signs+=strand_up
-			counter+=1
-			Coordinates_Consecutive+=[[chrom_up,start_up,end_up,name1,strand_up]]
 		else:
-			 Signs+="_"
-			 if threshold_consecutiveN<=counter:
-				for line in Coordinates_Consecutive:
-					datafile.write('\t'.join([str(x) for x in line])+'\n')
-			Coordinates_Consecutive=[];
+			Signs+="_"
+			Distances.append("_")
 	datafile.close()
 
 	# Random control
@@ -186,8 +188,8 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,
 	shuffle(Signs_control)
 	Signs_control = ''.join(Signs_control)
 
-	Occs_pattern=extract_pattern(Signs,pattern)
-	Occs_pattern_control=extract_pattern(Signs_control,pattern)
+	Occs_pattern=extract_pattern(DataL,Signs,pattern,threshold_consecutiveN,True)
+	Occs_pattern_control=extract_pattern(DataL,Signs_control,pattern,threshold_consecutiveN,False)
 
     	return Counter(Occs_pattern),Counter(Occs_pattern_control),Distances
 
@@ -450,4 +452,4 @@ if __name__ == "__main__":
 #Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),0,500,False,False,True)
 #print len(Strand1),len(Strand2),len(DistancesL)
 #print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
-asymmetries_single(read_BED("All_G4.bed"),0,1000,["++"],0,False,0.0001,"test")
+asymmetries_single(read_BED("All_G4.bed"),0,1000,["++--"],0,False,0.0001,"test")
