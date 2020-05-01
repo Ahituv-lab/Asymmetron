@@ -37,8 +37,6 @@ def name_splitter(names):
     namesL = [x.strip() for x in names.split(',')]
     return namesL
 
-# Should we move the pairs_generator(pathL1,pathL2,NamesL1,NamesL2) here from functions.py?
-
 def sanitize(paths, orientation, names):
     """
     All three parameters are entered by the user in string format. If multiple paths are given, they are in "path1, path2",
