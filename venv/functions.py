@@ -65,7 +65,7 @@ def binner(min_size,max_size,bin_no):
 	Bins =[(min_size+bin_size*k,min_size+bin_size*(k+1)) for k in range(0,bin_no)]
 	return Bins
 
-def separate_on_score(ScoreL,DataL,number_of_bins):
+def separate_on_score(path_score,path,number_of_bins,output_plot):
 	"""
 	Score list is ordered as DataL list of lists and the first is used to bin the second.
 	This requires binning this feature and calculating the asymmetry at each bin of this column values. 
@@ -74,6 +74,8 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 	the Score bins 
 	"""
 	#We should check Score to be integer / float in our checks
+        DataL,ScoreL=read_BED(path_score,last_col=True)
+	DataL2=read_BED(path,last_col=False)
 	StepsL = binner(min(ScoreL),max(ScoreL),number_of_bins)
 	DataStepsL=[];ScoresStepsL=[];
 	for step in StepsL:
@@ -84,7 +86,16 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 				ScoreStep+=[ScoreL[i]]
 		DataStepsL+=[DataStep]
 		ScoresStepsL+=[ScoreStep]
-	return zip(StepsL,ScoresStepsL,DataStepsL)
+
+	Ratio_Same_Opposite=[];
+        for step in range(len(StepsL)):
+		p_p_step,m_m_step,p_m_step,m_p_step,same_strand_step,opposite_strand_step,convergent_step,divergent_step=functions.overlap(DataStepsL,DataL2)
+                if same_strand_step+opposite_strand_step!=[]:
+                	Ratio_Same_Opposite.append(same_strand_step/float(same_strand_step+opposite_strand_step))
+		else:
+                	Ratio_Same_Opposite.append(0.5)
+	barplot_single_gen(Ratio_Same_Opposite,Score_names,output_plot)
+	return
 
 def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,output):
 	"""
@@ -274,7 +285,7 @@ def proximal(path1,path2,name1,name2,window_min,window_max,upstream=False,downst
 		# Convergent Divergent orientation
 		barplot_pair_lists_gen(Bins,convergentL_bin,divergentL_bin,name1,name2,"convergent_divergent_bins_"+name1+"_"+name2+".png")
 
-		return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
+	return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
 
 def asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L):
 	"""
@@ -468,7 +479,7 @@ if __name__ == "__main__":
 #DataL,ScoreL=read_BED("MCF7_RepliStrand.leading_lagging.bed",True)
 #separate_on_score(ScoreL,DataL,10)
 # works - minor error with extra bin, needs fixing
-Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),"G4","hg19_TSS",0,500,False,False,10)
+#Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),"G4","hg19_TSS",0,500,False,False,10)
 #print len(Strand1),len(Strand2),len(DistancesL)
-print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
+#print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
 #asymmetries_single(read_BED("All_G4.bed"),0,1000,["++--"],0,False,0.0001,"test")

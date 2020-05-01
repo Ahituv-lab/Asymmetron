@@ -48,7 +48,11 @@ def fun2(args):
             functions.barplot_gen(p_m,m_p,os.path.join(directory, names_pairs[0]+"_"+names_pairs[1]+ "_divergent_convergent_orientations.png"))
 
         if score:
-            pass
+            # Here we need to decide if we want to include the score for both -regions and -motifs and perform the analyses separately, score needs to go with number of score_bins
+	    if score_regions!=False:
+                separate_on_score(regions,motifs,number_of_bins,output_file1)
+            if score_motifs!=False:
+                separate_on_score(motifs,regions,number_of_bins,output_file2)
 
         if bins:
             pass
