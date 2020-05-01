@@ -82,7 +82,7 @@ def separate_on_score(ScoreL,DataL,number_of_bins):
 
 	return zip(StepsL,ScoresStepsL,DataStepsL)
 
-def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold_probability,threshold):
+def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,output):
 	"""
 	This function calculates the strand asymmetry biases in a single file.
 	Inputs. 
@@ -91,21 +91,21 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold_p
 	Number of bins to divide the signal in (optional). Default, no binning.
 	"""
 	# Reads the file and sorts it by ascending order of start (and chrom)
-        DataL = BedTool(path).sort().to_dataframe()
-        Strand = list(DataL.iloc[:,-1])
+        DataL = BedTool(path).sort()
+	Data_df=DataL.to_dataframe()
+        Strand = list(Data_df.iloc[:,-1])
 	total_plus = Strand.count("+")
         total_minus = Strand.count("-")
+	probability={}
         probability["+"]=total_plus/float(total_plus+total_minus)
-        probability_minus["-"] = 1-probability_plus
-        probability_pattern = np.prod([probability[k] for k in list(pattern)])
-	consecutive_threshold= next(x for x, val in enumerate(probability_pattern) if val**x > threshold) 
-  
+        probability["-"] = 1-probability["+"]
 
 	if patterns==False:
 		patterns = ['++','--','+-','-+']
 
 	for pattern in patterns:
-
+        	probability_pattern = np.prod([probability[k] for k in list(pattern)])
+        	consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if probability_pattern**x > threshold) 
                 Counter_consecutive_real,Counter_consecutive_control=calc_consecutive(DataL,window_min,window_max,pattern,consecutive_threshold,output)
 
                 if plot==True:
@@ -153,19 +153,19 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,
 		if i==0:
 			counter=0	
 			Coordinates_Consecutive=[];
-		
 		chrom_up,start_up,end_up,name1,strand_up=DataL[i][0:5]
 		chrom_down,start_down,end_down,name2,strand_down=DataL[i+1][0:5]
 		distance = abs(int(start_down)-int(end_up))
 		if distance>=window_min and distance<window_max:
-			Signs+=strand
+			Signs+=strand_up
 			counter+=1
-			Coordinates_Consecutive+=[chrom_up,start_up,end_up,name1,strand_up]
+			Coordinates_Consecutive+=[[chrom_up,start_up,end_up,name1,strand_up]]
 		else:
 			 Signs+="_"
 			 if threshold_consecutiveN<=counter:
 				for line in Coordinates_Consecutive:
 					datafile.write('\t'.join([str(x) for x in line])+'\n')
+				Coordinates_Consecutive=[];
 	datafile.close()
 
 
@@ -438,4 +438,4 @@ if __name__ == "__main__":
 #Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),0,500,False,False,True)
 #print len(Strand1),len(Strand2),len(DistancesL)
 #print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
-#asymmetries_single(read_BED("All_G4.bed"),0,1000,bins=0)
+asymmetries_single(read_BED("All_G4.bed"),0,1000,["++"],0,False,0.0001,"test")
