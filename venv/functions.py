@@ -3,6 +3,9 @@ import itertools,math
 import numpy as np
 from scipy.stats import binom_test
 from pybedtools import BedTool
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 # Google drive linke with the draft https://docs.google.com/document/d/1elnyyHShRcY5X406qk9O2-odU5yb7F15vWtwmSzrmrw/edit
 def pairs_generator(pathL1,pathL2,NamesL1,NamesL2):
@@ -251,14 +254,15 @@ def proximal(path1,path2,name1,name2,window_min,window_max,upstream=False,downst
 	Distance = [abs(i) for i in list(closest_df.iloc[:,-1])]
 	Distance,Strand1,Strand2 = zip(*((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance, Strand1,Strand2) if dist <window_max and dist>=window_min))
 
-	if bins==True:
-		p_pL_bin=[];m_mL_bin=[];p_mL_bin=[];m_pL_bin=[];same_strandL_bin=[];opposite_strandL_bin;convergentL_bin=[];divergentL_bin=[];
+	if bins!=False:
+		p_pL_bin=[];m_mL_bin=[];p_mL_bin=[];m_pL_bin=[];same_strandL_bin=[];opposite_strandL_bin=[];convergentL_bin=[];divergentL_bin=[];
 		Bins=binner(window_min,window_max,bins)
 		for min_bin,max_bin in Bins:
 			p_p_bin,m_m_bin,p_m_bin,m_p_bin,same_strand_bin,opposite_strand_bin,convergent_bin,divergent_bin=orientation(Strand1,Strand2)
 			p_pL_bin.append(p_p_bin);m_mL_bin.append(m_m_bin);p_mL_bin.append(p_m_bin);m_pL_bin.append(m_p_bin);same_strandL_bin.append(same_strand_bin);opposite_strandL_bin.append(opposite_strand_bin);convergentL_bin.append(convergent_bin);divergentL_bin.append(divergent_bin)
 
 		# Same Opposite orientation
+		print Bins,same_strandL_bin,opposite_strandL_bin,name1,name2,"same_opposite_bins_"+name1+"_"+name2+".png"
 		barplot_pair_lists_gen(Bins,same_strandL_bin,opposite_strandL_bin,name1,name2,"same_opposite_bins_"+name1+"_"+name2+".png")
 		# Convergent Divergent orientation
 		barplot_pair_lists_gen(Bins,convergentL_bin,divergentL_bin,name1,name2,"convergent_divergent_bins_"+name1+"_"+name2+".png")
@@ -266,7 +270,6 @@ def proximal(path1,path2,name1,name2,window_min,window_max,upstream=False,downst
 		return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
 
 def asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L):
-	# I need to fix this function
 	"""
 	This function should take as input:
 	window:Maximum distance to look into
@@ -279,19 +282,19 @@ def asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L):
 	"""
 	Range_Bins=binner(window_min,window_max,bins)
 	
-	Strand1D={i:[] for i in range(min(bins_DistancesL),max(bins_DistancesL)+1)}
-	Strand2D={i:[] for i in range(min(bins_DistancesL),max(bins_DistancesL)+1)}
-	DistancesD={i:[] for i in range(min(bins_DistancesL),max(bins_DistancesL)+1)}
+	Strand1D={i:[] for i in range(min(Range_Bins),max(Range_Bins)+1)}
+	Strand2D={i:[] for i in range(min(Range_Bins),max(Range_Bins)+1)}
+	DistancesD={i:[] for i in range(min(Range_Bins),max(Range_Bins)+1)}
 	for i in range(len(DistancesL)):
 		for index,k in enumerate(Range_Bins):
 			if k[0] <= DistancesL[i] <k[1]:
 				bin_of_distance = index+1
-				Strand1D[bin_of_distance]+=[Strand1L[i]]
-				Strand2D[bin_of_distance]+=[Strand2L[i]]
-				DistancesD[bin_of_distance]+=[DistancesL[i]]
+				Strand1D[index+1]+=[Strand1L[i]]
+				Strand2D[index+1]+=[Strand2L[i]]
+				DistancesD[index+1]+=[DistancesL[i]]
 
 	p_pL=[];m_mL=[];p_mL=[];m_pL=[];same_strandL=[];opposite_strandL=[];convergentL=[];divergentL=[]
-	for i in range(min(bins_DistancesL),max(bins_DistancesL)+1):
+	for i in range(1,len(Range_Bins)+1):
 		p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=orientation(Strand1D[i],Strand2D[i])
 		p_pL.append(p_p)
 		m_mL.append(m_m)
@@ -370,7 +373,6 @@ def histogram_gen(strand1L,strand2L,bins_used,output):
 	"""
 	Accepts the strand asymmetries  per bin and generates histograms
 	"""
-	import matplotlib.pyplot as plt
 	RatiosL=[ratio_calc(strand1L[i],strand2L[i]) for i in range(len(strand1L))]
 	plt.bar(range(1,len(strand1L)+1,1),RatiosL,align="center",color="lightblue")
 	plt.xticks(range(len(bins)),bins)
@@ -389,7 +391,6 @@ def barplot_gen(strand1,strand2,output):
 	"""
 	This should be an option for the user if he wants to generate vizualizations too.
 	"""
-	import matplotlib.pyplot as plt
 	ax = plt.subplot(111)
 	plt.barplot(range(1,3),[strand1,strand2],align="center")
 	plt.ylabel("Occurrences")
@@ -407,8 +408,8 @@ def barplot_pair_lists_gen(bin_sizes_rangeL,List1,List2,name1,name2,output):
         """
         This should be an option for the user if he wants to generate vizualizations too.
         """
-        import matplotlib.pyplot as plt
         ax = plt.subplot(111)
+	print List1,List2
 	plt.barplot(range(1,len(List1)*3,3),List1,label=name1,align="center")
 	plt.barplot(range(2,len(List2)*3,3),List2,label=name2,align="center")
 	plt.xticks(range(1,len(List1)*3,3),[bin_sizes_rangeL[k][0]+"-"+bin_sizes_rangeL[k][1] for k in range(len(bin_sizes_rangeL))])
@@ -428,7 +429,6 @@ def barplot_single_gen(List1,List1_names,output):
         """ 
         This should be an option for the user if he wants to generate vizualizations too.
         """
-        import matplotlib.pyplot as plt 
         ax = plt.subplot(111)
         plt.barplot(range(1,len(List1)*1,1),List1,align="center")
         plt.xticks(range(1,len(List1)*1,1),List1_names)
@@ -462,7 +462,7 @@ if __name__ == "__main__":
 #DataL,ScoreL=read_BED("MCF7_RepliStrand.leading_lagging.bed",True)
 #separate_on_score(ScoreL,DataL,10)
 # works - minor error with extra bin, needs fixing
-#Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),0,500,False,False,True)
+Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),"G4","hg19_TSS",0,500,False,False,10)
 #print len(Strand1),len(Strand2),len(DistancesL)
-#print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
+print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
 #asymmetries_single(read_BED("All_G4.bed"),0,1000,["++--"],0,False,0.0001,"test")
