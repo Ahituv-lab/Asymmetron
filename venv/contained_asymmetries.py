@@ -9,6 +9,8 @@ def fun2(args):
     # this is used for Bonferoni correction
     number_of_files= len(motifs)*len(regions)
 
+    # Missing link to fun4 if provided
+
     # Folder to save all outputs
     directory = "outputs_contained_asymmetries"
     if not os.path.exists(directory):
