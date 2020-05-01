@@ -116,11 +116,7 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
                     consecutive, times_found = zip(*Counter_consecutive_real.items())
 		    consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
                     indexes = np.arange(len(consecutive_sorted))
-                    plt.bar(indexes,consecutive_sorted)  
-                    width = 1
-                    plt.xticks(indexes+width * 0.5, times_found)
-                    plt.savefig(pattern+output)
-                    plt.close()
+                    barplot_single_gen(List1,List1_names,output)
 
 		if bins>1:
 			Bins=binner(window_min,window_max,bins)
@@ -132,14 +128,8 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
 						Occs_per_bin+=1
 				OccsL.append(Occs_per_bin)
 			# Plot barplot of occs consecutive in each bin
-			indexes = np.arange(len(OccsL))
-			plt.bar(indexes,OccsL)
-			width = 1
-			plt.xticks(indexes+width * 0.5, Bins)
-			plt.savefig(pattern+"_binned_"+output)	
-			plt.close()
+			barplot_single_gen(List1,List1_names,output)
 	return 
-
 
 def extract_pattern(DataL,signS,pattern,threshold,is_real):
 	"""
@@ -431,6 +421,26 @@ def barplot_pair_lists_gen(bin_sizes_rangeL,List1,List2,name1,name2,output):
         ax.yaxis.set_ticks_position('left')
         ax.xaxis.set_ticks_position('bottom')
 	plt.legend(frameon=False)
+        plt.tight_layout()
+        plt.savefig(output)
+        plt.close()
+        return
+
+def barplot_single_gen(List1,List1_names,output):
+        """ 
+        This should be an option for the user if he wants to generate vizualizations too.
+        """
+        import matplotlib.pyplot as plt 
+        ax = plt.subplot(111)
+        plt.barplot(range(1,len(List1)*1,1),List1,align="center")
+        plt.xticks(range(1,len(List1)*1,1),List1_names)
+        plt.ylabel("Occurrences")
+        plt.xlabel("Bins")
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.yaxis.set_ticks_position('left')
+        ax.xaxis.set_ticks_position('bottom')
+        plt.legend(frameon=False)
         plt.tight_layout()
         plt.savefig(output)
         plt.close()
