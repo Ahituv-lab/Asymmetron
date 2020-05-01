@@ -249,7 +249,7 @@ def proximal(path1,path2,name1,name2,window_min,window_max,upstream=False,downst
 	Strand1 = list(closest_df.iloc[:,4])
 	Strand2 = list(closest_df.iloc[:,9])
 	Distance = [abs(i) for i in list(closest_df.iloc[:,-1])]
-	Distance,Strand1,Strand2 = zip(*((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance, Strand1,Strand2) if dist <=window_max and dist>window_min))
+	Distance,Strand1,Strand2 = zip(*((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance, Strand1,Strand2) if dist <window_max and dist>=window_min))
 
 	if bins==True:
 		p_pL_bin=[];m_mL_bin=[];p_mL_bin=[];m_pL_bin=[];same_strandL_bin=[];opposite_strandL_bin;convergentL_bin=[];divergentL_bin=[];
@@ -265,7 +265,7 @@ def proximal(path1,path2,name1,name2,window_min,window_max,upstream=False,downst
 
 		return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
 
-def asym_binned(window_min,window_max,Bins,DistancesL,Strand1L,Strand2L):
+def asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L):
 	# I need to fix this function
 	"""
 	This function should take as input:
@@ -277,20 +277,18 @@ def asym_binned(window_min,window_max,Bins,DistancesL,Strand1L,Strand2L):
 	The strand asymmetries for each bin
 	#***There is a bug with an extra bin being generated than those expected***#
 	"""
-	from collections import defaultdict
-	window = window_min-window_max
-	SizeBins= window / Bins
-	StepsL = range(0,window+SizeBins,SizeBins)
-	bins_DistancesL=list(np.digitize(DistancesL,StepsL))
+	Range_Bins=binner(window_min,window_max,bins)
+	
 	Strand1D={i:[] for i in range(min(bins_DistancesL),max(bins_DistancesL)+1)}
 	Strand2D={i:[] for i in range(min(bins_DistancesL),max(bins_DistancesL)+1)}
 	DistancesD={i:[] for i in range(min(bins_DistancesL),max(bins_DistancesL)+1)}
-	#Strand1D=defaultdict()
-	#Strand2D=defaultdict()
 	for i in range(len(DistancesL)):
-		Strand1D[bins_DistancesL[i]]+=[Strand1L[i]]
-		Strand2D[bins_DistancesL[i]]+=[Strand2L[i]]
-		DistancesD[bins_DistancesL[i]]+=[DistancesL[i]]
+		for index,k in enumerate(Range_Bins):
+			if k[0] <= DistancesL[i] <k[1]:
+				bin_of_distance = index+1
+				Strand1D[bin_of_distance]+=[Strand1L[i]]
+				Strand2D[bin_of_distance]+=[Strand2L[i]]
+				DistancesD[bin_of_distance]+=[DistancesL[i]]
 
 	p_pL=[];m_mL=[];p_mL=[];m_pL=[];same_strandL=[];opposite_strandL=[];convergentL=[];divergentL=[]
 	for i in range(min(bins_DistancesL),max(bins_DistancesL)+1):

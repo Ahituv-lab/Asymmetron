@@ -7,11 +7,9 @@ import wrapper_functions as wf
 def fun1(args):
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
     for path in paths:
-        # lets ignore the bins part for now
         Counter_consecutive_real,Counter_consecutive_control=asymmetries_single(path,min_distance,max_distance,patterns,bins=0,plot=plots,threshold)
-        ## function to generate files with statistical significant coordinates
  
-        # Orientation link is missing
+        # Orientation link is missing / fun4 to be used here
 
     return
 
