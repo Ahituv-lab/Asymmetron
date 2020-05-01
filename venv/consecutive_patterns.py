@@ -11,10 +11,8 @@ def fun1(args):
         Counter_consecutive_real,Counter_consecutive_control=asymmetries_single(path,min_distance,max_distance,patterns,bins=0,plot=plots,threshold)
         ## function to generate files with statistical significant coordinates
  
-        # I added the ability to do bins, just still missing the plot from the bins
         # Orientation link is missing
 
-        # Plots missing
     return
 
 
