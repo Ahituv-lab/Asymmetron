@@ -178,9 +178,8 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,
 			 if threshold_consecutiveN<=counter:
 				for line in Coordinates_Consecutive:
 					datafile.write('\t'.join([str(x) for x in line])+'\n')
-				Coordinates_Consecutive=[];
+			Coordinates_Consecutive=[];
 	datafile.close()
-
 
 	# Random control
 	Signs_control = list(Signs)
