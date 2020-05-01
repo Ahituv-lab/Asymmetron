@@ -62,7 +62,7 @@ def binner(min_size,max_size,bin_no):
         Takes as input the distance range and number of bins and returns the bins in form (min,max) for every bin.
         """
 	bin_size = float(max_size-min_size)/float(bin_no)
-	Bins =[(min_size+bin_size*k,min_size+bin_size*(k+1)) for k in range(1,bin_no+1)]
+	Bins =[(min_size+bin_size*k,min_size+bin_size*(k+1)) for k in range(0,bin_no)]
 	return Bins
 
 def separate_on_score(ScoreL,DataL,number_of_bins):
@@ -257,12 +257,19 @@ def proximal(path1,path2,name1,name2,window_min,window_max,upstream=False,downst
 	if bins!=False:
 		p_pL_bin=[];m_mL_bin=[];p_mL_bin=[];m_pL_bin=[];same_strandL_bin=[];opposite_strandL_bin=[];convergentL_bin=[];divergentL_bin=[];
 		Bins=binner(window_min,window_max,bins)
-		for min_bin,max_bin in Bins:
-			p_p_bin,m_m_bin,p_m_bin,m_p_bin,same_strand_bin,opposite_strand_bin,convergent_bin,divergent_bin=orientation(Strand1,Strand2)
+		for index, bin_i in enumerate(Bins):
+			Strand1Bin=[];Strand2Bin=[];
+			min_bin,max_bin = bin_i
+			for k in range(len(Distance)):
+				if Distance[k]>=min_bin and Distance[k]<max_bin:
+					Strand1Bin.append(Strand1[k])
+					Strand2Bin.append(Strand2[k])
+
+			p_p_bin,m_m_bin,p_m_bin,m_p_bin,same_strand_bin,opposite_strand_bin,convergent_bin,divergent_bin=orientation(Strand1Bin,Strand2Bin)
 			p_pL_bin.append(p_p_bin);m_mL_bin.append(m_m_bin);p_mL_bin.append(p_m_bin);m_pL_bin.append(m_p_bin);same_strandL_bin.append(same_strand_bin);opposite_strandL_bin.append(opposite_strand_bin);convergentL_bin.append(convergent_bin);divergentL_bin.append(divergent_bin)
+			print p_p_bin,m_m_bin,p_m_bin,m_p_bin,bin_i
 
 		# Same Opposite orientation
-		print Bins,same_strandL_bin,opposite_strandL_bin,name1,name2,"same_opposite_bins_"+name1+"_"+name2+".png"
 		barplot_pair_lists_gen(Bins,same_strandL_bin,opposite_strandL_bin,name1,name2,"same_opposite_bins_"+name1+"_"+name2+".png")
 		# Convergent Divergent orientation
 		barplot_pair_lists_gen(Bins,convergentL_bin,divergentL_bin,name1,name2,"convergent_divergent_bins_"+name1+"_"+name2+".png")
@@ -409,10 +416,8 @@ def barplot_pair_lists_gen(bin_sizes_rangeL,List1,List2,name1,name2,output):
         This should be an option for the user if he wants to generate vizualizations too.
         """
         ax = plt.subplot(111)
-	print List1,List2
-	#plt.barplot(range(1,len(List1)*3+1,3),List1,label=name1,align="center")
-	#plt.barplot(range(2,len(List2)*3+1,3),List2,label=name2,align="center")
-	plt.plot(range(1,4),[1,1,1])
+	plt.barplot(range(1,len(List1)*3+1,3),List1,label=name1,align="center")
+	plt.barplot(range(2,len(List2)*3+1,3),List2,label=name2,align="center")
 	plt.xticks(range(1,len(List1)*3+1,3),[bin_sizes_rangeL[k][0]+"-"+bin_sizes_rangeL[k][1] for k in range(len(bin_sizes_rangeL))])
         plt.ylabel("Occurrences")
         plt.xlabel("Bins")
