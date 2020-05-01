@@ -103,8 +103,13 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
 		patterns = ['++','--','+-','-+']
 
 	for pattern in patterns:
+
         	probability_pattern = np.prod([probability[k] for k in list(pattern)])
-        	consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if probability_pattern**x > threshold) 
+		
+		number_of_tests = len(DataL)-len(pattern)
+
+		# Bonferoni correction
+        	consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if (probability_pattern**x)*number_of_tests > threshold) 
                 Counter_consecutive_real,Counter_consecutive_control,DistancesL=calc_consecutive(list(DataL),window_min,window_max,pattern,consecutive_threshold,output)
 
                 if plot==True:
@@ -137,6 +142,12 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
 
 
 def extract_pattern(DataL,signS,pattern,threshold,is_real):
+	"""
+	Takes as input the file data, a string of all consecutive signs or "_" if distance between consecutive not within constraints.
+	Takes as input the p-value threshold after which significat consecutive biases are observed. 
+	Returns the file with the biased coordinates for that pattern.
+	Returns consecutive occurrences list.
+	"""
 	occs=[];CoordinatesL=[];
 	counts=0;Coordinates=[];
 	for i in range(0,len(signS)-len(pattern)):
@@ -188,7 +199,6 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,
 
 	Occs_pattern=extract_pattern(DataL,Signs,pattern,threshold_consecutiveN,True)
 	Occs_pattern_control=extract_pattern(DataL,Signs_control,pattern,threshold_consecutiveN,False)
-
     	return Counter(Occs_pattern),Counter(Occs_pattern_control),Distances
 
 def strand_annotate_third_BED_overlap(unnotated_path,annotated_path):
