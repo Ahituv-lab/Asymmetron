@@ -2,7 +2,7 @@ import sys
 import functions
 import argparse
 import wrapper_functions as wf
-
+import visualizations
 
 def fun1(args):
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
