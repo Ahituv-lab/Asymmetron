@@ -113,9 +113,6 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
         probability["+"]=total_plus/float(total_plus+total_minus)
         probability["-"] = 1-probability["+"]
 
-	if patterns==False:
-		patterns = ['++','--','+-','-+']
-
 	for pattern in patterns:
 
         	probability_pattern = np.prod([probability[k] for k in list(pattern)])
