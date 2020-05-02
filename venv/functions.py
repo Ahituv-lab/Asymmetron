@@ -125,21 +125,7 @@ def asymmetries_single(path,name,window_min,window_max,patterns,bins,plot,thresh
         	consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if (probability_pattern**x)*number_of_tests > threshold) 
                 Counter_consecutive_real,Counter_consecutive_control,Distances=calc_consecutive(list(DataL),window_min,window_max,pattern,consecutive_threshold)
 		Counter_consecutive_realL.append(Counter_consecutive_real);Counter_consecutive_controlL.append(Counter_consecutive_control);DistancesL.append(Distances)
-                if plot==True:
-                    consecutive, times_found = zip(*Counter_consecutive_real.items())
-		    consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
 
-		if bins>1:
-			Bins=binner(window_min,window_max,bins)
-			OccsL=[];
-			for min_bin,max_bin in Bins:
-				Occs_per_bin=0
-				for dist in DistancesL:
-					if dist>=min_bin and dist<max_bin:
-						Occs_per_bin+=1
-				OccsL.append(Occs_per_bin)
-			# Plot barplot of occs consecutive in each bin
-			visualizations.barplot_single_gen(List1,List1_names,output)
 	return Counter_consecutive_realL,Counter_consecutive_controlL,DistancesL
 
 def extract_pattern(DataL,signS,pattern,threshold,is_real):
