@@ -31,14 +31,17 @@ def fun1(args):
         if plots==True:
             for i in range(len(Counter_consecutive_realL)):
                  consecutive, times_found = zip(*Counter_consecutive_realL[i].items())
-                 consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
-                 ConsecutiveD = dict(zip(consecutive_sorted, times_found_sorted))
+                 print consecutive, times_found
+                 #consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
+                 ConsecutiveD = dict(zip(consecutive, times_found))
 		 TimesFullList=[];
-		 for k in range(0,max(consecutive_sorted)):
+		 for k in range(1,max(consecutive)):
 		     if k in ConsecutiveD.keys():
 		         TimesFullList.append(ConsecutiveD[k])
                      else:
                          TimesFullList.append(0)
+		 print TimesFullList
+                 visualizations.barplot_single_gen(range(1,len(TimesFullList)+1),TimesFullList,"test.png")
 
                  if bins>1:
                      Bins=functions.binner(min_distance,max_distance,bins)
@@ -51,10 +54,6 @@ def fun1(args):
                                 OccsL.append(Occs_per_bin)
                      # Plot barplot of occs consecutive in each bin
                      visualizations.barplot_single_gen(OccsL,OccsL,"test2.png")
-
-
-
-                 visualizations.barplot_single_gen(range(0,max(consecutive_sorted)),TimesFullList,"test.png")
 
 
         # Orientation link is missing / fun4 to be used here
