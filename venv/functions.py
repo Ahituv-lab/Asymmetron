@@ -98,7 +98,7 @@ def separate_on_score(path_score,path,number_of_bins):
 	visualizations.barplot_single_gen(Ratio_Same_Opposite,Score_names,output_plot)
 	return Ratio_Same_Opposite,Score_names
 
-def asymmetries_single(path,name,window_min,window_max,patterns,bins,plot,threshold,output):
+def asymmetries_single(path,name,window_min,window_max,patterns,bins,plot,threshold):
 	"""
 	This function calculates the strand asymmetry biases in a single file.
 	Input file (If multiple files are provided the analysis is done independently in each")
@@ -114,6 +114,7 @@ def asymmetries_single(path,name,window_min,window_max,patterns,bins,plot,thresh
         probability["+"]=total_plus/float(total_plus+total_minus)
         probability["-"] = 1-probability["+"]
 
+	Counter_consecutive_realL=[];Counter_consecutive_controlL=[];DistancesL=[];
 	for pattern in patterns:
 
         	probability_pattern = np.prod([probability[k] for k in list(pattern)])
@@ -123,7 +124,7 @@ def asymmetries_single(path,name,window_min,window_max,patterns,bins,plot,thresh
 		# Bonferoni correction
         	consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if (probability_pattern**x)*number_of_tests > threshold) 
                 Counter_consecutive_real,Counter_consecutive_control,DistancesL=calc_consecutive(list(DataL),window_min,window_max,pattern,consecutive_threshold,output)
-
+		Counter_consecutive_realL.append(Counter_consecutive_real);Counter_consecutive_controlL.append(Counter_consecutive_control);DistancesL.append(Distances)
                 if plot==True:
                     consecutive, times_found = zip(*Counter_consecutive_real.items())
 		    consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
@@ -141,7 +142,7 @@ def asymmetries_single(path,name,window_min,window_max,patterns,bins,plot,thresh
 				OccsL.append(Occs_per_bin)
 			# Plot barplot of occs consecutive in each bin
 			visualizations.barplot_single_gen(List1,List1_names,output)
-	return 
+	return Counter_consecutive_realL;Counter_consecutive_controlL;DistancesL;
 
 def extract_pattern(DataL,signS,pattern,threshold,is_real):
 	"""
