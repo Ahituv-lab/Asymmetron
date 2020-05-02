@@ -4,7 +4,7 @@ from scipy.stats import binom_test
 from pybedtools import BedTool
 import matplotlib
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 
 def histogram_gen(strand1L,strand2L,bins_used,output):
         """ 
@@ -67,6 +67,8 @@ def barplot_single_gen(List1,List1_names,output):
         This should be an option for the user if he wants to generate vizualizations too.
         """
         ax = plt.subplot(111)
+        print List1
+	
         plt.barplot(range(1,len(List1)*1,1),List1,align="center")
         plt.xticks(range(1,len(List1)*1,1),List1_names)
         plt.ylabel("Occurrences")
