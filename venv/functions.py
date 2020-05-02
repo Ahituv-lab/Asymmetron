@@ -2,7 +2,7 @@
 import itertools, math
 import numpy as np
 from scipy.stats import binom_test
-#from pybedtools import BedTool
+from pybedtools import BedTool
 import matplotlib
 
 matplotlib.use("Agg")

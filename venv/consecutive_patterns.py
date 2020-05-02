@@ -41,7 +41,7 @@ def fun1(args):
                      else:
                          TimesFullList.append(0)
 		 print TimesFullList
-                 visualizations.barplot_single_gen(range(1,len(TimesFullList)+1),TimesFullList,"test.png")
+                 visualizations.barplot_single_gen(range(1,len(TimesFullList)+1),TimesFullList,wf.output_path("consecutive_patterns", ".png", ''))
 
                  if bins>1:
                      Bins=functions.binner(min_distance,max_distance,bins)
@@ -53,7 +53,7 @@ def fun1(args):
                                                 Occs_per_bin+=1
                                 OccsL.append(Occs_per_bin)
                      # Plot barplot of occs consecutive in each bin
-                     visualizations.barplot_single_gen(OccsL,OccsL,"test2.png")
+                     visualizations.barplot_single_gen(OccsL,OccsL,wf.output_path("consecutive_patterns", ".png", ''))
 
 
         # Orientation link is missing / fun4 to be used here
