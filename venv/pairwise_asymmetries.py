@@ -43,7 +43,7 @@ def fun3(args):
 
             # If bins is true I already put in functions.proximal that it generates two barplots. Also consider a table to be generated. Also, we need to put the output of that in the same directory as outputs_pairwise_asymmetries
             if bins:
-                 # Here we need to decide what is the outputs we want to provide since they can be too many and complicated or focus on the plots and a small table
+                 # Here we need to decide what is the outputs we want to provide since they can be too many and complicated or focus on the plots and a small table, we already call the function earlier
                  pass
 
     # generates table <- this should be done for all pairs together.
