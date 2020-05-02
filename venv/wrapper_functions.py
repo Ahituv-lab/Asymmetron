@@ -8,6 +8,7 @@ import time
 # Threshold p-value (with Bonferoni correction) how do people insert very small p-values? How do we explain them how to do it?
 # Expected bias needs to be between 0 and 1
 # If user uses Scores it should be float or integer.
+# Set patterns to default if not included in user-input
 
 class Error(Exception):
     """Base class for exceptions in this module."""
