@@ -109,7 +109,7 @@ def asymmetries_single(path,window_min,window_max,patterns,bins=0,plot):
                     indexes = np.arange(len(consecutive_sorted))
                     plt.bar(indexes,consecutive_sorted)  
                     width = 1
-                    plt.xticks(indexes width * 0.5, times_found)
+                    plt.xticks(indexes_width * 0.5, times_found)
                     plt.savefig(pattern+output)
                     plt.close()
 

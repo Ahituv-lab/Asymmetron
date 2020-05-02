@@ -1,4 +1,5 @@
 import os
+import time
 
 class Error(Exception):
     """Base class for exceptions in this module."""
@@ -13,6 +14,23 @@ class InputError(Error):
 
     def __init__(self, message):
         self.message = message
+
+def output_path(fun_name, *args):
+    """
+    Creates the path to be used for saving output files. File type needs to be added manually depending on the function
+
+    :param fun_name: Function name to append to the path
+    :param args: Additional arguments to append to the path
+    :return: Path under which to save the output. No file type is selected
+    """
+
+    time_stamp = time.strftime("%Y%m%d_%H%M%S", time.localtime())  # To add timestamp to output file names
+    if not os.path.exists("Asymmetron_output/"):
+        os.makedirs("Asymmetron_output/")
+
+    return "Asymmetron_output/"+time_stamp+"_"+fun_name+"_"+"_".join(args)
+
+
 
 def path_checker(paths):
     """:param paths Input given by the user as a string of paths, comma seperated
@@ -68,9 +86,5 @@ def sanitize(paths, orientation, names):
     if names is not None:
         if len(paths) != len(names):
             err = "Please enter the same number of arguments for paths and names"
-            raise InputError(err)
-    if orientation_paths is not None:
-        if len(paths)  != len(orientation_paths):
-            err = "Please enter the same number of arguments for paths and orientation_paths"
             raise InputError(err)
     return paths, orientation_paths, names
