@@ -25,7 +25,7 @@ def fun1(args):
 	
     for index,path in enumerate(paths):
         name = names[index]
-        # We need to provide a better output name
+        print name
         output = name
         Counter_consecutive_realL,Counter_consecutive_controlL,DistancesL=functions.asymmetries_single(path,name,min_distance,max_distance,patterns,bins,plots,threshold)
         if plots==True:
@@ -39,23 +39,7 @@ def fun1(args):
 		         TimesFullList.append(ConsecutiveD[k])
                      else:
                          TimesFullList.append(0)
-
-                 if bins>1:
-                     Bins=functions.binner(min_distance,max_distance,bins)
-                     OccsL=[];
-                     for min_bin,max_bin in Bins:
-                                Occs_per_bin=0
-                                for dist in DistancesL[i]:
-                                        if dist>=min_bin and dist<max_bin:
-                                                Occs_per_bin+=1
-                                OccsL.append(Occs_per_bin)
-                     # Plot barplot of occs consecutive in each bin
-                     visualizations.barplot_single_gen(OccsL,OccsL,"test2.png")
-
-
-
                  visualizations.barplot_single_gen(range(0,max(consecutive_sorted)),TimesFullList,"test.png")
-
 
         # Orientation link is missing / fun4 to be used here
 
