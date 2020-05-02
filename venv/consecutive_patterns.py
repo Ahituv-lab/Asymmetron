@@ -6,6 +6,14 @@ import wrapper_functions as wf
 
 def fun1(args):
     paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
+
+    min_distance = args.min_distance
+    max_distance = args.max_distance
+    patterns = args.patterns
+    bins = args.bins
+    if patterns == False:
+        patterns = ["++","--","+-","-+"]
+	
     for path in paths:
         Counter_consecutive_real,Counter_consecutive_control=asymmetries_single(path,min_distance,max_distance,patterns,bins=0,plot=plots,threshold)
  
