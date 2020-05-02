@@ -9,6 +9,7 @@ import time
 # Expected bias needs to be between 0 and 1
 # If user uses Scores it should be float or integer.
 # Set patterns to default if not included in user-input
+# Small file with inputs
 
 class Error(Exception):
     """Base class for exceptions in this module."""
@@ -37,7 +38,7 @@ def output_path(fun_name, *args):
     if not os.path.exists("Asymmetron_output/"):
         os.makedirs("Asymmetron_output/" + fun_name)
 
-    return "Asymmetron_output/" + time_stamp+ "_" + fun_name+ "_" + "_".join(args)
+    return "Asymmetron_output/" + fun_name + "/" + time_stamp+ "_" + fun_name + "_" + "_".join(args)
 
 
 
