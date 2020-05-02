@@ -25,21 +25,36 @@ def fun1(args):
 	
     for index,path in enumerate(paths):
         name = names[index]
-        print name
+        # We need to provide a better output name
         output = name
         Counter_consecutive_realL,Counter_consecutive_controlL,DistancesL=functions.asymmetries_single(path,name,min_distance,max_distance,patterns,bins,plots,threshold)
         if plots==True:
             for i in range(len(Counter_consecutive_realL)):
                  consecutive, times_found = zip(*Counter_consecutive_realL[i].items())
-                 consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
-                 ConsecutiveD = dict(zip(consecutive_sorted, times_found_sorted))
+                 print consecutive, times_found
+                 #consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
+                 ConsecutiveD = dict(zip(consecutive, times_found))
 		 TimesFullList=[];
-		 for k in range(0,max(consecutive_sorted)):
+		 for k in range(1,max(consecutive)):
 		     if k in ConsecutiveD.keys():
 		         TimesFullList.append(ConsecutiveD[k])
                      else:
                          TimesFullList.append(0)
-                 visualizations.barplot_single_gen(range(0,max(consecutive_sorted)),TimesFullList,"test.png")
+		 print TimesFullList
+                 visualizations.barplot_single_gen(range(1,len(TimesFullList)+1),TimesFullList,"test.png")
+
+                 if bins>1:
+                     Bins=functions.binner(min_distance,max_distance,bins)
+                     OccsL=[];
+                     for min_bin,max_bin in Bins:
+                                Occs_per_bin=0
+                                for dist in DistancesL[i]:
+                                        if dist>=min_bin and dist<max_bin:
+                                                Occs_per_bin+=1
+                                OccsL.append(Occs_per_bin)
+                     # Plot barplot of occs consecutive in each bin
+                     visualizations.barplot_single_gen(OccsL,OccsL,"test2.png")
+
 
         # Orientation link is missing / fun4 to be used here
 
