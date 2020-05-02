@@ -37,7 +37,7 @@ def fun2(args):
         Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
         Ratio_same_oppositeL.append(Ratio_same_opposite);p_val_same_oppositeL.append(p_val_same_opposite);p_val_same_opposite_BonferoniL.append(p_val_same_opposite_Bonferoni)
 
-        # convergent vs divergent analysis
+        #convergent vs divergent analysis
         Ratio_conv_diverg,p_val_conv_diverg,p_val_conv_diver_Bonferoni=functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
         p_val_conv_divergL.append(p_val_conv_diverg);p_val_conv_divergL.append(p_val_conv_diver_Bonferoni);Ratio_conv_divergL.append(Ratio_conv_diverg);
 
@@ -54,8 +54,9 @@ def fun2(args):
             if score_motifs!=False:
                 separate_on_score(motifs,regions,number_of_bins,output_file2)
 
-        if bins:
-            pass
+        # I think we don't need bins here. Only type of bins would have been spliting the regions in sub-parts and doing the analysis in those but I don't think it adds much.
+        #if bins:
+        #    pass
 
     # generates table <- this should be done for all pairs.
     functions.table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
