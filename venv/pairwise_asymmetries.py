@@ -2,6 +2,7 @@ import sys,os
 import functions
 import argparse
 import wrapper_functions as wf
+import visualizations
 
 def fun3(args):
 

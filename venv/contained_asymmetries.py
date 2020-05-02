@@ -2,6 +2,7 @@ import sys
 import functions
 import argparse
 import wrapper_functions as wf
+import visualizations
 
 def fun2(args):
 
@@ -50,9 +51,11 @@ def fun2(args):
         if score:
             # Here we need to decide if we want to include the score for both -regions and -motifs and perform the analyses separately, score needs to go with number of score_bins
 	    if score_regions!=False:
-                separate_on_score(regions,motifs,number_of_bins,output_file1)
+                Ratio_Same_Opposite,Score_names = separate_on_score(regions,motifs,number_of_bins)
+                visualizations.barplot_single_gen(Ratio_Same_Opposite,Score_names,output_plot)
             if score_motifs!=False:
-                separate_on_score(motifs,regions,number_of_bins,output_file2)
+                Ratio_Same_Opposite,Score_names = separate_on_score(motifs,regions,number_of_bins)
+                visualizations.barplot_single_gen(Ratio_Same_Opposite,Score_names,output_plot)
 
         # I think we don't need bins here. Only type of bins would have been spliting the regions in sub-parts and doing the analysis in those but I don't think it adds much.
         #if bins:

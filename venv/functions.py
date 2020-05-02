@@ -66,7 +66,7 @@ def binner(min_size,max_size,bin_no):
 	Bins =[(min_size+bin_size*k,min_size+bin_size*(k+1)) for k in range(0,bin_no)]
 	return Bins
 
-def separate_on_score(path_score,path,number_of_bins,output_plot):
+def separate_on_score(path_score,path,number_of_bins):
 	"""
 	Score list is ordered as DataL list of lists and the first is used to bin the second.
 	This requires binning this feature and calculating the asymmetry at each bin of this column values. 
@@ -96,7 +96,7 @@ def separate_on_score(path_score,path,number_of_bins,output_plot):
 		else:
                 	Ratio_Same_Opposite.append(0.5)
 	visualizations.barplot_single_gen(Ratio_Same_Opposite,Score_names,output_plot)
-	return
+	return Ratio_Same_Opposite,Score_names
 
 def asymmetries_single(path,name,window_min,window_max,patterns,bins,plot,threshold,output):
 	"""
