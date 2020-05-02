@@ -123,13 +123,11 @@ def asymmetries_single(path,name,window_min,window_max,patterns,bins,plot,thresh
 
 		# Bonferoni correction
         	consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if (probability_pattern**x)*number_of_tests > threshold) 
-                Counter_consecutive_real,Counter_consecutive_control,DistancesL=calc_consecutive(list(DataL),window_min,window_max,pattern,consecutive_threshold,output)
+                Counter_consecutive_real,Counter_consecutive_control,Distances=calc_consecutive(list(DataL),window_min,window_max,pattern,consecutive_threshold)
 		Counter_consecutive_realL.append(Counter_consecutive_real);Counter_consecutive_controlL.append(Counter_consecutive_control);DistancesL.append(Distances)
                 if plot==True:
                     consecutive, times_found = zip(*Counter_consecutive_real.items())
 		    consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
-                    indexes = np.arange(len(consecutive_sorted))
-                    visualizations.barplot_single_gen(List1,List1_names,output)
 
 		if bins>1:
 			Bins=binner(window_min,window_max,bins)
@@ -142,7 +140,7 @@ def asymmetries_single(path,name,window_min,window_max,patterns,bins,plot,thresh
 				OccsL.append(Occs_per_bin)
 			# Plot barplot of occs consecutive in each bin
 			visualizations.barplot_single_gen(List1,List1_names,output)
-	return Counter_consecutive_realL;Counter_consecutive_controlL;DistancesL;
+	return Counter_consecutive_realL,Counter_consecutive_controlL,DistancesL
 
 def extract_pattern(DataL,signS,pattern,threshold,is_real):
 	"""
@@ -172,7 +170,7 @@ def extract_pattern(DataL,signS,pattern,threshold,is_real):
 
 	return occs
 
-def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,output):
+def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN):
         """
         This function takes as input the list of lists of the fle data, the range of distances to search, the p-value threshold and aa list of strand sign patterns.
         It returns the number of consecutive occurrences in the plus and minus orientation.
@@ -180,7 +178,7 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN,
         """
 	from random import shuffle #pottentially do Monte carlo instead
 	from collections import Counter	
-	datafile=open(output,"w")
+	datafile=open("table","w")
 	Signs='';
 	Distances=[];
 	for i in range(len(DataL)-1):
