@@ -1,6 +1,14 @@
 import os
 import time
 
+# Catch number of bins >0, not string, not list etc
+# Catch distance limits, have to be integers
+# Catch plots needs to be False / True only
+# Patterns needs to only contain +/-
+# Threshold p-value, how do people insert very small p-values? How do we explain them how to do it?
+# Expected bias needs to be between 0 and 1
+# If user uses Scores it should be float or integer.
+
 class Error(Exception):
     """Base class for exceptions in this module."""
     pass
@@ -54,8 +62,6 @@ def name_splitter(names):
     """
     namesL = [x.strip() for x in names.split(',')]
     return namesL
-
-# Should we move the pairs_generator(pathL1,pathL2,NamesL1,NamesL2) here from functions.py?
 
 def sanitize(paths, orientation, names):
     """

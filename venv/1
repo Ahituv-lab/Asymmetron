@@ -62,10 +62,10 @@ def binner(min_size,max_size,bin_no):
         Takes as input the distance range and number of bins and returns the bins in form (min,max) for every bin.
         """
 	bin_size = float(max_size-min_size)/float(bin_no)
-	Bins =[(min_size+bin_size*k,min_size+bin_size*(k+1)) for k in range(0,bin_no)]
+	Bins =[(min_size+bin_size*k,min_size+bin_size*(k+1)) for k in range(1,bin_no+1)]
 	return Bins
 
-def separate_on_score(path_score,path,number_of_bins,output_plot):
+def separate_on_score(ScoreL,DataL,number_of_bins):
 	"""
 	Score list is ordered as DataL list of lists and the first is used to bin the second.
 	This requires binning this feature and calculating the asymmetry at each bin of this column values. 
@@ -74,8 +74,6 @@ def separate_on_score(path_score,path,number_of_bins,output_plot):
 	the Score bins 
 	"""
 	#We should check Score to be integer / float in our checks
-        DataL,ScoreL=read_BED(path_score,last_col=True)
-	DataL2=read_BED(path,last_col=False)
 	StepsL = binner(min(ScoreL),max(ScoreL),number_of_bins)
 	DataStepsL=[];ScoresStepsL=[];
 	for step in StepsL:
@@ -86,16 +84,7 @@ def separate_on_score(path_score,path,number_of_bins,output_plot):
 				ScoreStep+=[ScoreL[i]]
 		DataStepsL+=[DataStep]
 		ScoresStepsL+=[ScoreStep]
-
-	Ratio_Same_Opposite=[];
-        for step in range(len(StepsL)):
-		p_p_step,m_m_step,p_m_step,m_p_step,same_strand_step,opposite_strand_step,convergent_step,divergent_step=functions.overlap(DataStepsL,DataL2)
-                if same_strand_step+opposite_strand_step!=[]:
-                	Ratio_Same_Opposite.append(same_strand_step/float(same_strand_step+opposite_strand_step))
-		else:
-                	Ratio_Same_Opposite.append(0.5)
-	barplot_single_gen(Ratio_Same_Opposite,Score_names,output_plot)
-	return
+	return zip(StepsL,ScoresStepsL,DataStepsL)
 
 def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,output):
 	"""
@@ -268,24 +257,17 @@ def proximal(path1,path2,name1,name2,window_min,window_max,upstream=False,downst
 	if bins!=False:
 		p_pL_bin=[];m_mL_bin=[];p_mL_bin=[];m_pL_bin=[];same_strandL_bin=[];opposite_strandL_bin=[];convergentL_bin=[];divergentL_bin=[];
 		Bins=binner(window_min,window_max,bins)
-		for index, bin_i in enumerate(Bins):
-			Strand1Bin=[];Strand2Bin=[];
-			min_bin,max_bin = bin_i
-			for k in range(len(Distance)):
-				if Distance[k]>=min_bin and Distance[k]<max_bin:
-					Strand1Bin.append(Strand1[k])
-					Strand2Bin.append(Strand2[k])
-
-			p_p_bin,m_m_bin,p_m_bin,m_p_bin,same_strand_bin,opposite_strand_bin,convergent_bin,divergent_bin=orientation(Strand1Bin,Strand2Bin)
+		for min_bin,max_bin in Bins:
+			p_p_bin,m_m_bin,p_m_bin,m_p_bin,same_strand_bin,opposite_strand_bin,convergent_bin,divergent_bin=orientation(Strand1,Strand2)
 			p_pL_bin.append(p_p_bin);m_mL_bin.append(m_m_bin);p_mL_bin.append(p_m_bin);m_pL_bin.append(m_p_bin);same_strandL_bin.append(same_strand_bin);opposite_strandL_bin.append(opposite_strand_bin);convergentL_bin.append(convergent_bin);divergentL_bin.append(divergent_bin)
-			print p_p_bin,m_m_bin,p_m_bin,m_p_bin,bin_i
 
 		# Same Opposite orientation
+		print Bins,same_strandL_bin,opposite_strandL_bin,name1,name2,"same_opposite_bins_"+name1+"_"+name2+".png"
 		barplot_pair_lists_gen(Bins,same_strandL_bin,opposite_strandL_bin,name1,name2,"same_opposite_bins_"+name1+"_"+name2+".png")
 		# Convergent Divergent orientation
 		barplot_pair_lists_gen(Bins,convergentL_bin,divergentL_bin,name1,name2,"convergent_divergent_bins_"+name1+"_"+name2+".png")
 
-	return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
+		return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
 
 def asym_binned(window_min,window_max,bins,DistancesL,Strand1L,Strand2L):
 	"""
@@ -427,8 +409,10 @@ def barplot_pair_lists_gen(bin_sizes_rangeL,List1,List2,name1,name2,output):
         This should be an option for the user if he wants to generate vizualizations too.
         """
         ax = plt.subplot(111)
-	plt.barplot(range(1,len(List1)*3+1,3),List1,label=name1,align="center")
-	plt.barplot(range(2,len(List2)*3+1,3),List2,label=name2,align="center")
+	print List1,List2
+	#plt.barplot(range(1,len(List1)*3+1,3),List1,label=name1,align="center")
+	#plt.barplot(range(2,len(List2)*3+1,3),List2,label=name2,align="center")
+	plt.plot(range(1,4),[1,1,1])
 	plt.xticks(range(1,len(List1)*3+1,3),[bin_sizes_rangeL[k][0]+"-"+bin_sizes_rangeL[k][1] for k in range(len(bin_sizes_rangeL))])
         plt.ylabel("Occurrences")
         plt.xlabel("Bins")
@@ -479,7 +463,7 @@ if __name__ == "__main__":
 #DataL,ScoreL=read_BED("MCF7_RepliStrand.leading_lagging.bed",True)
 #separate_on_score(ScoreL,DataL,10)
 # works - minor error with extra bin, needs fixing
-#Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),"G4","hg19_TSS",0,500,False,False,10)
+Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),"G4","hg19_TSS",0,500,False,False,10)
 #print len(Strand1),len(Strand2),len(DistancesL)
-#print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
+print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
 #asymmetries_single(read_BED("All_G4.bed"),0,1000,["++--"],0,False,0.0001,"test")
