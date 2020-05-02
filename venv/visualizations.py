@@ -67,10 +67,10 @@ def barplot_single_gen(List1,List1_names,output):
         This should be an option for the user if he wants to generate vizualizations too.
         """
         ax = plt.subplot(111)
-        print List1
+        print List1,List1_names,len(List1),len(List1_names)
 	
-        plt.bar(range(1,len(List1)*1,1),List1,align="center")
-        plt.xticks(range(1,len(List1)*1,1),List1_names)
+        plt.bar(range(1,len(List1)*1+1,1),List1,align="center")
+        plt.xticks(range(1,len(List1)*1+1,1),List1_names)
         plt.ylabel("Occurrences")
         plt.xlabel("Bins")
         ax.spines['right'].set_visible(False)
