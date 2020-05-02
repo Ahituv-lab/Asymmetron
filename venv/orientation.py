@@ -17,10 +17,14 @@ def fun4(args):
                     f.write('\t'.join([str(x) for x in i])+'\n')
     return
 
-
-if __name__ == "__main__":
+def orientation_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("motif_no_annotation", help="BED-formatted file")
     parser.add_argument("motif_annotation", help="BED-formatted file")
     args = parser.parse_args()
+    return args
+
+
+if __name__ == "__main__":
+    orientation_parser()
     fun4(args)
