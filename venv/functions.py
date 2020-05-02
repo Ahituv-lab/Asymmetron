@@ -6,6 +6,7 @@ from pybedtools import BedTool
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import visualizations
 
 # Google drive linke with the draft https://docs.google.com/document/d/1elnyyHShRcY5X406qk9O2-odU5yb7F15vWtwmSzrmrw/edit
 def pairs_generator(pathL1,pathL2,NamesL1,NamesL2):
@@ -94,10 +95,10 @@ def separate_on_score(path_score,path,number_of_bins,output_plot):
                 	Ratio_Same_Opposite.append(same_strand_step/float(same_strand_step+opposite_strand_step))
 		else:
                 	Ratio_Same_Opposite.append(0.5)
-	barplot_single_gen(Ratio_Same_Opposite,Score_names,output_plot)
+	visualizations.barplot_single_gen(Ratio_Same_Opposite,Score_names,output_plot)
 	return
 
-def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,output):
+def asymmetries_single(path,name,window_min,window_max,patterns,bins,plot,threshold,output):
 	"""
 	This function calculates the strand asymmetry biases in a single file.
 	Input file (If multiple files are provided the analysis is done independently in each")
@@ -127,7 +128,7 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
                     consecutive, times_found = zip(*Counter_consecutive_real.items())
 		    consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
                     indexes = np.arange(len(consecutive_sorted))
-                    barplot_single_gen(List1,List1_names,output)
+                    visualizations.barplot_single_gen(List1,List1_names,output)
 
 		if bins>1:
 			Bins=binner(window_min,window_max,bins)
@@ -139,7 +140,7 @@ def asymmetries_single(path,window_min,window_max,patterns,bins,plot,threshold,o
 						Occs_per_bin+=1
 				OccsL.append(Occs_per_bin)
 			# Plot barplot of occs consecutive in each bin
-			barplot_single_gen(List1,List1_names,output)
+			visualizations.barplot_single_gen(List1,List1_names,output)
 	return 
 
 def extract_pattern(DataL,signS,pattern,threshold,is_real):
@@ -278,9 +279,9 @@ def proximal(path1,path2,name1,name2,window_min,window_max,upstream=False,downst
 			print p_p_bin,m_m_bin,p_m_bin,m_p_bin,bin_i
 
 		# Same Opposite orientation
-		barplot_pair_lists_gen(Bins,same_strandL_bin,opposite_strandL_bin,name1,name2,"same_opposite_bins_"+name1+"_"+name2+".png")
+		visualizations.barplot_pair_lists_gen(Bins,same_strandL_bin,opposite_strandL_bin,name1,name2,"same_opposite_bins_"+name1+"_"+name2+".png")
 		# Convergent Divergent orientation
-		barplot_pair_lists_gen(Bins,convergentL_bin,divergentL_bin,name1,name2,"convergent_divergent_bins_"+name1+"_"+name2+".png")
+		visualizations.barplot_pair_lists_gen(Bins,convergentL_bin,divergentL_bin,name1,name2,"convergent_divergent_bins_"+name1+"_"+name2+".png")
 
 	return p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent
 
@@ -383,80 +384,6 @@ def table_gen(NamesL_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL
 		datafile.write(NamesL_pairs[i][0]+'\t'+NamesL_pairs[i][1]+'\t'+str(p_pL[i])+'\t'+str(m_mL[i])+'\t'+str(p_mL[i])+'\t'+str(m_pL[i])+'\t'+str(p_valsL[i])+'\t'+str(p_vals_BonferoniL[i])+'\t'+str(RatiosL[i])+'\t'+str(p_valsL_divergent_convergent[i])+'\t'+str(p_valsL_divergent_convergent_BonferoniL[i])+'\t'+str(RatiosL_divergent_converg[i])+'\n')
 	datafile.close()
 	return
-
-def histogram_gen(strand1L,strand2L,bins_used,output):
-	"""
-	Accepts the strand asymmetries  per bin and generates histograms
-	"""
-	RatiosL=[ratio_calc(strand1L[i],strand2L[i]) for i in range(len(strand1L))]
-	plt.bar(range(1,len(strand1L)+1,1),RatiosL,align="center",color="lightblue")
-	plt.xticks(range(len(bins)),bins)
-	plt.xlabel("Bins (Distance)")
-	plt.ylabel("Strand Asymmetry Ratio")
-	ax.spines['right'].set_visible(False)
-	ax.spines['top'].set_visible(False)
-	ax.yaxis.set_ticks_position('left')
-	ax.xaxis.set_ticks_position('bottom')
-	plt.tight_layout()
-	plt.savefig(output)
-	plt.close()
-	return
-
-def barplot_gen(strand1,strand2,output):
-	"""
-	This should be an option for the user if he wants to generate vizualizations too.
-	"""
-	ax = plt.subplot(111)
-	plt.barplot(range(1,3),[strand1,strand2],align="center")
-	plt.ylabel("Occurrences")
-	plt.xlabel("Strand Orientation")
-	ax.spines['right'].set_visible(False)
-	ax.spines['top'].set_visible(False)
-	ax.yaxis.set_ticks_position('left')
-	ax.xaxis.set_ticks_position('bottom')
-	plt.tight_layout()
-	plt.savefig(output)
-	plt.close()
-	return
-
-def barplot_pair_lists_gen(bin_sizes_rangeL,List1,List2,name1,name2,output):
-        """
-        This should be an option for the user if he wants to generate vizualizations too.
-        """
-        ax = plt.subplot(111)
-	plt.barplot(range(1,len(List1)*3+1,3),List1,label=name1,align="center")
-	plt.barplot(range(2,len(List2)*3+1,3),List2,label=name2,align="center")
-	plt.xticks(range(1,len(List1)*3+1,3),[bin_sizes_rangeL[k][0]+"-"+bin_sizes_rangeL[k][1] for k in range(len(bin_sizes_rangeL))])
-        plt.ylabel("Occurrences")
-        plt.xlabel("Bins")
-        ax.spines['right'].set_visible(False)
-        ax.spines['top'].set_visible(False)
-        ax.yaxis.set_ticks_position('left')
-        ax.xaxis.set_ticks_position('bottom')
-	plt.legend(frameon=False)
-        plt.tight_layout()
-        plt.savefig(output)
-        plt.close()
-        return
-
-def barplot_single_gen(List1,List1_names,output):
-        """ 
-        This should be an option for the user if he wants to generate vizualizations too.
-        """
-        ax = plt.subplot(111)
-        plt.barplot(range(1,len(List1)*1,1),List1,align="center")
-        plt.xticks(range(1,len(List1)*1,1),List1_names)
-        plt.ylabel("Occurrences")
-        plt.xlabel("Bins")
-        ax.spines['right'].set_visible(False)
-        ax.spines['top'].set_visible(False)
-        ax.yaxis.set_ticks_position('left')
-        ax.xaxis.set_ticks_position('bottom')
-        plt.legend(frameon=False)
-        plt.tight_layout()
-        plt.savefig(output)
-        plt.close()
-        return
 
 # Ensures that code below is not run when this file is imported into another file
 if __name__ == "__main__":
