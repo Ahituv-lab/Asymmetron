@@ -138,9 +138,8 @@ def extract_pattern(DataL,signS,pattern,threshold,is_real):
 	occs=[];CoordinatesL=[];
 	counts=0;Coordinates=[];
 	for i in range(0,len(signS)-len(pattern)):
-		if signS[i:i+len(pattern)]==pattern:	
-			for m in DataL[i:i+len(pattern)]:
-				Coordinates.append(m)
+		if signS[i:i+len(pattern)]==pattern:
+			Coordinates.extend(DataL[i:i+len(pattern)])
 			counts+=1
 		else:
 			if counts>0:
