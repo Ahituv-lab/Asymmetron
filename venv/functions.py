@@ -370,8 +370,17 @@ def table_gen(NamesL_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL
 	datafile.close()
 	return
 
+def find_sub_str(my_str, sub_str):
+    start = 0
+    while True:
+        start = my_str.find(sub_str, start)
+        if start == -1: return
+        yield start
+        start += len(sub_str) # use start += 1 to find overlapping matches
+
 # Ensures that code below is not run when this file is imported into another file
 if __name__ == "__main__":
+	print(find)
 	pass
 # test area
 #works

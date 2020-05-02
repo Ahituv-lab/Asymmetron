@@ -26,12 +26,13 @@ class InputError(Error):
     def __init__(self, message):
         self.message = message
 
-def output_path(fun_name, *args):
+def output_path(fun_name, extension, *args):
     """
     Creates the path to be used for saving output files. File type needs to be added manually depending on the function
 
     :param fun_name: Function name to append to the path
     :param args: Additional arguments to append to the path
+    :param extension: file extension for the file
     :return: Path under which to save the output. No file type is selected
     """
 
@@ -39,7 +40,7 @@ def output_path(fun_name, *args):
     if not os.path.exists("Asymmetron_output/"):
         os.makedirs("Asymmetron_output/" + fun_name)
 
-    return "Asymmetron_output/" + fun_name + "/" + time_stamp+ "_" + fun_name + "_" + "_".join(args)
+    return "Asymmetron_output/" + fun_name + "/" + time_stamp+ "_" + fun_name + "_" + "_".join(args)+ "." + extension
 
 
 
@@ -141,7 +142,8 @@ def check_valid_probability(value):
 
 
 
-
+if __name__ == "__name__":
+    print(output_path("consecutive_patterns", "bed", "test", "test2"))
 
 
 
