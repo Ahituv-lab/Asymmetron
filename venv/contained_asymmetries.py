@@ -1,14 +1,13 @@
-import sys
-#import functions
+import sys,os
+import functions
 import argparse
 import wrapper_functions as wf
-#import visualizations
+import visualizations
 
 
 def fun2(args):
-	paths, orientation_paths, names = wf.sanitize(args.motifs, args.orientation, args.names)
+	#paths, orientation_paths, names = wf.sanitize(args.motifs, args.orientation, args.names)
 	# this is used for Bonferoni correction
-	number_of_files = len(motifs) * len(regions)
 
 	# Missing link to fun4 if provided
 
@@ -17,8 +16,28 @@ def fun2(args):
 	if not os.path.exists(directory):
 		os.makedirs(directory)
 
+        motifsL=args.motifs.split(",")
+        regionsL=args.regions.split(",")
+
+	motifsL_names=args.names_motifs
+        if motifsL_names==None:
+            motifsL_names=[k.split("/")[-1] for k in motifsL]
+        else:
+            motifsL_names = motifsL_names.split(",")
+
+        regionsL_names=args.names_regions
+        if regionsL_names==None:
+            regionsL_names=[k.split("/")[-1] for k in regionsL]
+        else:
+            regionsL_names=regionsL_names.split(",")
+
+        expected_asym=args.expected_asym
+        if expected_asym==None:
+            expected_asym=0.5
+ 
+        number_of_files = len(motifsL) * len(regionsL)
 	# All possible pairs between region files and motif files
-	motif_region_pairs, names_pairs = functions.pairs_generator(pathL1, pathL2, NamesL1, NamesL2)
+	motif_region_pairs, names_pairs = functions.pairs_generator(motifsL, regionsL, motifsL_names, regionsL_names)
 
 	# Save the results for the final table
 	p_pL = [];
@@ -39,9 +58,9 @@ def fun2(args):
 	# Perform all comparisons of each pair
 	for i in range(len(motif_region_pairs)):
 
-		p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = functions.overlap(motifs, regions)
+		p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = functions.overlap(motif_region_pairs[i][0], motif_region_pairs[i][1])
 
-		p_pL.apend(p_p);
+		p_pL.append(p_p);
 		m_mL.append(m_m);  # Same strand orientation
 		p_mL.append(p_m);
 		m_pL.append(m_pL);  # Opposite strand orientation
@@ -68,12 +87,9 @@ def fun2(args):
 
 		if plots:
 			# generates histogram same opposite, we need to decide the output1
-			functions.barplot_gen(same_strand, opposite_strand, os.path.join(directory,
-			                                                                 names_pairs[0] + "_" + names_pairs[
-				                                                                 1] + "_same_opposite_orientations.png"))
+                        visualizations.barplot_gen(same_strand, opposite_strand, wf.output_path("contained_asymmetries", "same_opposite_orientation.png", names_pairs[0],names_pairs[1]))
 			# generates historam covergent divergent, we need to decide the output2
-			functions.barplot_gen(p_m, m_p, os.path.join(directory, names_pairs[0] + "_" + names_pairs[
-				1] + "_divergent_convergent_orientations.png"))
+                        visualizations.barplot_gen(p_m, m_p, os.path.join(directory, names_pairs[0] + "_" + names_pairs[1] + "_divergent_convergent_orientations.png"))
 
 		if score:
 			# Here we need to decide if we want to include the score for both -regions and -motifs and perform the analyses separately, score needs to go with number of score_bins
