@@ -70,7 +70,7 @@ if __name__ == "__main__":
     # Note: Optional arguments have a - or -- in front of them
     parser = argparse.ArgumentParser()
     parser.add_argument("regions", help="BED-formatted files, containing the regions within which to estimate motif asymmetries. Can enter multiple paths as a comma separated string, e.g. \"path1, path2\"")
-    parser.add_argument("path", help="Enter the path of the file for each of which the asymmetries are calculated. Can enter multiple paths as a comma separated string, e.g. \"path1, path2\"")
+    parser.add_argument("motifs", help="Enter the path of the file for each of which the asymmetries are calculated. Can enter multiple paths as a comma separated string, e.g. \"path1, path2\"")
     parser.add_argument("-nr", "--names_regions", help="Optional argument. A name for each of the region files for more human-readable output. Each name must correspond to a region file path")
     parser.add_argument("-nm", "--names_motifs", help="Optional argument. A name for each of the motif files for more human-readable output. Each name must correspond to a motif file path")
     parser.add_argument("-or", "--orientation_regions", help="Optional argument. Orient file(s) relative to annotated BED-formated region file(s) and perform the analysis for the un-annoated file with the new annotations. ")
