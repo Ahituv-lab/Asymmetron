@@ -116,7 +116,7 @@ def asymmetries_single(path,name,window_min,window_max,patterns,bins,plot,thresh
 
 	Counter_consecutive_realL=[];Counter_consecutive_controlL=[];DistancesL=[];
 	for pattern in patterns:
-		
+
         	probability_pattern = np.prod([probability[k] for k in list(pattern)])
 		
 		number_of_tests = len(DataL)-len(pattern)
@@ -153,6 +153,7 @@ def extract_pattern(DataL,signS,pattern,threshold,is_real):
 		for line in CoordinatesL:
 			datafile.write('\t'.join([str(x) for x in line])+'\n')
 		datafile.close()
+
 	return occs
 
 def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN):
@@ -185,7 +186,6 @@ def calc_consecutive(DataL,window_min,window_max,pattern,threshold_consecutiveN)
 
 	Occs_pattern=extract_pattern(DataL,Signs,pattern,threshold_consecutiveN,True)
 	Occs_pattern_control=extract_pattern(DataL,Signs_control,pattern,threshold_consecutiveN,False)
-        
     	return Counter(Occs_pattern),Counter(Occs_pattern_control),Distances
 
 def strand_annotate_third_BED_overlap(unnotated_path,annotated_path):
@@ -261,6 +261,7 @@ def proximal(path1,path2,name1,name2,window_min,window_max,upstream=False,downst
 
 			p_p_bin,m_m_bin,p_m_bin,m_p_bin,same_strand_bin,opposite_strand_bin,convergent_bin,divergent_bin=orientation(Strand1Bin,Strand2Bin)
 			p_pL_bin.append(p_p_bin);m_mL_bin.append(m_m_bin);p_mL_bin.append(p_m_bin);m_pL_bin.append(m_p_bin);same_strandL_bin.append(same_strand_bin);opposite_strandL_bin.append(opposite_strand_bin);convergentL_bin.append(convergent_bin);divergentL_bin.append(divergent_bin)
+			print p_p_bin,m_m_bin,p_m_bin,m_p_bin,bin_i
 
 		# Same Opposite orientation
 		visualizations.barplot_pair_lists_gen(Bins,same_strandL_bin,opposite_strandL_bin,name1,name2,"same_opposite_bins_"+name1+"_"+name2+".png")
