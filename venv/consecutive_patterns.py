@@ -27,7 +27,12 @@ def fun1(args):
         name = names[index]
         output = name
 	print patterns
-        Counter_consecutive_real,Counter_consecutive_control=functions.asymmetries_single(path,name,min_distance,max_distance,patterns,bins,plots,threshold,output)
+        Counter_consecutive_realL,Counter_consecutive_controlL,DistancesL=functions.asymmetries_single(path,name,min_distance,max_distance,patterns,bins,plots,threshold)
+        if plots==True:
+            for i in range(len(Counter_consecutive_realL)):
+                 consecutive, times_found = zip(*Counter_consecutive_realL[i].items())
+                 consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
+                 visualizations.barplot_single_gen(consecutive_sorted,times_found_sorted,output)
         # Orientation link is missing / fun4 to be used here
 
     return
