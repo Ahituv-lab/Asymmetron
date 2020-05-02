@@ -34,7 +34,17 @@ def fun2(args):
         expected_asym=args.expected_asym
         if expected_asym==None:
             expected_asym=0.5
- 
+
+        expected_asym_conv_div = args.expected_asym_conv_div
+        if expected_asym_conv_div==None:
+            expected_asym_conv_div=0.5
+
+        plots=args.plots 
+
+        score=args.score
+
+        bins=args.bins
+
         number_of_files = len(motifsL) * len(regionsL)
 	# All possible pairs between region files and motif files
 	motif_region_pairs, names_pairs = functions.pairs_generator(motifsL, regionsL, motifsL_names, regionsL_names)
@@ -63,7 +73,7 @@ def fun2(args):
 		p_pL.append(p_p);
 		m_mL.append(m_m);  # Same strand orientation
 		p_mL.append(p_m);
-		m_pL.append(m_pL);  # Opposite strand orientation
+		m_pL.append(m_p);  # Opposite strand orientation
 
 		same_strandL.append(same_strand);
 		opposite_strandL.append(opposite_strand);
@@ -71,25 +81,23 @@ def fun2(args):
 		divergentL.append(divergent);
 
 		# same vs opposite analysis
-		Ratio_same_opposite, p_val_same_opposite, p_val_same_opposite_Bonferoni = functions.statistical_evaluation(
-			same_strand, opposite_strand, number_of_files, expected_asym=expected_asym)
+		Ratio_same_opposite, p_val_same_opposite, p_val_same_opposite_Bonferoni = functions.statistical_evaluation(same_strand, opposite_strand, number_of_files, expected_asym=expected_asym)
 		Ratio_same_oppositeL.append(Ratio_same_opposite);
 		p_val_same_oppositeL.append(p_val_same_opposite);
 		p_val_same_opposite_BonferoniL.append(p_val_same_opposite_Bonferoni)
 
 		# convergent vs divergent analysis
-		Ratio_conv_diverg, p_val_conv_diverg, p_val_conv_diver_Bonferoni = functions.statistical_evaluation(p_m, m_p,
-		                                                                                                    number_of_files,
-		                                                                                                    expected_asym=expected_asym_conv_div)
+		Ratio_conv_diverg, p_val_conv_diverg, p_val_conv_diver_Bonferoni = functions.statistical_evaluation(p_m, m_p,number_of_files,expected_asym=expected_asym_conv_div)
 		p_val_conv_divergL.append(p_val_conv_diverg);
 		p_val_conv_divergL.append(p_val_conv_diver_Bonferoni);
 		Ratio_conv_divergL.append(Ratio_conv_diverg);
+                p_val_conv_diver_BonferoniL.append(p_val_conv_diver_BonferoniL);
 
 		if plots:
 			# generates histogram same opposite, we need to decide the output1
                         visualizations.barplot_gen(same_strand, opposite_strand, wf.output_path("contained_asymmetries", "same_opposite_orientation.png", names_pairs[0],names_pairs[1]))
 			# generates historam covergent divergent, we need to decide the output2
-                        visualizations.barplot_gen(p_m, m_p, os.path.join(directory, names_pairs[0] + "_" + names_pairs[1] + "_divergent_convergent_orientations.png"))
+                        visualizations.barplot_gen(p_m, m_p, wf.output_path("contained_asymmetries", "convergent_divergent_orientation.png", names_pairs[0],names_pairs[1]))
 
 		if score:
 			# Here we need to decide if we want to include the score for both -regions and -motifs and perform the analyses separately, score needs to go with number of score_bins
@@ -105,8 +113,7 @@ def fun2(args):
 		#    pass
 
 	# generates table <- this should be done for all pairs.
-	functions.table_gen(names_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, RatiosL, p_val_conv_divergL,
-	                    p_val_conv_diver_BonferoniL, Ratio_conv_divergL)
+	functions.table_gen(names_pairs, p_pL, m_mL, p_mL, m_pL, p_val_same_oppositeL, p_val_same_opposite_BonferoniL, Ratio_same_oppositeL, p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
 
 	return
 
