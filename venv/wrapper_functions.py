@@ -9,7 +9,7 @@ import time
 # Expected bias needs to be between 0 and 1
 # If user uses Scores it should be float or integer.
 # Set patterns to default if not included in user-input
-# Small file with inputs
+# Small file with inputs. Trunctuate path if too long
 
 class Error(Exception):
     """Base class for exceptions in this module."""
