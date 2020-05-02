@@ -9,6 +9,8 @@ def fun2(args):
     # this is used for Bonferoni correction
     number_of_files= len(motifs)*len(regions)
 
+    # Missing link to fun4 if provided
+
     # Folder to save all outputs
     directory = "outputs_contained_asymmetries"
     if not os.path.exists(directory):
@@ -35,7 +37,7 @@ def fun2(args):
         Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
         Ratio_same_oppositeL.append(Ratio_same_opposite);p_val_same_oppositeL.append(p_val_same_opposite);p_val_same_opposite_BonferoniL.append(p_val_same_opposite_Bonferoni)
 
-        # convergent vs divergent analysis
+        #convergent vs divergent analysis
         Ratio_conv_diverg,p_val_conv_diverg,p_val_conv_diver_Bonferoni=functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
         p_val_conv_divergL.append(p_val_conv_diverg);p_val_conv_divergL.append(p_val_conv_diver_Bonferoni);Ratio_conv_divergL.append(Ratio_conv_diverg);
 
@@ -46,10 +48,15 @@ def fun2(args):
             functions.barplot_gen(p_m,m_p,os.path.join(directory, names_pairs[0]+"_"+names_pairs[1]+ "_divergent_convergent_orientations.png"))
 
         if score:
-            pass
+            # Here we need to decide if we want to include the score for both -regions and -motifs and perform the analyses separately, score needs to go with number of score_bins
+	    if score_regions!=False:
+                separate_on_score(regions,motifs,number_of_bins,output_file1)
+            if score_motifs!=False:
+                separate_on_score(motifs,regions,number_of_bins,output_file2)
 
-        if bins:
-            pass
+        # I think we don't need bins here. Only type of bins would have been spliting the regions in sub-parts and doing the analysis in those but I don't think it adds much.
+        #if bins:
+        #    pass
 
     # generates table <- this should be done for all pairs.
     functions.table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
