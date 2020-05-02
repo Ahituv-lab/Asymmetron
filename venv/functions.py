@@ -304,7 +304,6 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
 			opposite_strandL_bin.append(opposite_strand_bin);
 			convergentL_bin.append(convergent_bin);
 			divergentL_bin.append(divergent_bin)
-			print
 			p_p_bin, m_m_bin, p_m_bin, m_p_bin, bin_i
 
 		# Same Opposite orientation
@@ -418,21 +417,15 @@ def statistical_evaluation(occs_strand1, occs_strand2, number_of_files_scanned, 
 	return Ratio_strand1_2, p_val_strand1_2, p_val_strand1_2_Bonferoni
 
 
-def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, RatiosL, p_valsL_divergent_convergent,
-              p_valsL_divergent_convergent_BonferoniL, RatiosL_divergent_convergent):
+def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, RatiosL, p_valsL_divergent_convergent,p_valsL_divergent_convergent_BonferoniL, RatiosL_divergent_convergent):
 	"""
 	accepts list of  pairs of files / Names (factors) as input, list of p-values, Ratios and returns table
 	This is more useful for multiple lists of files.
 	"""
 	datafile = open("statistics_asymmetry.txt", "w")
-	datafile.write(
-		"Feature 1" + '\t' + "Feature 2" + "\t" + "plus-plus" + '\t' + "minus-minus" + '\t' + "plus-minus" + '\t' + "minus-plus" + '\t' + "p-value same opposite" + '\t' + "p-value same opposite Bonferoni corrected" + '\t' + "Ratio same opposite" + '\t' + "p-value divergent convergent" + '\t' + "p-value divergent convergent Bonferoni corrected" + '\t' + "Ratio divergent convergent" + '\n')
-	for i in range(len(NamesL)):
-		datafile.write(
-			NamesL_pairs[i][0] + '\t' + NamesL_pairs[i][1] + '\t' + str(p_pL[i]) + '\t' + str(m_mL[i]) + '\t' + str(
-				p_mL[i]) + '\t' + str(m_pL[i]) + '\t' + str(p_valsL[i]) + '\t' + str(p_vals_BonferoniL[i]) + '\t' + str(
-				RatiosL[i]) + '\t' + str(p_valsL_divergent_convergent[i]) + '\t' + str(
-				p_valsL_divergent_convergent_BonferoniL[i]) + '\t' + str(RatiosL_divergent_converg[i]) + '\n')
+	datafile.write("Feature 1" + '\t' + "Feature 2" + "\t" + "plus-plus" + '\t' + "minus-minus" + '\t' + "plus-minus" + '\t' + "minus-plus" + '\t' + "p-value same opposite" + '\t' + "p-value same opposite Bonferoni corrected" + '\t' + "Ratio same opposite" + '\t' + "p-value divergent convergent" + '\t' + "p-value divergent convergent Bonferoni corrected" + '\t' + "Ratio divergent convergent" + '\n')
+	for i in range(len(NamesL_pairs)):
+		datafile.write(NamesL_pairs[i][0] + '\t' + NamesL_pairs[i][1] + '\t' + str(p_pL[i]) + '\t' + str(m_mL[i]) + '\t' + str(p_mL[i]) + '\t' + str(m_pL[i]) + '\t' + str(p_valsL[i]) + '\t' + str(p_vals_BonferoniL[i]) + '\t' + str(RatiosL[i]) + '\t' + str(p_valsL_divergent_convergent[i]) + '\t' + str(p_valsL_divergent_convergent_BonferoniL[i]) + '\t' + str(RatiosL_divergent_convergent[i]) + '\n')
 	datafile.close()
 	return
 
