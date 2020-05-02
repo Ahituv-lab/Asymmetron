@@ -11,12 +11,23 @@ def fun1(args):
     max_distance = args.max_distance
     patterns = args.patterns
     bins = args.bins
-    if patterns == False:
+    plots = args.plots
+    threshold = args.threshold
+
+    if patterns == None:
         patterns = ["++","--","+-","-+"]
+
+    if bins == None:
+        bins = 1
+
+    if threshold == None:
+        threshold = 0.05
 	
-    for path in paths:
-        Counter_consecutive_real,Counter_consecutive_control=asymmetries_single(path,min_distance,max_distance,patterns,bins=0,plot=plots,threshold)
- 
+    for index,path in enumerate(paths):
+        name = names[index]
+        output = name
+	print patterns
+        Counter_consecutive_real,Counter_consecutive_control=functions.asymmetries_single(path,name,min_distance,max_distance,patterns,bins,plots,threshold,output)
         # Orientation link is missing / fun4 to be used here
 
     return
