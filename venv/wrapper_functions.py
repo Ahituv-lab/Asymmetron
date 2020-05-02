@@ -1,11 +1,11 @@
 import os
 import time
 
-# Catch number of bins >0, not string, not list etc
-# Catch distance limits, have to be integers
-# Catch plots needs to be False / True only
+# Catch number of bins negative or 0
+# Catch distance limits have to be >=0
 # Patterns needs to only contain +/-
-# Threshold p-value, how do people insert very small p-values? How do we explain them how to do it?
+# Recognize if one of the input files is using a header for column names
+# Threshold p-value (with Bonferoni correction) how do people insert very small p-values? How do we explain them how to do it?
 # Expected bias needs to be between 0 and 1
 # If user uses Scores it should be float or integer.
 
@@ -34,9 +34,9 @@ def output_path(fun_name, *args):
 
     time_stamp = time.strftime("%Y%m%d_%H%M%S", time.localtime())  # To add timestamp to output file names
     if not os.path.exists("Asymmetron_output/"):
-        os.makedirs("Asymmetron_output/")
+        os.makedirs("Asymmetron_output/" + fun_name)
 
-    return "Asymmetron_output/"+time_stamp+"_"+fun_name+"_"+"_".join(args)
+    return "Asymmetron_output/" + time_stamp+ "_" + fun_name+ "_" + "_".join(args)
 
 
 
