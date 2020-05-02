@@ -1,12 +1,13 @@
 import os
 import time
+import argparse
 
-# Catch number of bins negative or 0
-# Catch distance limits have to be >=0
-# Patterns needs to only contain +/-
+# Catch number of bins negative or 0 --> check_positive_int
+# Catch distance limits have to be >=0 --> check_positive_int
+# Patterns needs to only contain +/- --> check_valid_pattern
 # Recognize if one of the input files is using a header for column names
 # Threshold p-value (with Bonferoni correction) how do people insert very small p-values? How do we explain them how to do it?
-# Expected bias needs to be between 0 and 1
+# Expected bias needs to be between 0 and 1 --> check_valid_probability QUESTION does 0 or 1 make sense?
 # If user uses Scores it should be float or integer.
 # Set patterns to default if not included in user-input
 # Small file with inputs. Trunctuate path if too long
@@ -96,3 +97,53 @@ def sanitize(paths, orientation, names):
             err = "Please enter the same number of arguments for paths and names"
             raise InputError(err)
     return paths, orientation_paths, names
+
+
+def check_positive_int(value):
+    """
+    Checks if the value is a non-zero integer. Raises an argparser error otherwise. Returns the integer
+
+    """
+    try:
+        my_value = int(value)
+        if my_value < 0:
+            raise
+    except:
+        msg = "{} is an invalid value. Please enter a positive integer.".format(value)
+        raise argparse.ArgumentTypeError(msg)
+    return my_value
+
+
+def check_valid_pattern(value):
+    """
+    Checks if the value is a valid pattern consisting of + and -. Raises an argparser error otherwise.
+    Returns the pattern.
+    """
+    for char in value:
+        if char not in ("+", "-"):
+            msg = "{} is an invalid pattern. Please enter a pattern consisting of + or - only.".format(value)
+            raise argparse.ArgumentTypeError(msg)
+    return value
+
+
+def check_valid_probability(value):
+    """
+    Checks if the value is a valid probability between 0 and 1. Raises an argparser error otherwise.
+    Returns the pattern.
+    """
+    try:
+        my_value = float(value)
+        if my_value < 0 or my_value > 1:
+            raise
+    except:
+        msg = "{} is an invalid value. Please enter a probability between 0 and 1.".format(value)
+        raise argparse.ArgumentTypeError(msg)
+
+
+
+
+
+
+
+
+
