@@ -137,9 +137,6 @@ if __name__ == "__main__":
 	parser.add_argument("-s", "--score",
 	                    help="Optional flag. If provided, assumes the last column of the region files is a scoring metric and uses it to subdivide the analysis into quartiles",
 	                    action="store_true")
-	parser.add_argument("-t", "--threshold",
-	                    help="Optional argument. Threshold of p-value of consecutive patterns to save in new BED file.",
-	                    type=int)
 	parser.add_argument("-b", "--bins",
 	                    help="Optional argument. Number of bins to subdivide the results into. Only runs when --score is provided. Default value is 10.",
 	                    type=wf.check_positive_int)
