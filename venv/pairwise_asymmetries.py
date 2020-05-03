@@ -7,6 +7,9 @@ import visualizations
 def fun3(args):
 
     #paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
+
+
+    # arguments 
     motifsAL=args.motifsA.split(",")
     motifsBL=args.motifsB.split(",")
 
@@ -40,19 +43,21 @@ def fun3(args):
 
     # I think orientation analysis if user points to file(s) should go here before we start the asymmetries estimations
 
-    output_path = wf.output_path("pairwise_asymmetries")
 
-    number_of_files= len(motifsA)*len(motifsB)
+    number_of_files= len(motifsAL)*len(motifsBL)
 
     # Generates all pairs between motifsA and motifsB
-    motif_pairs,names_pairs=functions.pairs_generator(pathL1,pathL2,NamesL1,NamesL2)
+    motif_pairs,names_pairs=functions.pairs_generator(motifsAL,motifsBL,motifsAL_names,motifsBL_names)
 
     p_pL=[];m_mL=[];m_pL=[];p_mL=[];p_valsL=[];p_vals_BonferoniL=[];RatiosL=[];p_val_conv_divergL=[];p_val_conv_diver_BonferoniL=[];Ratio_conv_divergL=[];
 
     # Loops through all combinations
     for i in range(len(motif_pairs)):
+            motifA = motif_pairs[i][0];
+            motifB = motif_pairs[i][1];
+
             # for a pair of files finds the orientations
-            p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.proximal(path1,path2,name1,name2,min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,in_parts=bins)
+            p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.proximal(motifA,motifB,names_pairs[i][0],names_pairs[i][1],min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,bins=bins)
             #same vs opposite analysis
             Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
             p_pL.append(p_p);m_mL.append(m_m); # same orientation data
@@ -64,11 +69,12 @@ def fun3(args):
             Ratio_conv_diverg,p_val_conv_diverg,p_val_conv_diver_Bonferoni=functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
             p_val_conv_divergL.append(p_val_conv_diverg);p_val_conv_diver_BonferoniL.append(p_val_conv_diver_BonferoniL);
             Ratio_conv_divergL.append(Ratio_conv_diverg);
+
 	    if plots:
-                 # generates histogram same opposite, we need to decide the output1
-                 functions.barplot_gen(same_strand,opposite_strand,os.path.join(directory, names_pairs[0]+"_"+names_pairs[1]+ "_same_opposite_orientations.png"))
-                 # generates historam covergent divergent, we need to decide the output2
-                 functions.barplot_gen(p_m,m_p,os.path.join(directory, names_pairs[0]+"_"+names_pairs[1]+ "_divergent_convergent_orientations.png"))
+                 # generates histogram same opposite
+                 visualizations.barplot_gen(same_strand, opposite_strand, wf.output_path("pairwise_asymmetries", "same_opposite_orientation.png", names_pairs[i][0],names_pairs[i][1]))
+                 # generates historam covergent divergent
+                 visualizations.barplot_gen(p_m, m_p, wf.output_path("pairwise_asymmetries", "convergent_divergent_orientation.png", names_pairs[i][0],names_pairs[i][1]))
 
             # If bins is true I already put in functions.proximal that it generates two barplots. Also consider a table to be generated. Also, we need to put the output of that in the same directory as outputs_pairwise_asymmetries
             if bins:
