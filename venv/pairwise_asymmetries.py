@@ -75,9 +75,9 @@ def fun3(args):
 
 	    if plots:
                  # generates histogram same opposite
-                 visualizations.barplot_gen(same_strand, opposite_strand, wf.output_path("pairwise_asymmetries", "same_opposite_orientation.png", names_pairs[i][0],names_pairs[i][1]))
+                 visualizations.barplot_gen(same_strand, opposite_strand, "Same", "Opposite",wf.output_path("pairwise_asymmetries", "same_opposite_orientation.png", names_pairs[i][0],names_pairs[i][1]))
                  # generates historam covergent divergent
-                 visualizations.barplot_gen(p_m, m_p, wf.output_path("pairwise_asymmetries", "convergent_divergent_orientation.png", names_pairs[i][0],names_pairs[i][1]))
+                 visualizations.barplot_gen(p_m, m_p, "Convergent","Divergent",wf.output_path("pairwise_asymmetries", "convergent_divergent_orientation.png", names_pairs[i][0],names_pairs[i][1]))
 
             # If bins is true I already put in functions.proximal that it generates two barplots. Also consider a table to be generated. Also, we need to put the output of that in the same directory as outputs_pairwise_asymmetries
             if bins:
