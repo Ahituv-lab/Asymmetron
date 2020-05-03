@@ -8,7 +8,6 @@ def fun3(args):
 
     #paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
 
-
     # arguments 
     motifsAL=args.motifsA.split(",")
     motifsBL=args.motifsB.split(",")
@@ -26,7 +25,11 @@ def fun3(args):
         motifsBL_names = motifsBL_names.split(",") 
 
     min_distance = args.min_distance
+    if min_distance == None:
+       min_distance = 0 
     max_distance = args.max_distance
+    if max_distance == None:
+        max_distance = 100
 
     expected_asym = args.expected_asym
     if expected_asym == None:
@@ -39,17 +42,17 @@ def fun3(args):
     upstream_only = args.upstream_only
     downstream_only = args.downstream_only
 
+    plots = args.plots
     bins = args.bins
 
     # I think orientation analysis if user points to file(s) should go here before we start the asymmetries estimations
-
 
     number_of_files= len(motifsAL)*len(motifsBL)
 
     # Generates all pairs between motifsA and motifsB
     motif_pairs,names_pairs=functions.pairs_generator(motifsAL,motifsBL,motifsAL_names,motifsBL_names)
 
-    p_pL=[];m_mL=[];m_pL=[];p_mL=[];p_valsL=[];p_vals_BonferoniL=[];RatiosL=[];p_val_conv_divergL=[];p_val_conv_diver_BonferoniL=[];Ratio_conv_divergL=[];
+    p_pL=[];m_mL=[];m_pL=[];p_mL=[];p_val_same_oppositeL=[];p_val_same_opposite_BonferoniL=[];RatiosL=[];p_val_conv_divergL=[];p_val_conv_diver_BonferoniL=[];Ratio_conv_divergL=[];
 
     # Loops through all combinations
     for i in range(len(motif_pairs)):
@@ -62,7 +65,7 @@ def fun3(args):
             Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
             p_pL.append(p_p);m_mL.append(m_m); # same orientation data
             p_mL.append(p_m);m_pL.append(m_p); # opposite orientation data
-            p_valsL.append(p_val_same_opposite);p_val_same_opposite_BonferoniL.append(p_val_same_opposite_Bonferoni); # p-values for same vs opposite
+            p_val_same_oppositeL.append(p_val_same_opposite);p_val_same_opposite_BonferoniL.append(p_val_same_opposite_Bonferoni); # p-values for same vs opposite
             RatiosL.append(Ratio_same_opposite); # Ratio of asymmetry for same / opposite analysis
 
             # convergent vs divergent analysis
@@ -79,10 +82,14 @@ def fun3(args):
             # If bins is true I already put in functions.proximal that it generates two barplots. Also consider a table to be generated. Also, we need to put the output of that in the same directory as outputs_pairwise_asymmetries
             if bins:
                 # Here we need to decide what is the outputs we want to provide since they can be too many and complicated or focus on the plots and a small table
+                # Same Opposite orientation
+                #visualizations.barplot_pair_lists_gen(Bins, same_strandL_bin, opposite_strandL_bin, name1, name2,"same_opposite_bins_" + name1 + "_" + name2 + ".png")
+                # Convergent Divergent orientation
+                #visualizations.barplot_pair_lists_gen(Bins, convergentL_bin, divergentL_bin, name1, name2,"convergent_divergent_bins_" + name1 + "_" + name2 + ".png")
                 pass
 
     # generates table <- this should be done for all pairs together.
-    functions.table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_valsL,p_vals_BonferoniL,RatiosL,p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
+    functions.table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_val_same_oppositeL,p_val_same_opposite_BonferoniL,RatiosL,p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL)
 
     return
 

@@ -244,7 +244,7 @@ def overlap(path1, path2):
 	return p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent
 
 
-def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False, downstream=False, bins=False):
+def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False, downstream=False, bins=None):
 	"""
        This is the main function of pairwise_asymmetries.py
        Uses pybedtools closest function to find proximal coordinates
@@ -267,11 +267,10 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
 	Strand1 = list(closest_df.iloc[:, 4])
 	Strand2 = list(closest_df.iloc[:, 9])
 	Distance = [abs(i) for i in list(closest_df.iloc[:, -1])]
-	Distance, Strand1, Strand2 = zip(
-		*((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance, Strand1, Strand2) if
-		  dist < window_max and dist >= window_min))
+	Distance, Strand1, Strand2 = zip(*((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance, Strand1, Strand2) if dist < window_max and dist >= window_min))
+        p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent= orientation(Strand1,Strand2)
 
-	if bins != False:
+	if bins != None:
 		p_pL_bin = [];
 		m_mL_bin = [];
 		p_mL_bin = [];
@@ -303,11 +302,9 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
 			p_p_bin, m_m_bin, p_m_bin, m_p_bin, bin_i
 
 		# Same Opposite orientation
-		visualizations.barplot_pair_lists_gen(Bins, same_strandL_bin, opposite_strandL_bin, name1, name2,
-		                                      "same_opposite_bins_" + name1 + "_" + name2 + ".png")
+		#visualizations.barplot_pair_lists_gen(Bins, same_strandL_bin, opposite_strandL_bin, name1, name2,"same_opposite_bins_" + name1 + "_" + name2 + ".png")
 		# Convergent Divergent orientation
-		visualizations.barplot_pair_lists_gen(Bins, convergentL_bin, divergentL_bin, name1, name2,
-		                                      "convergent_divergent_bins_" + name1 + "_" + name2 + ".png")
+		#visualizations.barplot_pair_lists_gen(Bins, convergentL_bin, divergentL_bin, name1, name2,"convergent_divergent_bins_" + name1 + "_" + name2 + ".png")
 
 	return p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent
 
