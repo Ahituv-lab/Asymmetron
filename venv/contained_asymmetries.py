@@ -8,13 +8,7 @@ import visualizations
 def fun2(args):
 	#paths, orientation_paths, names = wf.sanitize(args.motifs, args.orientation, args.names)
 	# this is used for Bonferoni correction
-
 	# Missing link to fun4 if provided
-
-	# Folder to save all outputs
-	directory = "outputs_contained_asymmetries"
-	if not os.path.exists(directory):
-		os.makedirs(directory)
 
         motifsL=args.motifs.split(",")
         regionsL=args.regions.split(",")
@@ -95,9 +89,9 @@ def fun2(args):
 
 		if plots:
 			# generates histogram same opposite, we need to decide the output1
-                        visualizations.barplot_gen(same_strand, opposite_strand, wf.output_path("contained_asymmetries", "same_opposite_orientation.png", names_pairs[0],names_pairs[1]))
+                        visualizations.barplot_gen(same_strand, opposite_strand, wf.output_path("contained_asymmetries", "same_opposite_orientation.png", names_pairs[i][0],names_pairs[i][1]))
 			# generates historam covergent divergent, we need to decide the output2
-                        visualizations.barplot_gen(p_m, m_p, wf.output_path("contained_asymmetries", "convergent_divergent_orientation.png", names_pairs[0],names_pairs[1]))
+                        visualizations.barplot_gen(p_m, m_p, wf.output_path("contained_asymmetries", "convergent_divergent_orientation.png", names_pairs[i][0],names_pairs[i][1]))
 
 		if score:
 			# Here we need to decide if we want to include the score for both -regions and -motifs and perform the analyses separately, score needs to go with number of score_bins
@@ -150,6 +144,5 @@ if __name__ == "__main__":
 	                    help="Optional argument. Number of bins to subdivide the results into. Only runs when --score is provided. Default value is 10.",
 	                    type=wf.check_positive_int)
 	args = parser.parse_args()
-	print(args.bins)
 
 	fun2(args)
