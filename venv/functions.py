@@ -431,14 +431,48 @@ def find_sub_str(my_str, sub_str):
 		yield start
 		start += len(sub_str)  # use start += 1 to find overlapping matches
 
+def extract_pattern_test(DataL, pattern, min_distance, max_distance, threshold):
+    """
+    Finds all occurences of the pattern in BED file that meet the distance requirements.
+    :param DataL: A list, where each element is a list, representing a line of a sorted BED-file
+    :param pattern: The pattern to search
+    :param min_distance: Minimum distance between two motifs. If two occurences of the motif do not have this minimum
+                         distance, they break the pattern
+    :param max_distance: Maximum distance between two motifs. If two occurences of the motif do not have this minimum
+                         distance, they break the pattern
+    :param threshold:
+    :return: A list of all occurences of the pattern meeting the minimum distance requirements
+    """
+
+    # Create a string with all signs (5th column in the sorted BED file)
+    signs = ""
+    for line in DataL:
+        signs += line[4]
+
+    # Find all occurences of the pattern in the string of signs without accounting for distances
+    occs = list(find_sub_str(signs, pattern))
+
+    # Remove occurences that do not meet the distance criterion
+    for i in range(len(occs)):
+        index = occs[i]
+        for j in range(len(pattern)-1):
+            distance = max(0, int(DataL[index + j + 1][1]) - int(DataL[index+j][2]))
+            if distance < min_distance or distance > max_distance:
+                del occs[i]
+                break
+
+    # Need to add another check to calculate if consecutive occurences meet the distance requirements
+    # and calculate number of consecutive occurences
+    return occs
 
 # Ensures that code below is not run when this file is imported into another file
 if __name__ == "__main__":
-	print(list(find_sub_str("ABCD", "AB")))
-	print(list(find_sub_str("++-+-+", "-+")))
-	print(list(find_sub_str("++++", "+")))
-	print(list(find_sub_str("+-+-_+-+-", "+-")))
-	pass
+	with open("test_extract_pattern.bed", "r") as f:
+		DataL = []
+		for line in f.readlines():
+			DataL.append(line.strip().split("\t"))
+
+	print("The pattern occurs on the following lines: ", extract_pattern_test(DataL, "+-", 0, 3, 2))
 # test area
 # works
 # print overlap(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"))
