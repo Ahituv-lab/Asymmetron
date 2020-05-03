@@ -37,7 +37,9 @@ def output_path(fun_name, extension, *args):
     """
 
     time_stamp = time.strftime("%Y%m%d_%H%M%S", time.localtime())  # To add timestamp to output file names
-    if not os.path.exists("Asymmetron_output/"):
+    if not os.path.exists("Asymmetron_output"):
+        os.makedirs("Asymmetron_output/")
+    if not os.path.exists("Asymmetron_output/"+fun_name):
         os.makedirs("Asymmetron_output/" + fun_name)
 
     return "Asymmetron_output/" + fun_name + "/" + time_stamp+ "_" + fun_name + "_" + "_".join(args)+ "." + extension
