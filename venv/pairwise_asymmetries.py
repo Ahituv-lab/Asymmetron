@@ -60,7 +60,8 @@ def fun3(args):
             motifB = motif_pairs[i][1];
 
             # for a pair of files finds the orientations
-            p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=functions.proximal(motifA,motifB,names_pairs[i][0],names_pairs[i][1],min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,bins=bins)
+            total_asymmetries,per_bin_asymmetries = functions.proximal(motifA,motifB,names_pairs[i][0],names_pairs[i][1],min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,bins=bins)
+            p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=total_asymmetries
             #same vs opposite analysis
             Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
             p_pL.append(p_p);m_mL.append(m_m); # same orientation data

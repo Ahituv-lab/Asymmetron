@@ -100,7 +100,6 @@ def separate_on_score(path_score, path, number_of_bins):
 			Ratio_Same_Opposite.append(same_strand_step / float(same_strand_step + opposite_strand_step))
 		else:
 			Ratio_Same_Opposite.append(0.5)
-	visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names, output_plot)
 	return Ratio_Same_Opposite, Score_names
 
 
@@ -270,15 +269,8 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
 	Distance, Strand1, Strand2 = zip(*((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance, Strand1, Strand2) if dist < window_max and dist >= window_min))
         p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent= orientation(Strand1,Strand2)
 
+        p_pL_bin = [];m_mL_bin = [];p_mL_bin = [];m_pL_bin = [];same_strandL_bin = [];opposite_strandL_bin = [];convergentL_bin = [];divergentL_bin = [];
 	if bins != None:
-		p_pL_bin = [];
-		m_mL_bin = [];
-		p_mL_bin = [];
-		m_pL_bin = [];
-		same_strandL_bin = [];
-		opposite_strandL_bin = [];
-		convergentL_bin = [];
-		divergentL_bin = [];
 		Bins = binner(window_min, window_max, bins)
 		for index, bin_i in enumerate(Bins):
 			Strand1Bin = [];
@@ -306,7 +298,7 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
 		# Convergent Divergent orientation
 		#visualizations.barplot_pair_lists_gen(Bins, convergentL_bin, divergentL_bin, name1, name2,"convergent_divergent_bins_" + name1 + "_" + name2 + ".png")
 
-	return p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent
+	return (p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent),(p_pL, m_mL, p_mL, m_pL, same_strandL, opposite_strandL, convergentL, divergentL)
 
 
 def asym_binned(window_min, window_max, bins, DistancesL, Strand1L, Strand2L):
