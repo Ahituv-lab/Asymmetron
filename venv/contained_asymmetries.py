@@ -89,9 +89,9 @@ def fun2(args):
 
 		if plots:
 			# generates histogram same opposite, we need to decide the output1
-                        visualizations.barplot_gen(same_strand, opposite_strand, wf.output_path("contained_asymmetries", "same_opposite_orientation.png", names_pairs[i][0],names_pairs[i][1]))
+                        visualizations.barplot_gen(same_strand, opposite_strand,"Same","Opposite", wf.output_path("contained_asymmetries", "same_opposite_orientation.png", names_pairs[i][0],names_pairs[i][1]))
 			# generates historam covergent divergent, we need to decide the output2
-                        visualizations.barplot_gen(p_m, m_p, wf.output_path("contained_asymmetries", "convergent_divergent_orientation.png", names_pairs[i][0],names_pairs[i][1]))
+                        visualizations.barplot_gen(p_m, m_p,"Convergent","Divergent", wf.output_path("contained_asymmetries", "convergent_divergent_orientation.png", names_pairs[i][0],names_pairs[i][1]))
 
 		if score:
 			# Here we need to decide if we want to include the score for both -regions and -motifs and perform the analyses separately, score needs to go with number of score_bins
