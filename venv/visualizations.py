@@ -43,21 +43,21 @@ def barplot_gen(strand1,strand2,name1,name2,output):
         plt.close()
         return
 
-def barplot_pair_lists_gen(bin_sizes_rangeL,List1,List2,name1,name2,output):
+def barplot_pair_lists_gen(x_tickL,List1,List2,name1,name2,x_label,title_legend,output):
         """ 
         This should be an option for the user if he wants to generate vizualizations too.
         """
         ax = plt.subplot(111)
         plt.bar(range(1,len(List1)*3+1,3),List1,label=name1,align="center")
         plt.bar(range(2,len(List2)*3+1,3),List2,label=name2,align="center")
-        plt.xticks(range(1,len(List1)*3+1,3),[str(bin_sizes_rangeL[k][0])+"-"+str(bin_sizes_rangeL[k][1]) for k in range(len(bin_sizes_rangeL))])
+        plt.xticks(range(1,len(List1)*3+1,3),x_tickL)
         plt.ylabel("Occurrences")
-        plt.xlabel("Bins")
+        plt.xlabel(x_label)
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.yaxis.set_ticks_position('left')
         ax.xaxis.set_ticks_position('bottom')
-        plt.legend(frameon=False,title="Orientation")
+        plt.legend(frameon=False,title=title_legend)
         plt.tight_layout()
         plt.savefig(output)
         plt.close()
