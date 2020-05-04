@@ -103,8 +103,8 @@ def fun1(args):
                      # Plot barplot of occs consecutive in each bin
                      #visualizations.barplot_single_gen(OccsL,OccsL,wf.output_path("consecutive_patterns", ".png", ''))
 
-            # Need to add here vizualization as heatmap for all patterns and number of consecutive
-
+                # Need to add here vizualization as heatmap for all patterns and number of consecutive
+                
 
     return
 
