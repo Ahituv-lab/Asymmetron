@@ -67,15 +67,15 @@ def fun1(args):
                          TimesFullList.append(ConsecutiveD[k])
                      else:
                          TimesFullList.append(0)
+                 
                  if plots==True:
-                     visualizations.barplot_single_gen(range(1,len(TimesFullList)+1),TimesFullList,wf.output_path("consecutive_patterns", ".png", ''))
+                     visualizations.barplot_single_gen(range(1,len(TimesFullList)+1),TimesFullList,"Consecutive occurrences",wf.output_path("consecutive_pattern_"+str(patterns[i]), "png", ''))
 
                  # I think instead of Bins here it can be gradient of distances or something like that
                  if bins>1:
                      consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
                      Bins=functions.binner(min_distance,max_distance,bins)
                      for min_bin,max_bin in Bins:
-                         print(min_bin,max_bin)
                          consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,patterns,min_bin,max_bin,threshold)
                          consecutiveLL_bin.append(consecutiveL_bin);
                          occsLL_bin.append(occsL_bin);
