@@ -55,8 +55,14 @@ def fun1(args):
     
     for index,path in enumerate(paths):
         name = names[index]
-        consecutiveL,occsL,consecutive_controlL,occs_controlL = functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
+        DataL_significant,consecutiveL,occsL,consecutive_controlL,occs_controlL = functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
         Counter_consecutive_realL=[Counter(consecutive_pattern) for consecutive_pattern in consecutiveL]
+
+        # Write significant results in an output file
+        with open(wf.output_path("consecutive_patterns",path.split("/")[-1],"bed","statistically_siginificant"), 'w') as output_file:
+            for line in DataL_significant:
+                output_file.write('\t'.join([str(x) for x in line])+'\n')
+
 
         for i in range(len(Counter_consecutive_realL)):
                  consecutive, times_found = zip(*Counter_consecutive_realL[i].items())
@@ -69,14 +75,14 @@ def fun1(args):
                          TimesFullList.append(0)
                  
                  if plots==True:
-                     visualizations.barplot_single_gen(range(1,len(TimesFullList)+1),TimesFullList,"Consecutive occurrences",wf.output_path("consecutive_pattern_"+str(patterns[i]), "png", ''))
+                     visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Consecutive occurrences",wf.output_path("consecutive_pattern_"+str(patterns[i]), "png", ''))
 
                  # I think instead of Bins here it can be gradient of distances or something like that
                  if bins>1:
                      consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
                      Bins=functions.binner(min_distance,max_distance,bins)
                      for min_bin,max_bin in Bins:
-                         consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,patterns,min_bin,max_bin,threshold)
+                         DataL_significant_bin,consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,patterns,min_bin,max_bin,threshold)
                          consecutiveLL_bin.append(consecutiveL_bin);
                          occsLL_bin.append(occsL_bin);
                          consecutive_controlLL_bin.append(consecutive_controlL_bin);
