@@ -110,107 +110,6 @@ def separate_on_score(path_score, path, number_of_bins):
     return Ratio_Same_Opposite, Score_names
 
 
-def asymmetries_single(path, name, window_min, window_max, patterns, bins, plot, threshold):
-    """
-    This function calculates the strand asymmetry biases in a single file.
-    Input file (If multiple files are provided the analysis is done independently in each")
-    Minimum and maximum distances between consecutive instances.
-    Number of bins to divide the signal in (optional). Default, no binning.
-    """
-    DataL = BedTool(path).sort()
-    Data_df = DataL.to_dataframe()
-    Strand = list(Data_df.iloc[:, -1])
-    total_plus = Strand.count("+")
-    total_minus = Strand.count("-")
-    probability = {}
-    probability["+"] = total_plus / float(total_plus + total_minus)
-    probability["-"] = 1 - probability["+"]
-
-    Counter_consecutive_realL = [];
-    Counter_consecutive_controlL = [];
-    DistancesL = [];
-    for pattern in patterns:
-        probability_pattern = np.prod([probability[k] for k in list(pattern)])
-
-        number_of_tests = len(DataL) - len(pattern)
-
-        # Bonferoni correction
-        consecutive_threshold = next(
-            x for x, val in enumerate(range(len(DataL))) if (probability_pattern ** x) * number_of_tests > threshold)
-        Counter_consecutive_real, Counter_consecutive_control, Distances = calc_consecutive(list(DataL), window_min,
-                                                                                            window_max, pattern,
-                                                                                            consecutive_threshold)
-        Counter_consecutive_realL.append(Counter_consecutive_real);
-        Counter_consecutive_controlL.append(Counter_consecutive_control);
-        DistancesL.append(Distances)
-
-    return Counter_consecutive_realL, Counter_consecutive_controlL, DistancesL
-
-
-def extract_pattern(DataL, signS, pattern, threshold, is_real):
-    """
-    Takes as input the file data, a string of all consecutive signs or "_" if distance between consecutive not within constraints.
-    Takes as input the p-value threshold after which significat consecutive biases are observed.
-    Returns the file with the biased coordinates for that pattern.
-    Returns consecutive occurrences list.
-    """
-    occs = [];
-    CoordinatesL = [];
-    counts = 0;
-    Coordinates = [];
-    for i in range(0, len(signS) - len(pattern)):
-        if signS[i:i + len(pattern)] == pattern:
-            Coordinates.extend(DataL[i:i + len(pattern)])
-            counts += 1
-        else:
-            if counts > 0:
-                occs += [counts]
-                if counts >= threshold:
-                    CoordinatesL.append(Coordinates)
-                counts = 0;
-                Coordinates = [];
-    if is_real:
-        datafile = open("Consecutives_threshold_coordinates", "w")  # We need to somehow incorporate the naming here
-        for line in CoordinatesL:
-            datafile.write('\t'.join([str(x) for x in line]) + '\n')
-        datafile.close()
-
-    return occs
-
-
-def calc_consecutive(DataL, window_min, window_max, pattern, threshold_consecutiveN):
-    """
-    This function takes as input the list of lists of the fle data, the range of distances to search, the p-value threshold and aa list of strand sign patterns.
-    It returns the number of consecutive occurrences in the plus and minus orientation.
-    We should also include alternating occurrences
-    """
-    from random import shuffle  # pottentially do Monte carlo instead
-    from collections import Counter
-    datafile = open("table", "w")
-    Signs = '';
-    Distances = [];
-    for i in range(len(DataL) - 1):
-        chrom_up, start_up, end_up, name1, strand_up = DataL[i][0:5]
-        chrom_down, start_down, end_down, name2, strand_down = DataL[i + 1][0:5]
-        distance = abs(int(start_down) - int(end_up))
-        if distance >= window_min and distance < window_max:
-            Distances.append(distance)
-            Signs += strand_up
-        else:
-            Signs += "_"
-            Distances.append("_")
-    datafile.close()
-
-    # Random control
-    Signs_control = list(Signs)
-    shuffle(Signs_control)
-    Signs_control = ''.join(Signs_control)
-
-    Occs_pattern = extract_pattern(DataL, Signs, pattern, threshold_consecutiveN, True)
-    Occs_pattern_control = extract_pattern(DataL, Signs_control, pattern, threshold_consecutiveN, False)
-    return Counter(Occs_pattern), Counter(Occs_pattern_control), Distances
-
-
 def strand_annotate_third_BED_overlap(unnotated_path, annotated_path):
     """
     For a third file that doesn't have its own annotation e.g. mutation files since mutations are on both strands
@@ -436,6 +335,17 @@ def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, 
     datafile.close()
     return
 
+def consecutive_measure(occsL,pattern):
+   consecutive=[];
+   counter=0
+   for i in range(len(occsL)-1):
+       if occsL[i+1]-occsL[i]==len(pattern):
+           counter+=1
+       else:
+           if counter!=0:
+               consecutive.append(counter)
+           counter=0;
+   return consecutive
 
 def find_sub_str(my_str, sub_str):
     start = 0
@@ -446,7 +356,7 @@ def find_sub_str(my_str, sub_str):
         start += len(sub_str)  # use start += 1 to find overlapping matches
 
 
-def extract_pattern_test(DataL, pattern, min_distance, max_distance, threshold):
+def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     """
     Finds all occurences of the pattern in BED file that meet the distance requirements.
     :param DataL: A list, where each element is a list, representing a line of a sorted BED-file
@@ -477,7 +387,7 @@ def extract_pattern_test(DataL, pattern, min_distance, max_distance, threshold):
                 occs[i] = None
                 break
     occs = [x for x in occs if x is not None]
-
+    consecutive=consecutive_measure(occs,pattern)
 
     # Filter for number of consecutive occurences that meet the threshold criterion and are within the distance window
     DataL_significant = []
@@ -500,9 +410,19 @@ def extract_pattern_test(DataL, pattern, min_distance, max_distance, threshold):
         DataL_temp.extend(DataL[occs[-1]:occs[-1]+len(pattern)])
         DataL_significant.extend(DataL_temp)
 
-    return occs, DataL_significant
+    return consecutive,occs,DataL_significant
 
-
+def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
+    from random import shuffle
+    DataL = read_BED(path,False)
+    DataL_random = DataL
+    shuffle(DataL_random)
+    consecutiveL=[];occsL=[];DataL_significantL=[];consecutive_controlL=[];occs_controlL=[];DataL_significant_controlL=[];
+    for pattern in patternsL:
+        consecutive,occs, DataL_significant = extract_pattern(DataL, pattern, min_distance, max_distance, threshold)
+        consecutive_control,occs_control, DataL_significant_control = extract_pattern(DataL_random, pattern, min_distance, max_distance, threshold)
+        consecutiveL.append(consecutive);occsL.append(occs);consecutive_controlL.append(consecutive_control);occs_controlL.append(occs_control)
+    return consecutiveL,occsL,consecutive_controlL,occs_controlL
 
 # Ensures that code below is not run when this file is imported into another file
 if __name__ == "__main__":
@@ -510,10 +430,11 @@ if __name__ == "__main__":
         DataL = []
         for line in f.readlines():
             DataL.append(line.strip().split("\t"))
-    out = extract_pattern_test(DataL, "+-", 0, 3, 2)
+    out = extract_pattern(DataL, "+-", 0, 3, 2)
     print("The pattern occurs on the following lines: ", out[0] )
-    print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the "
-          "threshold and distance requirements\n", out[1])
+    print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the threshold and distance requirements\n", out[1])
+
+print(asymmetries_single("test_extract_pattern.bed","+-", 0, 3, 2))
 # test area
 # works
 # print overlap(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"))
