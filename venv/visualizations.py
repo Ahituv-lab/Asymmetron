@@ -63,7 +63,7 @@ def barplot_pair_lists_gen(bin_sizes_rangeL,List1,List2,name1,name2,output):
         plt.close()
         return
 
-def barplot_single_gen(List1,List1_names,output):
+def barplot_single_gen(List1,List1_names,x_label,output):
         """ 
         This should be an option for the user if he wants to generate vizualizations too.
         """
@@ -71,12 +71,11 @@ def barplot_single_gen(List1,List1_names,output):
         plt.bar(range(1,len(List1)*1+1,1),List1,align="center")
         plt.xticks(range(1,len(List1)*1+1,1),List1_names)
         plt.ylabel("Occurrences")
-        plt.xlabel("Bins")
+        plt.xlabel(x_label)
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.yaxis.set_ticks_position('left')
         ax.xaxis.set_ticks_position('bottom')
-        plt.legend(frameon=False)
         plt.tight_layout()
         plt.savefig(output)
         plt.close()
