@@ -63,6 +63,8 @@ def fun1(args):
                      # Plot barplot of occs consecutive in each bin
                      visualizations.barplot_single_gen(OccsL,OccsL,wf.output_path("consecutive_patterns", ".png", ''))
 
+            # Need to add here vizualization as heatmap for all patterns and number of consecutive
+
 
         # Orientation link is missing / fun4 to be used here
 
@@ -79,8 +81,6 @@ if __name__ == "__main__":
     parser.add_argument("-max", "--max_distance", help="Two consecutive motifs with distance higher than the max_distance will not be considered as significant for the purpose of this analysis. Default = 100", type=int)
     parser.add_argument("-b", "--bins", help="Optional argument. Split output data and graphs in the specified number of bins. Default = 1", type=int)  # Needs rephrasing
     parser.add_argument("-p", "--plots", help="Optional flag. Display output plots", action="store_true")
-    # parser.add_argument("-dc", "--expected_div_conv", help="Optional argument. Expected divergence convergence. Default = 0.5", type=float) # Not sure if necessary
-    # parser.add_argument("-sp", "--expected_same_op", help="Optional argument. Expected ................ Default = 0.5", type=float)
     parser.add_argument("-o", "--orientation", help="Optional argument. Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations. Can enter multiple paths as a comma separated string, e.g. \"path1, path2\"")
     parser.add_argument("-t", "--threshold", help="Optional argument. Threshold of p-value of consecutive patterns to save in new BED file.", type=float)
     args = parser.parse_args()
