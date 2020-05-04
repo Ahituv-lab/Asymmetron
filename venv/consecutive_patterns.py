@@ -18,14 +18,10 @@ def fun1(args):
     min_distance = args.min_distance
     if min_distance == None:
         min_distance = 0;
-    else:
-        min_distance = int(min_distance)
 
     max_distance = args.max_distance
     if max_distance == None:
         max_distance = 100;
-    else:
-        max_distance = int(max_distance)
 
     patterns = args.patterns
 
@@ -38,8 +34,6 @@ def fun1(args):
 
     if bins == None:
         bins = 1;
-    else:
-        bins = int(bins);
 
     if threshold == None:
         threshold = 0.05;
