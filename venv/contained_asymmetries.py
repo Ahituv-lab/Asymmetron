@@ -97,7 +97,7 @@ def fun2(args):
 			# Here we need to decide if we want to include the score for both -regions and -motifs and perform the analyses separately, score needs to go with number of score_bins
 			if score_regions != False:
 				Ratio_Same_Opposite, Score_names = separate_on_score(regions, motifs, number_of_bins)
-				visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names, output_plot)
+				visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names, "Strand Orientation",output_plot)
 			if score_motifs != False:
 				Ratio_Same_Opposite, Score_names = separate_on_score(motifs, regions, number_of_bins)
 				visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names, output_plot)
