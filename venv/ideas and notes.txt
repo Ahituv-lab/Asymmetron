@@ -1,0 +1,9 @@
+orientation analysis (fun3)
+output path
+names
+
+group parser bins score motifs regions
+barplots
+
+add wildcard to function 1
+distance distribution in function 1
