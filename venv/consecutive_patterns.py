@@ -43,7 +43,16 @@ def fun1(args):
 
     if threshold == None:
         threshold = 0.05;
-	
+
+    # A simple way to integrate orientation in the flags here. Probably needs a lot of improvement though.
+    orientation = args.orientation
+    if orientation != None:
+        paths_after_orientation=[];
+        for path in paths:
+            os.system("python orientation.py "  + path + " " + orientation)
+            paths_after_orientation.append(["ASYMMETRON"+path.split("/")[-1]+"_ANNOTATED_"+orientation.split("/")[-1]])
+        paths = paths_after_orientation
+    
     for index,path in enumerate(paths):
         name = names[index]
         consecutiveL,occsL,consecutive_controlL,occs_controlL = functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
@@ -61,6 +70,7 @@ def fun1(args):
                  if plots==True:
                      visualizations.barplot_single_gen(range(1,len(TimesFullList)+1),TimesFullList,wf.output_path("consecutive_patterns", ".png", ''))
 
+                 # I think instead of Bins here it can be gradient of distances or something like that
                  if bins>1:
                      consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
                      Bins=functions.binner(min_distance,max_distance,bins)
@@ -80,8 +90,6 @@ def fun1(args):
 
             # Need to add here vizualization as heatmap for all patterns and number of consecutive
 
-
-        # Orientation link is missing / fun4 to be used here
 
     return
 
