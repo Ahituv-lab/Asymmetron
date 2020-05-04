@@ -57,6 +57,7 @@ def fun1(args):
         name = names[index]
         DataL_significant,consecutiveL,occsL,consecutive_controlL,occs_controlL = functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
         Counter_consecutive_realL=[Counter(consecutive_pattern) for consecutive_pattern in consecutiveL]
+        Counter_consecutive_controlL=[Counter(consecutive_pattern_control) for consecutive_pattern_control in consecutive_controlL]
 
         # Write significant results in an output file
         with open(wf.output_path("consecutive_patterns",path.split("/")[-1],"bed","statistically_siginificant"), 'w') as output_file:
@@ -66,16 +67,24 @@ def fun1(args):
 
         for i in range(len(Counter_consecutive_realL)):
                  consecutive, times_found = zip(*Counter_consecutive_realL[i].items())
+                 consecutive_control, times_found_control = zip(*Counter_consecutive_controlL[i].items())
                  ConsecutiveD = dict(zip(consecutive, times_found))
-                 TimesFullList=[];
-                 for k in range(1,max(consecutive)):
+                 ConsecutiveD_control = dict(zip(consecutive_control, times_found_control))
+                 TimesFullList=[];TimesFullList_control=[];
+                 for k in range(1,max(max(consecutive),max(consecutive_control))):
                      if k in ConsecutiveD.keys():
                          TimesFullList.append(ConsecutiveD[k])
                      else:
                          TimesFullList.append(0)
+
+                     if k in ConsecutiveD_control.keys():
+                          TimesFullList_control.append(ConsecutiveD_control[k])
+                     else:
+                          TimesFullList_control.append(0)
                  
                  if plots==True:
                      visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Consecutive occurrences",wf.output_path("consecutive_pattern_"+str(patterns[i]), "png", ''))
+                     visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_pattern_with_control_"+str(patterns[i]),"png", ''))
 
                  # I think instead of Bins here it can be gradient of distances or something like that
                  if bins>1:
