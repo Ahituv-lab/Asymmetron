@@ -3,13 +3,23 @@ import functions
 import argparse
 import wrapper_functions as wf
 import visualizations
+from collections import Counter
 
 def fun1(args):
-    paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
+    #paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
+
+    paths = args.paths.split(",")
+    names = args.names
+    if names == None:
+        names = paths
+    else: 
+       names = names.split(",")
 
     min_distance = args.min_distance
     max_distance = args.max_distance
+
     patterns = args.patterns
+
     bins = args.bins
     plots = args.plots
     threshold = args.threshold
@@ -25,33 +35,26 @@ def fun1(args):
 	
     for index,path in enumerate(paths):
         name = names[index]
-        # We need to provide a better output name
-        output = name
-        Counter_consecutive_realL,Counter_consecutive_controlL,DistancesL=functions.asymmetries_single(path,name,min_distance,max_distance,patterns,bins,plots,threshold)
+        consecutiveL,occsL,consecutive_controlL,occs_controlL =functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
+        Counter_consecutive_realL=[Counter(consecutive_pattern) for consecutive_pattern in consecutiveL]
+
         if plots==True:
             for i in range(len(Counter_consecutive_realL)):
                  consecutive, times_found = zip(*Counter_consecutive_realL[i].items())
-                 print consecutive, times_found
-                 #consecutive_sorted, times_found_sorted = [list(x) for x in zip(*sorted(zip(consecutive, times_found), key=lambda pair: pair[0]))]
+                 print(consecutive, times_found)
                  ConsecutiveD = dict(zip(consecutive, times_found))
-		 TimesFullList=[];
-		 for k in range(1,max(consecutive)):
-		     if k in ConsecutiveD.keys():
-		         TimesFullList.append(ConsecutiveD[k])
+                 TimesFullList=[];
+                 for k in range(1,max(consecutive)):
+                     if k in ConsecutiveD.keys():
+                         TimesFullList.append(ConsecutiveD[k])
                      else:
                          TimesFullList.append(0)
-		 print TimesFullList
                  visualizations.barplot_single_gen(range(1,len(TimesFullList)+1),TimesFullList,wf.output_path("consecutive_patterns", ".png", ''))
 
                  if bins>1:
                      Bins=functions.binner(min_distance,max_distance,bins)
-                     OccsL=[];
                      for min_bin,max_bin in Bins:
-                                Occs_per_bin=0
-                                for dist in DistancesL[i]:
-                                        if dist>=min_bin and dist<max_bin:
-                                                Occs_per_bin+=1
-                                OccsL.append(Occs_per_bin)
+                         consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin =functions.asymmetries_single(path,patternsL,min_bin,max_bin,threshold)
                      # Plot barplot of occs consecutive in each bin
                      visualizations.barplot_single_gen(OccsL,OccsL,wf.output_path("consecutive_patterns", ".png", ''))
 
@@ -64,7 +67,7 @@ def fun1(args):
 if __name__ == "__main__":
     # Note: Optional arguments have a - or -- in front of them
     parser = argparse.ArgumentParser()
-    parser.add_argument("path", help="Enter the path of the file to analyze. Can enter multiple paths as a comma separated string, e.g. \"path1, path2\"")
+    parser.add_argument("paths", help="Enter the path of the file to analyze. Can enter multiple paths as a comma separated string, e.g. \"path1, path2\"")
     parser.add_argument("-n", "--names", help="Optional argument. A name for each of the motif files for more human-readable output. Each name must correspond to a path")	   # --patterns eg.. ++/+-+
     parser.add_argument("-pt","--patterns", help = "Patterns to search, comma separated. Default is ++,--,+-,-+.")
     parser.add_argument("-min", "--min_distance", help="Two consecutive motifs with distance lower than the min_distance will not be considered as significant for the purpose of this analysis. Default = 0", type=int)
@@ -78,8 +81,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     fun1(args)
-
-
-
-
 

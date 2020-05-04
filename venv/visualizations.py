@@ -83,3 +83,10 @@ def barplot_single_gen(List1,List1_names,output):
         return
 
 
+def heatmap_gen(DataLL,output):
+       import seaborn as sns
+       import pandas as pd
+       df = pd.DataFrame(np.array(DataLL))
+       sns.heatmap(df)
+       sns.savefig(output)
+       sns.close()
