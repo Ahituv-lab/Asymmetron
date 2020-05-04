@@ -18,10 +18,14 @@ def fun1(args):
     min_distance = args.min_distance
     if min_distance == None:
         min_distance = 0;
+    else:
+        min_distance = int(min_distance)
 
     max_distance = args.max_distance
     if max_distance == None:
         max_distance = 100;
+    else:
+        max_distance = int(max_distance)
 
     patterns = args.patterns
 
@@ -30,23 +34,23 @@ def fun1(args):
     threshold = args.threshold
 
     if patterns == None:
-        patterns = ["++","--","+-","-+"]
+        patterns = ["++","--","+-","-+"];
 
     if bins == None:
-        bins = 1
+        bins = 1;
+    else:
+        bins = int(bins);
 
     if threshold == None:
-        threshold = 0.05
+        threshold = 0.05;
 	
     for index,path in enumerate(paths):
         name = names[index]
-        consecutiveL,occsL,consecutive_controlL,occs_controlL =functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
+        consecutiveL,occsL,consecutive_controlL,occs_controlL = functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
         Counter_consecutive_realL=[Counter(consecutive_pattern) for consecutive_pattern in consecutiveL]
 
-        if plots==True:
-            for i in range(len(Counter_consecutive_realL)):
+        for i in range(len(Counter_consecutive_realL)):
                  consecutive, times_found = zip(*Counter_consecutive_realL[i].items())
-                 print(consecutive, times_found)
                  ConsecutiveD = dict(zip(consecutive, times_found))
                  TimesFullList=[];
                  for k in range(1,max(consecutive)):
@@ -54,14 +58,25 @@ def fun1(args):
                          TimesFullList.append(ConsecutiveD[k])
                      else:
                          TimesFullList.append(0)
-                 visualizations.barplot_single_gen(range(1,len(TimesFullList)+1),TimesFullList,wf.output_path("consecutive_patterns", ".png", ''))
+                 if plots==True:
+                     visualizations.barplot_single_gen(range(1,len(TimesFullList)+1),TimesFullList,wf.output_path("consecutive_patterns", ".png", ''))
 
                  if bins>1:
+                     consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
                      Bins=functions.binner(min_distance,max_distance,bins)
                      for min_bin,max_bin in Bins:
-                         consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin =functions.asymmetries_single(path,patternsL,min_bin,max_bin,threshold)
+                         print(min_bin,max_bin)
+                         consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,patterns,min_bin,max_bin,threshold)
+                         consecutiveLL_bin.append(consecutiveL_bin);
+                         occsLL_bin.append(occsL_bin);
+                         consecutive_controlLL_bin.append(consecutive_controlL_bin);
+                         occs_controlLL_bin.append(occs_controlL_bin);
+                     
+                     consecutiveLL_binT = np.array(consecutiveLL_bin).T.tolist();occsLL_binT = np.array(occsLL_bin).T.tolist();
+                     consecutive_controlLL_binT = np.arrray(consecutive_controlLL_bin).T.tolist(); occs_controlLL_binT = np.array(occs_controlLL_bin).T.tolist()
+                     print(consecutive_controlLL_binT,"bins")
                      # Plot barplot of occs consecutive in each bin
-                     visualizations.barplot_single_gen(OccsL,OccsL,wf.output_path("consecutive_patterns", ".png", ''))
+                     #visualizations.barplot_single_gen(OccsL,OccsL,wf.output_path("consecutive_patterns", ".png", ''))
 
             # Need to add here vizualization as heatmap for all patterns and number of consecutive
 
