@@ -389,6 +389,16 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     occs = [x for x in occs if x is not None]
     consecutive=consecutive_measure(occs,pattern)
 
+    # Here we translate the probability threshold to consecutive occcurrences 
+    number_of_tests = len(DataL)-1
+    total_plus = signs.count("+")
+    total_minus = signs.count("-")
+    probability={}
+    probability["+"]=total_plus/float(total_plus+total_minus)
+    probability["-"] = 1-probability["+"]
+    probability_pattern = np.prod([probability[k] for k in list(pattern)])
+    consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if (probability_pattern**x)*number_of_tests > threshold)
+
     # Filter for number of consecutive occurences that meet the threshold criterion and are within the distance window
     DataL_significant = []
     counter = 1
@@ -400,13 +410,13 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         if occs[i+1]-occs[i] == len(pattern) and (distance >= min_distance and distance <= max_distance):
             counter += 1
         else:
-            if counter >= threshold:
+            if counter >= consecutive_threshold:
                 # Could also dump to file here to save on memory
                 DataL_significant.extend(DataL_temp)
             DataL_temp.clear()
             counter = 1
     # Add last lines
-    if counter >= threshold:
+    if counter >= consecutive_threshold:
         DataL_temp.extend(DataL[occs[-1]:occs[-1]+len(pattern)])
         DataL_significant.extend(DataL_temp)
 
