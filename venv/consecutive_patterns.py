@@ -16,7 +16,12 @@ def fun1(args):
        names = names.split(",")
 
     min_distance = args.min_distance
+    if min_distance == None:
+        min_distance = 0;
+
     max_distance = args.max_distance
+    if max_distance == None:
+        max_distance = 100;
 
     patterns = args.patterns
 
