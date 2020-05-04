@@ -123,7 +123,7 @@ def check_valid_pattern(value):
     Returns the pattern.
     """
     for char in value:
-        if char not in ("+", "-"):
+        if char not in ("+", "-", ",", " "):
             msg = "{} is an invalid pattern. Please enter a pattern consisting of + or - only.".format(value)
             raise argparse.ArgumentTypeError(msg)
     return value

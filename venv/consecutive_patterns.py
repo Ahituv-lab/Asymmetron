@@ -13,7 +13,7 @@ def fun1(args):
     if names == None:
         names = paths
     else: 
-       names = names.split(",")
+       names = wf.name_splitter(names)
 
     min_distance = args.min_distance
     if min_distance == None:
