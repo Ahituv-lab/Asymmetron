@@ -6,19 +6,24 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+def plot_styler():
+        ax = plt.subplot(111)
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.yaxis.set_ticks_position('left')
+        ax.xaxis.set_ticks_position('bottom')
+        return
+
 def histogram_gen(strand1L,strand2L,bins_used,output):
         """ 
         Accepts the strand asymmetries  per bin and generates histograms
         """
+        plot_styler()
         RatiosL=[ratio_calc(strand1L[i],strand2L[i]) for i in range(len(strand1L))]
         plt.bar(range(1,len(strand1L)+1,1),RatiosL,align="center",color="lightblue")
         plt.xticks(range(len(bins)),bins)
         plt.xlabel("Bins (Distance)")
         plt.ylabel("Strand Asymmetry Ratio")
-        ax.spines['right'].set_visible(False)
-        ax.spines['top'].set_visible(False)
-        ax.yaxis.set_ticks_position('left')
-        ax.xaxis.set_ticks_position('bottom')
         plt.tight_layout()
         plt.savefig(output)
         plt.close()
@@ -29,15 +34,11 @@ def barplot_gen(strand1,strand2,name1,name2,output):
         """ 
         This should be an option for the user if he wants to generate vizualizations too.
         """
-        ax = plt.subplot(111)
+        plot_styler()
         plt.bar(range(1,3),[strand1,strand2],align="center")
         plt.xticks(range(1,3),[name1,name2])
         plt.ylabel("Occurrences")
         plt.xlabel("Strand Orientation")
-        ax.spines['right'].set_visible(False)
-        ax.spines['top'].set_visible(False)
-        ax.yaxis.set_ticks_position('left')
-        ax.xaxis.set_ticks_position('bottom')
         plt.tight_layout()
         plt.savefig(output)
         plt.close()
@@ -47,16 +48,12 @@ def barplot_pair_lists_gen(x_tickL,List1,List2,name1,name2,x_label,title_legend,
         """ 
         This should be an option for the user if he wants to generate vizualizations too.
         """
-        ax = plt.subplot(111)
+        plot_styler()
         plt.bar(range(1,len(List1)*3+1,3),List1,label=name1,align="center")
         plt.bar(range(2,len(List2)*3+1,3),List2,label=name2,align="center")
         plt.xticks(range(1,len(List1)*3+1,3),x_tickL)
         plt.ylabel("Occurrences")
         plt.xlabel(x_label)
-        ax.spines['right'].set_visible(False)
-        ax.spines['top'].set_visible(False)
-        ax.yaxis.set_ticks_position('left')
-        ax.xaxis.set_ticks_position('bottom')
         plt.legend(frameon=False,title=title_legend)
         plt.tight_layout()
         plt.savefig(output)
@@ -67,15 +64,11 @@ def barplot_single_gen(List1,List1_names,x_label,output):
         """ 
         This should be an option for the user if he wants to generate vizualizations too.
         """
-        ax = plt.subplot(111)
+        plot_styler()
         plt.bar(range(1,len(List1)*1+1,1),List1,align="center")
         plt.xticks(range(1,len(List1)*1+1,1),List1_names)
         plt.ylabel("Occurrences")
         plt.xlabel(x_label)
-        ax.spines['right'].set_visible(False)
-        ax.spines['top'].set_visible(False)
-        ax.yaxis.set_ticks_position('left')
-        ax.xaxis.set_ticks_position('bottom')
         plt.tight_layout()
         plt.savefig(output)
         plt.close()
@@ -89,3 +82,18 @@ def heatmap_gen(DataLL,output):
        sns.heatmap(df)
        sns.savefig(output)
        sns.close()
+       return
+
+def distribution_gen(occsL,occsL_control,output):
+       from collections import Counter
+       plot_styler()
+       occsD=Counter(occsL)
+       occsD_control=Counter(occsL_control)
+
+       occsD_sorted=sorted(occsD.items(), key=lambda k: -k[0]) 
+       occsD_sorted_control=sorted(occsD_control.items(), key=lambda k: -k[0])
+
+       plt.plot(occsD_sorted.keys(),occsD_sorted.values(),"o")
+       plt.plot(occsD_control_sorted.keys(),occsD_control_sorted.values(),"o")
+       plt.savefig(output)
+       plt.close()
