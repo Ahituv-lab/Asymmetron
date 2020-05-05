@@ -76,6 +76,7 @@ def fun1(args):
                           TimesFullList_control.append(0)
                  
                  if plots==True:
+                     print(TimesFullList,TimesFullList_control)
                      visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
                      visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
                      # We want to show biases in distances of consecutive
