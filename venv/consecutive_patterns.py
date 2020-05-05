@@ -38,6 +38,7 @@ def fun1(args):
     if threshold == None:
         threshold = 0.05;
 
+    ConsecutiveD_Total=[]
     # A simple way to integrate orientation in the flags here. Probably needs a lot of improvement though.
     orientation = args.orientation
     if orientation != None:
@@ -62,6 +63,9 @@ def fun1(args):
                  consecutive, times_found = zip(*Counter_consecutive_realL[i].items())
                  consecutive_control, times_found_control = zip(*Counter_consecutive_controlL[i].items())
                  ConsecutiveD = dict(zip(consecutive, times_found))
+
+                 ConsecutiveD_Total.append(ConsecutiveD)
+
                  ConsecutiveD_control = dict(zip(consecutive_control, times_found_control))
                  TimesFullList=[];TimesFullList_control=[];
                  for k in range(1,max(max(consecutive),max(consecutive_control))):
@@ -78,7 +82,7 @@ def fun1(args):
                  if plots==True:
                      print(TimesFullList,TimesFullList_control)
                      visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
-                     visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
+                     visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1]+"_with_controls",str(patterns[i])))
                      # We want to show biases in distances of consecutive
                      visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],"distances_inconsecutive_pattern_"+str(patterns[i])))
 
@@ -100,7 +104,11 @@ def fun1(args):
                      #visualizations.barplot_single_gen(OccsL,OccsL,wf.output_path("consecutive_patterns", ".png", ''))
 
                 # Need to add here vizualization as heatmap for all patterns and number of consecutive
-                
+
+        # Table with all the outputs for all strands
+        #with open(wf.output_path("consecutive_patterns","txt","Consecutive_Strand_Asymmetries", 'w') as the_file:
+        #        for k in OccsLL:
+        #        the_file.write()
 
     return
 
