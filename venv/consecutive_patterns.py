@@ -80,11 +80,12 @@ def fun1(args):
                           TimesFullList_control.append(0)
                  
                  if plots==True:
-                     print(TimesFullList,TimesFullList_control)
+                     print(patterns[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
                      visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
                      visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1]+"_with_controls",str(patterns[i])))
                      # We want to show biases in distances of consecutive
-                     visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],"distances_inconsecutive_pattern_"+str(patterns[i])))
+                     print(wf.output_path("consecutive_patterns",path.split("/")[-1],"png","distances_inconsecutive_pattern_"+str(patterns[i])))
+                     visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],"png","distances_inconsecutive_pattern_"+str(patterns[i])))
 
                  # I think instead of Bins here it can be gradient of distances or something like that
                  if bins>1:
@@ -106,7 +107,7 @@ def fun1(args):
                 # Need to add here vizualization as heatmap for all patterns and number of consecutive
 
         # Table with all the outputs for all strands
-        table_consecutive(ConsecutiveD_Total.append,strands,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_Total"))
+        functions.table_consecutive(ConsecutiveD_Total,patterns,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_Total"))
         #with open(wf.output_path("consecutive_patterns","txt","Consecutive_Strand_Asymmetries", 'w') as the_file:
         #        for k in OccsLL:
         #        the_file.write()
