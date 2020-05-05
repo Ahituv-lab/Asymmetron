@@ -26,37 +26,37 @@ It encompasses four functions:
 
 ### 1. consecutive_patterns.py
 #### Required input:
-	-motifs: One or more BED-formatted files
+	paths: One or more BED-formatted files
 #### Optional inputs:
 	-names: Assign a name for each of the inputted BED-formatted files to allow for more human readable output
-	-min_dist: Minimum distance between consecutive occurrences to consider in the analysis. Default is 0.
-	-max_dist: Maximum distance between consecutive occurrences to consider in the analysis. Default is 100.
-	-patterns: Patterns to search, comma separated. Default is ++,--,+-,-+.
-	-orientation: Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations.
-	-bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
-	-threshold: Threshold of p-value of consecutive patterns to save in new BED file.
-	-plots: Returns the associated plots of the asymmetries for each file.
+	--min_distance: Minimum distance between consecutive occurrences to consider in the analysis. Default is 0.
+	--max_distance: Maximum distance between consecutive occurrences to consider in the analysis. Default is 100.
+	--patterns: Patterns to search, comma separated. Default is ++,--,+-,-+.
+	--orientation: Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations.
+	--bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
+	--threshold: Threshold of p-value of consecutive patterns to save in new BED file.
+	--plots: Returns the associated plots of the asymmetries for each file.
 #### Outputs:
 	-Table of strand asymmetries for all patterns for each motif.
 	-BED files with the statistically significant consecutive regions. One file for each pattern for each file inputted.
-	-Histogram of expected and observed distribution of consecutive patterns.
+	-barplots of expected and observed consecutive occurrences of each of the patterns.
+        -Plots showing the distribution of consecutive occurrences for each pattern.
+        -Heatmap of subdivisions of the signal in distances across all patterns if --bins is selected
 
 ### 2. contained_asymmetries.py
 #### Required inputs:
-	-regions: One or more BED-formatted files, containing the regions within which to estimate motif asymmetries.
-	-motifs: One or more BED-formatted files, for each of which the asymmetries are calculated.
+	regions: One or more BED-formatted files, containing the regions within which to estimate motif asymmetries.
+	motifs: One or more BED-formatted files, for each of which the asymmetries are calculated.
 #### Optional inputs:
-	-names_A: Assign a name for each of the BED-formatted region files to allow for more human readable output
-	-names_B: Assign a name for each of the BED-formatted motif files to allow for more human readable output
-	-upstream: Only look for occurrences of motif A upstream of motif B. Incompattible with -downstream
-	-downstream: Only look for occurrences of motif A downstream of motif B. Incompatible with -upstream
-	-orientation_region: Orient file(s) relative to annotated BED-formated region file(s) and perform the analysis for the un-annoated file with the new annotations.
-	-orientation_motif: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
-	-expected_asym: The expected asymmetry bias between the regions and the motifs. Default is 0.5.
-	-expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the motifs. Default is 0.5.
-	-score: Optional flag. If provided, assumes the last column of the region files is a scoring metric and uses it to subdivide the analysis into bins.
-	-bins: Number of bins to subdivide the results into. Only runs when --score is provided. Default value is 10.
-	-plots: Returns the associated plots of the asymmetries for each file.
+	--names_regions: Assign a name for each of the BED-formatted region files to allow for more human readable output.
+	--names_motifs: Assign a name for each of the BED-formatted motif files to allow for more human readable output.
+	--orientation_region: Orient file(s) relative to annotated BED-formated region file(s) and perform the analysis for the un-annoated file with the new annotations.
+	--orientation_motif: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
+	--expected_asym: The expected asymmetry bias between the regions and the motifs regarding same or opposite strand orientation. Default is 0.5.
+	--expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the motifs. Default is 0.5.
+	--score: Optional flag. If provided, assumes the last column of the region files is a scoring metric and uses it to subdivide the analysis into bins.
+	--bins: Number of bins to subdivide the results into. Only runs when --score is provided. Default value is 10.
+	--plots: Returns the associated plots of the asymmetries for each file.
 #### Outputs:
 	-Table containing strand asymmetries of ++/+-/-+/-- orientations, same-strand, opposite strand, p-value, p-value with Binomial correction.
 	-Histograms of strand asymmetries for each pair of comparisons.
@@ -70,8 +70,10 @@ It encompasses four functions:
 #### Optional inputs:
 	-names_A: The name of each of the inputted BED-formatted motif A files.
 	-names_B: The name of each of the inputted BED-formatted motif B files.
+        -upstream: Only look for occurrences of motif A upstream of motif B. Incompattible with -downstream.
+        -downstream: Only look for occurrences of motif A downstream of motif B. Incompatible with -upstream.
 	-orientation: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
-	-expected_asym: The expected asymmetry bias between the pairs of motifs. Default is 0.5.
+	-expected_asym: The expected asymmetry bias between the pairs of motifs regarding same or opposite strand orientation. Default is 0.5.
         -expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the pairs of motifs. Default is 0.5.
 	-min_dist: Minimum distance to consider in the analysis. Default is 0.
 	-max_dist: Maximum distance to consider in the analysis. Default is 100.
