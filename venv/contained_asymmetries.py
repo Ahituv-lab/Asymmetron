@@ -111,8 +111,7 @@ def fun2(args):
 
 	return
 
-
-if __name__ == "__main__":
+def contained_asymmetries_parser():
 	# Note: Optional arguments have a - or -- in front of them
 	parser = argparse.ArgumentParser()
 	parser.add_argument("regions",
@@ -142,4 +141,6 @@ if __name__ == "__main__":
 	                    type=wf.check_positive_int)
 	args = parser.parse_args()
 
+if __name__ == "__main__":
+	args = contained_asymmetries_parser()
 	fun2(args)

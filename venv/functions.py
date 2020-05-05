@@ -370,6 +370,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     :param threshold:
     :return: A list of all occurences of the pattern meeting the minimum distance requirements
     """
+    n = len(pattern)
 
     # Create a string with all signs (5th column in the sorted BED file)
     signs = ""
@@ -383,7 +384,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     # Remove occurences that do not meet the distance criterion
     for i in range(len(occs)):
         index = occs[i]
-        for j in range(len(pattern) - 1):
+        for j in range(n - 1):
             distance = max(0, int(DataL[index + j + 1][1]) - int(DataL[index + j][2]))
             if distance < min_distance or distance > max_distance:
                 occs[i] = None
@@ -403,25 +404,22 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     # Filter for number of consecutive occurences that meet the threshold criterion and are within the distance window
     DataL_significant = []
     counter = 1
-    DataL_temp = [];
-    consecutiveL= [];
-    for i in range(len(occs)-1):
+    DataL_temp = DataL[occs[0]:occs[0]+n];
+    from collections import defaultdict
+    consecutiveL= defaultdict(int);
+    for i in range(1, len(occs)):
         index = occs[i]
-        DataL_temp.extend(DataL[index:index + len(pattern)])
-        distance = max(0, int(DataL[index + len(pattern)][1]) - int(DataL[index + len(pattern) - 1][2]))
-        if occs[i+1]-occs[i] == len(pattern) and (distance >= min_distance and distance <= max_distance):
+        distance = max(0, int(DataL[index + n][1]) - int(DataL[index + n - 1][2]))
+        if occs[i]-occs[i-1] == n and (distance >= min_distance and distance <= max_distance):
             counter += 1
+            DataL_temp.extend(DataL[index:index+n])
         else:
-            consecutiveL+=[counter]
+            consecutiveL[counter]+=1
             if counter >= consecutive_threshold:
                 # Could also dump to file here to save on memory
                 DataL_significant.extend(DataL_temp)
             DataL_temp.clear()
             counter = 1
-    # Add last lines
-    if counter >= consecutive_threshold:
-        DataL_temp.extend(DataL[occs[-1]:occs[-1]+len(pattern)])
-        DataL_significant.extend(DataL_temp)
 
     return consecutiveL,occs,DataL_significant
 
