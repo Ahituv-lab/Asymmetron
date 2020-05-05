@@ -58,7 +58,6 @@ def fun1(args):
             for line in DataL_significant:
                 output_file.write('\t'.join([str(x) for x in line])+'\n')
 
-
         for i in range(len(Counter_consecutive_realL)):
                  consecutive, times_found = zip(*Counter_consecutive_realL[i].items())
                  consecutive_control, times_found_control = zip(*Counter_consecutive_controlL[i].items())
@@ -79,6 +78,8 @@ def fun1(args):
                  if plots==True:
                      visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Consecutive occurrences",wf.output_path("consecutive_pattern_"+str(patterns[i]), "png", ''))
                      visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_pattern_with_control_"+str(patterns[i]),"png", ''))
+                     # We want to show biases in distances of consecutive
+                     visualizations.distribution_gen(occsL,occs_controlL,wf.output_path("distances_inconsecutive_pattern_"+str(patterns[i]), "png", ''))
 
                  # I think instead of Bins here it can be gradient of distances or something like that
                  if bins>1:

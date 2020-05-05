@@ -401,8 +401,8 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     # Filter for number of consecutive occurences that meet the threshold criterion and are within the distance window
     DataL_significant = []
     counter = 1
-    DataL_temp = []
-    counter_dict = {}
+    DataL_temp = [];
+    consecutiveL= [];
     for i in range(len(occs)-1):
         index = occs[i]
         DataL_temp.extend(DataL[index:index + len(pattern)])
@@ -410,7 +410,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         if occs[i+1]-occs[i] == len(pattern) and (distance >= min_distance and distance <= max_distance):
             counter += 1
         else:
-            counter_dict[counter]+=1
+            consecutiveL+=[counter]
             if counter >= consecutive_threshold:
                 # Could also dump to file here to save on memory
                 DataL_significant.extend(DataL_temp)
@@ -421,7 +421,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         DataL_temp.extend(DataL[occs[-1]:occs[-1]+len(pattern)])
         DataL_significant.extend(DataL_temp)
 
-    return consecutive,occs,DataL_significant
+    return consecutiveL,occs,DataL_significant
 
 def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     from random import shuffle
