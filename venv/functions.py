@@ -336,24 +336,18 @@ def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, 
     return
 
 def table_consecutive(ConsecutiveD_Total,StrandsL,path_out):
-
-   with open(path_out, 'w') as output:
-   for k in range(1,max_cons+1):
-       output.write('\t'.join([str(x) for x in ]))
-
-   datafile
-
-def consecutive_measure(occsL,pattern):
-   consecutive=[];
-   counter=0
-   for i in range(len(occsL)-1):
-       if occsL[i+1]-occsL[i]==len(pattern):
-           counter+=1
-       else:
-           if counter!=0:
-               consecutive.append(counter)
-           counter=0;
-   return consecutive
+    max_all = max([max(dic.keys()) for dic in ConsecutiveD_Total])
+    with open(path_out, 'w') as output:
+        output.write(str("Number of consecutive occurrences")+'\t'.join([str(x) for x in StrandsL])+'\n')
+        for i in range(1,max_all+1):
+            StrandConsecutive=[];
+            for consecutiveD in ConsecutiveD_Total:
+               if i in consecutiveD.keys():
+                    StrandConsecutive.append(consecutiveD[i])
+               else:
+                    StrandConsecutive.append(0)
+        output.write(str(i)+'\t'.join([str(x) for x in StrandConsecutive])+'\n')
+    return
 
 def find_sub_str(my_str, sub_str):
     start = 0
@@ -440,7 +434,7 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     for pattern in patternsL:
         consecutive,occs, DataL_significant = extract_pattern(DataL, pattern, min_distance, max_distance, threshold)
         consecutive_control,occs_control, DataL_significant_control = extract_pattern(DataL_random, pattern, min_distance, max_distance, threshold)
-        consecutiveL.append(consecutive);occsL.append(occs);consecutive_controlL.append(consecutive_control);occs_controlL.append(occs_control)
+        consecutiveL.append(consecutive);occsL.append(occs);consecutive_controlL.append(consecutive_control);occs_controlL.append(occs_control);
     return DataL_significant,consecutiveL,occsL,consecutive_controlL,occs_controlL
 
 # Ensures that code below is not run when this file is imported into another file
