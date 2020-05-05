@@ -93,7 +93,7 @@ def distribution_gen(occsL,occsL_control,output):
        occsD_sorted=sorted(occsD.items(), key=lambda k: -k[0]) 
        occsD_sorted_control=sorted(occsD_control.items(), key=lambda k: -k[0])
 
-       plt.plot(occsD_sorted.keys(),occsD_sorted.values(),"o")
-       plt.plot(occsD_control_sorted.keys(),occsD_control_sorted.values(),"o")
+       plt.plot([k[0] for k in occsD_sorted],[m[1] for m in occsD_sorted],"o")
+       plt.plot([k[0] for k in occsD_sorted_control],[m[1] for m in occsD_sorted_control],"o")
        plt.savefig(output)
        plt.close()
