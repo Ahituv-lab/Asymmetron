@@ -85,16 +85,19 @@ def heatmap_gen(DataLL,output):
        return
 
 def distribution_gen(occsL,occsL_control,output):
+       """
+       This function calculates the distance of consecutive patterns and plots it for both the real data and the controls.
+       """
        from collections import Counter
        plot_styler()
-       Distances_consecutiveL = [occsL[k+1]-occsL[k] for k in range(len(occsL))]
-       Distances_consecutive_controlL = [occsL_control[k+1]-occsL_control[k] for k in range(len(occsL_control))]
+       Distances_consecutiveL = [occsL[k+1]-occsL[k] for k in range(len(occsL)-1)]
+       Distances_consecutive_controlL = [occsL_control[k+1]-occsL_control[k] for k in range(len(occsL_control)-1)]
 
        Distances_consecutiveD = Counter(Distances_consecutiveL).most_common()
        Distances_consecutive_controlD = Counter(Distances_consecutive_controlL).most_common()
 
-       plt.plot([k[0] for k in occsD_sorted],[m[1] for m in occsD_sorted],"o")
-       plt.plot([k[0] for k in occsD_sorted_control],[m[1] for m in occsD_sorted_control],"o")
+       plt.plot([k[0] for k in Distances_consecutiveD],[m[1] for m in Distances_consecutiveD],"o")
+       plt.plot([k[0] for k in Distances_consecutive_controlD],[m[1] for m in Distances_consecutive_controlD],"o")
        plt.savefig(output)
        plt.close()
        return
