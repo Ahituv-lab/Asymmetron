@@ -54,7 +54,7 @@ def fun1(args):
         Counter_consecutive_controlL=[Counter(consecutive_pattern_control) for consecutive_pattern_control in consecutive_controlL]
 
         # Write significant results in an output file
-        with open(wf.output_path("consecutive_patterns",path.split("/")[-1],"bed","statistically_siginificant"), 'w') as output_file:
+        with open(wf.output_path("consecutive_patterns","bed",path.split("/")[-1],"statistically_siginificant"), 'w') as output_file:
             for line in DataL_significant:
                 output_file.write('\t'.join([str(x) for x in line])+'\n')
 
@@ -76,10 +76,10 @@ def fun1(args):
                           TimesFullList_control.append(0)
                  
                  if plots==True:
-                     visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Consecutive occurrences",wf.output_path("consecutive_pattern_"+str(patterns[i]), "png", ''))
-                     visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_pattern_with_control_"+str(patterns[i]),"png", ''))
+                     visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
+                     visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
                      # We want to show biases in distances of consecutive
-                     visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("distances_inconsecutive_pattern_"+str(patterns[i]), "png", ''))
+                     visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],"distances_inconsecutive_pattern_"+str(patterns[i])))
 
                  # I think instead of Bins here it can be gradient of distances or something like that
                  if bins>1:
