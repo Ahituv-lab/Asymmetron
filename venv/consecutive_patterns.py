@@ -91,7 +91,7 @@ def fun1(args):
                      consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
                      Bins=functions.binner(min_distance,max_distance,bins)
                      for min_bin,max_bin in Bins:
-                         DataL_significant_bin,consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,patterns,min_bin,max_bin,threshold)
+                         DataL_significant_bin,consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,patterns[i],min_bin,max_bin,threshold)
                          consecutiveLL_bin.append(consecutiveL_bin);
                          occsLL_bin.append(occsL_bin);
                          consecutive_controlLL_bin.append(consecutive_controlL_bin);
@@ -101,11 +101,12 @@ def fun1(args):
                      consecutive_controlLL_binT = np.arrray(consecutive_controlLL_bin).T.tolist(); occs_controlLL_binT = np.array(occs_controlLL_bin).T.tolist()
                      print(consecutive_controlLL_binT,"bins")
                      # Plot barplot of occs consecutive in each bin
-                     #visualizations.barplot_single_gen(OccsL,OccsL,wf.output_path("consecutive_patterns", ".png", ''))
+                     #visualizations.barplot_single_gen(OccsL,OccsL,wf.output_path("consecutive_patterns", "png", ''))
 
                 # Need to add here vizualization as heatmap for all patterns and number of consecutive
 
         # Table with all the outputs for all strands
+        table_consecutive(ConsecutiveD_Total.append,strands,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_Total"))
         #with open(wf.output_path("consecutive_patterns","txt","Consecutive_Strand_Asymmetries", 'w') as the_file:
         #        for k in OccsLL:
         #        the_file.write()
