@@ -335,6 +335,14 @@ def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, 
     datafile.close()
     return
 
+def table_consecutive(ConsecutiveD_Total,StrandsL,path_out):
+
+   with open(path_out, 'w') as output:
+   for k in range(1,max_cons+1):
+       output.write('\t'.join([str(x) for x in ]))
+
+   datafile
+
 def consecutive_measure(occsL,pattern):
    consecutive=[];
    counter=0
