@@ -87,13 +87,14 @@ def heatmap_gen(DataLL,output):
 def distribution_gen(occsL,occsL_control,output):
        from collections import Counter
        plot_styler()
-       occsD=Counter(occsL)
-       occsD_control=Counter(occsL_control)
+       Distances_consecutiveL = [occsL[k+1]-occsL[k] for k in range(len(occsL))]
+       Distances_consecutive_controlL = [occsL_control[k+1]-occsL_control[k] for k in range(len(occsL_control))]
 
-       occsD_sorted=sorted(occsD.items(), key=lambda k: -k[0]) 
-       occsD_sorted_control=sorted(occsD_control.items(), key=lambda k: -k[0])
+       Distances_consecutiveD = Counter(Distances_consecutiveL).most_common()
+       Distances_consecutive_controlD = Counter(Distances_consecutive_controlL).most_common()
 
        plt.plot([k[0] for k in occsD_sorted],[m[1] for m in occsD_sorted],"o")
        plt.plot([k[0] for k in occsD_sorted_control],[m[1] for m in occsD_sorted_control],"o")
        plt.savefig(output)
        plt.close()
+       return
