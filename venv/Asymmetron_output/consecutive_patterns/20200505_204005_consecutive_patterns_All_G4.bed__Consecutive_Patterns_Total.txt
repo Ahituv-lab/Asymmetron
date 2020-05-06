@@ -1,2 +1,0 @@
-Number of consecutive occurrences++	--	+-	-+
-36	8	5	3
