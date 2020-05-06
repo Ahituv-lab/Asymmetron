@@ -408,7 +408,8 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     consecutiveL= defaultdict(int);
     for i in range(1, len(occs)):
         index = occs[i]
-        distance = max(0, int(DataL[index + n][1]) - int(DataL[index + n - 1][2]))
+        print(index+n)
+        distance = max(0, int(DataL[index][1]) - int(DataL[index -1][2]))
         if occs[i]-occs[i-1] == n and (distance >= min_distance and distance <= max_distance):
             counter += 1
             DataL_temp.extend(DataL[index:index+n])
@@ -419,6 +420,10 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                 DataL_significant.extend(DataL_temp)
             DataL_temp.clear()
             counter = 1
+    # Add last lines
+    if counter >= consecutive_threshold:
+        DataL_significant.extend(DataL_temp)
+        consecutiveL[counter] += 1
 
     return consecutiveL,occs,DataL_significant
 
