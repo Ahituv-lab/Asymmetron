@@ -212,7 +212,7 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
     # Convergent Divergent orientation
     # visualizations.barplot_pair_lists_gen(Bins, convergentL_bin, divergentL_bin, name1, name2,"convergent_divergent_bins_" + name1 + "_" + name2 + ".png")
 
-    return (p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent), (p_pL_bin,m_mL_bin,p_mL_bin,m_pL_bin,same_strandL_bin,opposite_strandL_bin,convergentL_bin,divergentL_bin)
+    return (p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent), (Bins,p_pL_bin,m_mL_bin,p_mL_bin,m_pL_bin,same_strandL_bin,opposite_strandL_bin,convergentL_bin,divergentL_bin)
 
 
 def asym_binned(window_min, window_max, bins, DistancesL, Strand1L, Strand2L):
