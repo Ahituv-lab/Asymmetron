@@ -409,7 +409,8 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     consecutiveL= defaultdict(int);
     for i in range(1, len(occs)):
         index = occs[i]
-        distance = max(0, int(DataL[index + n][1]) - int(DataL[index + n - 1][2]))
+        print(index+n)
+        distance = max(0, int(DataL[index][1]) - int(DataL[index -1][2]))
         if occs[i]-occs[i-1] == n and (distance >= min_distance and distance <= max_distance):
             counter += 1
             DataL_temp.extend(DataL[index:index+n])
@@ -420,6 +421,10 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                 DataL_significant.extend(DataL_temp)
             DataL_temp.clear()
             counter = 1
+    # Add last lines
+    if counter >= consecutive_threshold:
+        DataL_significant.extend(DataL_temp)
+        consecutiveL[counter] += 1
 
     return consecutiveL,occs,DataL_significant
 
@@ -442,10 +447,13 @@ if __name__ == "__main__":
         for line in f.readlines():
             DataL.append(line.strip().split("\t"))
     out = extract_pattern(DataL, "+-", 0, 3, 2)
-    print("The pattern occurs on the following lines: ", out[0] )
-    print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the threshold and distance requirements\n", out[1])
+    print("The following dictionary includes the number of consecutive appearances of the pattern, e.g. when looking "
+          "for +- in +-+-+---+- the result should be {1:1}, {3:1}", out[0])
+    print("The pattern occurs on the following lines: ", out[1] )
+    print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the "
+          "threshold and distance requirements\n", out[2])
 
-print(asymmetries_single("test_extract_pattern.bed","+-", 0, 3, 2))
+    #print(asymmetries_single("test_extract_pattern.bed","+-", 0, 3, 2))
 # test area
 # works
 # print overlap(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"))
