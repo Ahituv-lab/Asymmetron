@@ -51,7 +51,7 @@ def barplot_pair_lists_gen(x_tickL,List1,List2,name1,name2,x_label,title_legend,
         plot_styler()
         plt.bar(range(1,len(List1)*3+1,3),List1,label=name1,align="center")
         plt.bar(range(2,len(List2)*3+1,3),List2,label=name2,align="center")
-        plt.xticks(range(1,len(List1)*3+1,3),x_tickL)
+        plt.xticks(range(1,len(List1)*3+1,3),x_tickL,rotation=90,fontsize=9)
         plt.ylabel("Occurrences")
         plt.xlabel(x_label)
         plt.legend(frameon=False,title=title_legend)
