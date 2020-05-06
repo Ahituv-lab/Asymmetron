@@ -2,7 +2,10 @@ import sys,os
 import functions
 import argparse
 import wrapper_functions as wf
-import visualizations
+try:
+    import visualizations
+except:
+    print("visualisations not imported")
 
 
 def fun2(args):
@@ -139,7 +142,7 @@ def contained_asymmetries_parser():
 	parser.add_argument("-b", "--bins",
 	                    help="Optional argument. Number of bins to subdivide the results into. Only runs when --score is provided. Default value is 10.",
 	                    type=wf.check_positive_int)
-	args = parser.parse_args()
+	return args = parser.parse_args()
 
 if __name__ == "__main__":
 	args = contained_asymmetries_parser()
