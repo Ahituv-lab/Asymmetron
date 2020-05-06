@@ -446,8 +446,11 @@ if __name__ == "__main__":
         for line in f.readlines():
             DataL.append(line.strip().split("\t"))
     out = extract_pattern(DataL, "+-", 0, 3, 2)
-    print("The pattern occurs on the following lines: ", out[0] )
-    print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the threshold and distance requirements\n", out[1])
+    print("The following dictionary includes the number of consecutive appearances of the pattern, e.g. when looking "
+          "for +- in +-+-+---+- the result should be {1:1}, {3:1}", out[0])
+    print("The pattern occurs on the following lines: ", out[1] )
+    print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the "
+          "threshold and distance requirements\n", out[2])
 
 #print(asymmetries_single("test_extract_pattern.bed","+-", 0, 3, 2))
 # test area
