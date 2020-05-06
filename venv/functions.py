@@ -177,15 +177,15 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
           dist < window_max and dist >= window_min))
     p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = orientation(Strand1, Strand2)
 
+    p_pL_bin = [];
+    m_mL_bin = [];
+    p_mL_bin = [];
+    m_pL_bin = [];
+    same_strandL_bin = [];
+    opposite_strandL_bin = [];
+    convergentL_bin = [];
+    divergentL_bin = [];
     if bins != None:
-        p_pL_bin = [];
-        m_mL_bin = [];
-        p_mL_bin = [];
-        m_pL_bin = [];
-        same_strandL_bin = [];
-        opposite_strandL_bin = [];
-        convergentL_bin = [];
-        divergentL_bin = [];
         Bins = binner(window_min, window_max, bins)
         for index, bin_i in enumerate(Bins):
             Strand1Bin = [];
@@ -206,14 +206,13 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
             opposite_strandL_bin.append(opposite_strand_bin);
             convergentL_bin.append(convergent_bin);
             divergentL_bin.append(divergent_bin)
-            p_p_bin, m_m_bin, p_m_bin, m_p_bin, bin_i
 
     # Same Opposite orientation
     # visualizations.barplot_pair_lists_gen(Bins, same_strandL_bin, opposite_strandL_bin, name1, name2,"same_opposite_bins_" + name1 + "_" + name2 + ".png")
     # Convergent Divergent orientation
     # visualizations.barplot_pair_lists_gen(Bins, convergentL_bin, divergentL_bin, name1, name2,"convergent_divergent_bins_" + name1 + "_" + name2 + ".png")
 
-    return p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent
+    return (p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent), (Bins,p_pL_bin,m_mL_bin,p_mL_bin,m_pL_bin,same_strandL_bin,opposite_strandL_bin,convergentL_bin,divergentL_bin)
 
 
 def asym_binned(window_min, window_max, bins, DistancesL, Strand1L, Strand2L):
@@ -409,8 +408,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     consecutiveL= defaultdict(int);
     for i in range(1, len(occs)):
         index = occs[i]
-        print(index+n)
-        distance = max(0, int(DataL[index][1]) - int(DataL[index -1][2]))
+        distance = max(0, int(DataL[index + n][1]) - int(DataL[index + n - 1][2]))
         if occs[i]-occs[i-1] == n and (distance >= min_distance and distance <= max_distance):
             counter += 1
             DataL_temp.extend(DataL[index:index+n])
@@ -421,10 +419,6 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                 DataL_significant.extend(DataL_temp)
             DataL_temp.clear()
             counter = 1
-    # Add last lines
-    if counter >= consecutive_threshold:
-        DataL_significant.extend(DataL_temp)
-        consecutiveL[counter] += 1
 
     return consecutiveL,occs,DataL_significant
 
@@ -447,13 +441,10 @@ if __name__ == "__main__":
         for line in f.readlines():
             DataL.append(line.strip().split("\t"))
     out = extract_pattern(DataL, "+-", 0, 3, 2)
-    print("The following dictionary includes the number of consecutive appearances of the pattern, e.g. when looking "
-          "for +- in +-+-+---+- the result should be {1:1}, {3:1}", out[0])
-    print("The pattern occurs on the following lines: ", out[1] )
-    print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the "
-          "threshold and distance requirements\n", out[2])
+    print("The pattern occurs on the following lines: ", out[0] )
+    print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the threshold and distance requirements\n", out[1])
 
-    #print(asymmetries_single("test_extract_pattern.bed","+-", 0, 3, 2))
+#print(asymmetries_single("test_extract_pattern.bed","+-", 0, 3, 2))
 # test area
 # works
 # print overlap(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"))
