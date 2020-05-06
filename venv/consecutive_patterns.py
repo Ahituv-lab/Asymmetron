@@ -85,7 +85,7 @@ def fun1(args):
                      visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1]+"_with_controls",str(patterns[i])))
                      # We want to show biases in distances of consecutive
                      print(wf.output_path("consecutive_patterns",path.split("/")[-1],"png","distances_inconsecutive_pattern_"+str(patterns[i])))
-                     visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],"png","distances_inconsecutive_pattern_"+str(patterns[i])))
+                     visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],"distances_inconsecutive_pattern_"+str(patterns[i])))
 
                  # I think instead of Bins here it can be gradient of distances or something like that
                  if bins>1:
