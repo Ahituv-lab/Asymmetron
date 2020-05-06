@@ -74,7 +74,7 @@ def fun3(args):
             p_val_conv_divergL.append(p_val_conv_diverg);p_val_conv_diver_BonferoniL.append(p_val_conv_diver_BonferoniL);
             Ratio_conv_divergL.append(Ratio_conv_diverg);
 
-	    if plots:
+            if plots:
                  # generates histogram same opposite
                  visualizations.barplot_gen(same_strand, opposite_strand, "Same", "Opposite",wf.output_path("pairwise_asymmetries", "same_opposite_orientation.png", names_pairs[i][0],names_pairs[i][1]))
                  # generates historam covergent divergent
