@@ -85,9 +85,9 @@ def fun3(args):
                 BinsL,p_p_binsL,m_m_binsL,p_m_binsL,m_p_binsL,same_strand_binsL,opposite_strand_binsL,convergent_binsL,divergent_binsL=per_bin_asymmetries
                 # Here we need to decide what is the outputs we want to provide since they can be too many and complicated or focus on the plots and a small table
                 # Same Opposite orientation
-                visualizations.barplot_pair_lists_gen(BinsL, same_strand_binsL, opposite_strand_binsL, "Same", "Opposite","Orientation","Strand Orientation",wf.output_path("pairwise_asymmetries", "png","bins_same_opposite_orientation", names_pairs[i][0],names_pairs[i][1]))
+                visualizations.barplot_pair_lists_gen(BinsL, same_strand_binsL, opposite_strand_binsL, "Same", "Opposite","Distance","Strand Orientation",wf.output_path("pairwise_asymmetries", "png","bins_same_opposite_orientation", names_pairs[i][0],names_pairs[i][1]))
                 # Convergent Divergent orientation
-                visualizations.barplot_pair_lists_gen(BinsL, convergent_binsL, divergent_binsL, "Convergent", "Divergent","Orientation","Strand Orientation",wf.output_path("pairwise_asymmetries", "png","bins_convergent_divergent_orientation", names_pairs[i][0],names_pairs[i][1]))
+                visualizations.barplot_pair_lists_gen(BinsL, convergent_binsL, divergent_binsL, "Convergent", "Divergent","Distance","Strand Orientation",wf.output_path("pairwise_asymmetries", "png","bins_convergent_divergent_orientation", names_pairs[i][0],names_pairs[i][1]))
 
     # generates table <- this should be done for all pairs together.
     functions.table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_val_same_oppositeL,p_val_same_opposite_BonferoniL,RatiosL,p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL,wf.output_path("pairwise_asymmetries","all_assymetries"))
