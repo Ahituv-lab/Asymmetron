@@ -1,0 +1,2 @@
+Number of consecutive occurrences++	--	+-	-+
+40	0	0	1
