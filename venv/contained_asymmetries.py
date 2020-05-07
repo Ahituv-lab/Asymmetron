@@ -44,9 +44,6 @@ def fun2(args):
         if score == True and bins_score == None:
             bins_score = 10
     
-        bins=args.bins
-
-
         number_of_files = len(motifsL) * len(regionsL)
 	# All possible pairs between region files and motif files
         motif_region_pairs, names_pairs = functions.pairs_generator(motifsL, regionsL, motifsL_names, regionsL_names)
@@ -103,8 +100,8 @@ def fun2(args):
 
             if score:
                     Ratio_Bins, Score_names = functions.separate_on_score(motif_region_pairs[i][1], motif_region_pairs[i][0], bins_score)
-                    visualizations.barplot_single_gen(Ratio_Bins, [int((round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names],"Distance", "Strand Orientation", wf.output_path("contained_asymmetries","png", "same_opposite_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
-                    visualizations.barplot_single_gen(Ratio_Bins, [int((round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names],"Distance", "Strand Orientation", wf.output_path("contained_asymmetries","png", "convergent_divergent_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
+                    visualizations.barplot_single_gen(Ratio_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names],"Distance", "Strand Orientation", wf.output_path("contained_asymmetries","png", "same_opposite_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
+                    visualizations.barplot_single_gen(Ratio_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names],"Distance", "Strand Orientation", wf.output_path("contained_asymmetries","png", "convergent_divergent_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
 
         # generates table <- this should be done for all pairs.
         functions.table_gen(names_pairs, p_pL, m_mL, p_mL, m_pL, p_val_same_oppositeL, p_val_same_opposite_BonferoniL, Ratio_same_oppositeL, p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL,wf.output_path("contained_asymmetries", "txt","table", names_pairs[i][0],names_pairs[i][1]))
