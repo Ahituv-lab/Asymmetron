@@ -1,0 +1,2 @@
+Number of consecutive occurrences+	+
+72	2
