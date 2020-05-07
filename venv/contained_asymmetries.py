@@ -10,7 +10,6 @@ except:
 
 def fun2(args):
 	#paths, orientation_paths, names = wf.sanitize(args.motifs, args.orientation, args.names)
-	# this is used for Bonferoni correction
 	# Missing link to fun4 if provided
 
         regionsL=args.regions.split(",")
@@ -36,7 +35,6 @@ def fun2(args):
         if expected_asym_conv_div==None:
             expected_asym_conv_div=0.5
 
-
         plots=args.plots 
 
         score = args.score
@@ -49,19 +47,13 @@ def fun2(args):
         motif_region_pairs, names_pairs = functions.pairs_generator(motifsL, regionsL, motifsL_names, regionsL_names)
 
 	# Save the results for the final table
-        p_pL = [];
-        m_mL = [];
-        p_mL = [];
-        m_pL = [];
-        same_strandL = [];
-        opposite_strandL = [];
-        convergentL = [];
-        divergentL = [];
-        p_val_same_oppositeL = [];
-        p_val_same_opposite_BonferoniL = [];
+        p_pL = [];m_mL = []; # Same orientation
+        p_mL = [];m_pL = []; # Opposite orientation
+        same_strandL = []; opposite_strandL = []; # Summed
+        convergentL = []; divergentL = [];
+        p_val_same_oppositeL = []; p_val_same_opposite_BonferoniL = [];
         Ratio_same_oppositeL = [];
-        p_val_conv_divergL = [];
-        p_val_conv_diver_BonferoniL = [];
+        p_val_conv_divergL = [];p_val_conv_diver_BonferoniL = [];
         Ratio_conv_divergL = [];
 
         # Perform all comparisons of each pair
@@ -88,7 +80,6 @@ def fun2(args):
             # convergent vs divergent analysis
             Ratio_conv_diverg, p_val_conv_diverg, p_val_conv_diver_Bonferoni = functions.statistical_evaluation(p_m, m_p,number_of_files,expected_asym=expected_asym_conv_div)
             p_val_conv_divergL.append(p_val_conv_diverg);
-            p_val_conv_divergL.append(p_val_conv_diver_Bonferoni);
             Ratio_conv_divergL.append(Ratio_conv_diverg);
             p_val_conv_diver_BonferoniL.append(p_val_conv_diver_BonferoniL);
 
@@ -99,9 +90,9 @@ def fun2(args):
                 visualizations.barplot_gen(p_m, m_p,"Convergent","Divergent", wf.output_path("contained_asymmetries", "png","convergent_divergent_orientation", names_pairs[i][0],names_pairs[i][1]))
 
             if score:
-                    Ratio_Bins, Score_names = functions.separate_on_score(motif_region_pairs[i][1], motif_region_pairs[i][0], bins_score)
-                    visualizations.barplot_single_gen(Ratio_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names], "Strand Orientation","Distance", wf.output_path("contained_asymmetries","png", "same_opposite_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
-                    visualizations.barplot_single_gen(Ratio_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names], "Strand Orientation","Distance", wf.output_path("contained_asymmetries","png", "convergent_divergent_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
+                Ratio_Bins, Score_names = functions.separate_on_score(motif_region_pairs[i][1], motif_region_pairs[i][0], bins_score)
+                visualizations.barplot_single_gen(Ratio_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names], "Strand Orientation","Distance", wf.output_path("contained_asymmetries","png", "same_opposite_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
+                visualizations.barplot_single_gen(Ratio_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names], "Strand Orientation","Distance", wf.output_path("contained_asymmetries","png", "convergent_divergent_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
 
         # generates table <- this should be done for all pairs.
         functions.table_gen(names_pairs, p_pL, m_mL, p_mL, m_pL, p_val_same_oppositeL, p_val_same_opposite_BonferoniL, Ratio_same_oppositeL, p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL,wf.output_path("contained_asymmetries","txt","table", names_pairs[i][0],names_pairs[i][1]))
