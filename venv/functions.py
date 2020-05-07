@@ -425,13 +425,12 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     for i in range(len(occs)-1):
         index = occs[i]
         index_next = occs[i+1]
-        print(index, index_next)
-        distance = max(0, int(DataL[index_next][1]) - int(DataL[index+n][2]))
-        distancesL.append(max_distance)
+        distance = max(0, int(DataL[occs[i+1]][1]) - int(DataL[occs[i]+n-1][2]))
+        distancesL.append(distance)
 
-    print(distancesL)
 
-    return consecutiveL,occs,DataL_significant
+
+    return consecutiveL,distancesL,DataL_significant
 
 def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     from random import shuffle
@@ -454,7 +453,7 @@ if __name__ == "__main__":
     out = extract_pattern(DataL, "+-", 0, 3, 2)
     print("The following dictionary includes the number of consecutive appearances of the pattern, e.g. when looking "
           "for +- in +-+-+---+- the result should be {1:1}, {3:1}", out[0])
-    print("The pattern occurs on the following lines: ", out[1] )
+    print("The distances between consecutive appearances of the pattern are: ", out[1] )
     print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the "
           "threshold and distance requirements\n", out[2])
 
