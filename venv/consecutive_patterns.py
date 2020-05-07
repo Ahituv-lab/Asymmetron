@@ -101,7 +101,8 @@ def fun1(args):
                      # Plot barplot of occs consecutive in each bin
                      visualizations.barplot_single_gen(OccsL,OccsL,"Occurrences",wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
 
-                # Need to add here vizualization as heatmap for all patterns and number of consecutive
+        # Need to add here vizualization as heatmap for all patterns and number of consecutive
+        #ConsecutiveD_Total[i]
 
         # Table with all the outputs for all strands
         functions.table_consecutive(ConsecutiveD_Total,patterns,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_Total"))
