@@ -23,7 +23,7 @@ def fun1(args):
     if max_distance == None:
         max_distance = 100;
 
-    patterns = args.patterns.split(",")
+    patterns = args.patterns
 
     bins = args.bins
     plots = args.plots
@@ -31,6 +31,8 @@ def fun1(args):
 
     if patterns == None:
         patterns = ["++","--","+-","-+"];
+    else:
+        patterns = patterns.spli(",")
 
     if bins == None:
         bins = 1;
@@ -51,42 +53,27 @@ def fun1(args):
     for index,path in enumerate(paths):
         name = names[index]
         DataL_significant,consecutiveL,occsL,consecutive_controlL,occs_controlL = functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
-        Counter_consecutive_realL=[Counter(consecutive_pattern) for consecutive_pattern in consecutiveL]
-        Counter_consecutive_controlL=[Counter(consecutive_pattern_control) for consecutive_pattern_control in consecutive_controlL]
 
         # Write significant results in an output file
         with open(wf.output_path("consecutive_patterns","bed",path.split("/")[-1],"statistically_siginificant"), 'w') as output_file:
             for line in DataL_significant:
                 output_file.write('\t'.join([str(x) for x in line])+'\n')
 
-        for i in range(len(Counter_consecutive_realL)):
-                 consecutive, times_found = zip(*Counter_consecutive_realL[i].items())
-                 consecutive_control, times_found_control = zip(*Counter_consecutive_controlL[i].items())
-                 ConsecutiveD = dict(zip(consecutive, times_found))
+	         
+            consecutive = consecutiveL[i].keys()
+            times_found = [consecutiveL[i][x] for x in consecutive]
 
-                 ConsecutiveD_Total.append(ConsecutiveD)
-
-                 ConsecutiveD_control = dict(zip(consecutive_control, times_found_control))
-                 TimesFullList=[];TimesFullList_control=[];
-                 for k in range(1,max(max(consecutive),max(consecutive_control))):
-                     if k in ConsecutiveD.keys():
-                         TimesFullList.append(ConsecutiveD[k])
-                     else:
-                         TimesFullList.append(0)
-
-                     if k in ConsecutiveD_control.keys():
-                          TimesFullList_control.append(ConsecutiveD_control[k])
-                     else:
-                          TimesFullList_control.append(0)
-                 
-                 if plots==True:
+            consecutive_control = consecutive_controlL[i].keys()
+            times_found_found = [consecutive_controlL[i][x] for x in consecutive]
+ 
+            if plots==True:
                      visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Occurrences","Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
                      visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1]+"_with_controls",str(patterns[i])))
                      # We want to show biases in distances of consecutive
                      visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],"distances_inconsecutive_pattern_"+str(patterns[i])))
 
-                 # I think instead of Bins here it can be gradient of distances or something like that
-                 if bins>1:
+            # I think instead of Bins here it can be gradient of distances or something like that
+            if bins>1:
                      consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
                      Bins=functions.binner(min_distance,max_distance,bins)
                      for min_bin,max_bin in Bins:
