@@ -1,2 +1,0 @@
-Feature 1	Feature 2	plus-plus	minus-minus	plus-minus	minus-plus	p-value same opposite	p-value same opposite Bonferoni corrected	Ratio same opposite	p-value divergent convergent	p-value divergent convergent Bonferoni corrected	Ratio divergent convergent
-All_G4.bed	MCF7_RepliStrand.leading_lagging.bed	75689	73941	77046	77514	3.995823613293362e-19	3.995823613293362e-19	0.4918965120483908	0.2348851608889111	[[...]]	0.4984860248447205
