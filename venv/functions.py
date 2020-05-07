@@ -337,7 +337,7 @@ def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, 
 def table_consecutive(ConsecutiveL,StrandsL,path_out):
     max_consecutive = max([max(k.keys()) for k in ConsecutiveL])
     with open(path_out, 'w') as output:
-        output.write(str("Number of consecutive occurrences")+'\t'.join([str(x) for x in max_consecutive])+'\n')
+        output.write(str("Number of consecutive occurrences")+'\t'.join([str(x) for x in range(1,max_consecutive+1)])+'\n')
 
         for i in range(len(ConsecutiveL)):
             ConsecutiveLT = sorted(ConsecutiveL[i].items()) 

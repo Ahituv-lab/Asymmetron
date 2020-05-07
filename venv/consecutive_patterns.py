@@ -55,7 +55,7 @@ def fun1(args):
         DataL_significant,consecutiveL,occsL,consecutive_controlL,occs_controlL = functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
 
         # Table with all the outputs for all strands
-        functions.table_consecutive(consecutiveL,patterns,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_Total",str(patterns[i])))
+        functions.table_consecutive(consecutiveL,patterns,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_Total"))
 
         for i in range(len(patterns)):
 
@@ -94,7 +94,6 @@ def fun1(args):
 
 
         # Need to add here vizualization as heatmap for all patterns and number of consecutive
-        #ConsecutiveD_Total[i]
 
 
     return
