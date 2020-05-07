@@ -1,4 +1,4 @@
-import sys
+import sys,os
 import functions
 import argparse
 import wrapper_functions as wf
@@ -45,7 +45,7 @@ def fun1(args):
         paths_after_orientation=[];
         for path in paths:
             os.system("python orientation.py "  + path + " " + orientation)
-            paths_after_orientation.append(["ASYMMETRON"+path.split("/")[-1]+"_ANNOTATED_"+orientation.split("/")[-1]])
+            paths_after_orientation.append(["ASYMMETRON"+os.path.basename(path)+"_ANNOTATED_"+os.path.basename(orientation)])
         paths = paths_after_orientation
     
     for index,path in enumerate(paths):
