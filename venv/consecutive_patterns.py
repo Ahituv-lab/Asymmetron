@@ -54,10 +54,12 @@ def fun1(args):
         name = names[index]
         DataL_significant,consecutiveL,occsL,consecutive_controlL,occs_controlL = functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
 
-        # Write significant results in an output file
-        with open(wf.output_path("consecutive_patterns","bed",path.split("/")[-1],"statistically_siginificant"), 'w') as output_file:
-            for line in DataL_significant:
-                output_file.write('\t'.join([str(x) for x in line])+'\n')
+        for i in range(len(patterns)):
+
+            # Write significant results in an output file
+            with open(wf.output_path("consecutive_patterns","bed",path.split("/")[-1],"statistically_siginificant",patterns[i]), 'w') as output_file:
+                for line in DataL_significant:
+                    output_file.write('\t'.join([str(x) for x in line])+'\n')
 
 	         
             consecutive = consecutiveL[i].keys()
