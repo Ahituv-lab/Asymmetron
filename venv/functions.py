@@ -334,18 +334,15 @@ def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, 
     datafile.close()
     return
 
-def table_consecutive(ConsecutiveD_Total,StrandsL,path_out):
-    max_all = max([max(dic.keys()) for dic in ConsecutiveD_Total])
+def table_consecutive(ConsecutiveL,StrandsL,path_out):
+    max_consecutive = max([max(k.keys()) for k in ConsecutiveL])
     with open(path_out, 'w') as output:
-        output.write(str("Number of consecutive occurrences")+'\t'.join([str(x) for x in StrandsL])+'\n')
-        for i in range(1,max_all+1):
-            StrandConsecutive=[];
-            for consecutiveD in ConsecutiveD_Total:
-               if i in consecutiveD.keys():
-                    StrandConsecutive.append(consecutiveD[i])
-               else:
-                    StrandConsecutive.append(0)
-        output.write(str(i)+'\t'.join([str(x) for x in StrandConsecutive])+'\n')
+        output.write(str("Number of consecutive occurrences")+'\t'.join([str(x) for x in max_consecutive])+'\n')
+
+        for i in range(len(ConsecutiveL)):
+            ConsecutiveLT = sorted(ConsecutiveL[i].items()) 
+            consecutive, times_found = zip(*ConsecutiveLT) 
+            output.write(str(i)+'\t'.join([str(x) for x in times_found])+'\n')
     return
 
 def find_sub_str(my_str, sub_str):
