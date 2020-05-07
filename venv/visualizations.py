@@ -66,7 +66,7 @@ def barplot_single_gen(List1,List1_names,y_label,x_label,output):
         """
         plot_styler()
         plt.bar(range(1,len(List1)*1+1,1),List1,align="center")
-        plt.xticks(range(1,len(List1)*1+1,1),List1_names)
+        plt.xticks(range(1,len(List1)*1+1,1),List1_names,rotation=90)
         plt.ylabel(y_label)
         plt.xlabel(x_label)
         plt.tight_layout()
