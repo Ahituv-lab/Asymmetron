@@ -1,0 +1,2 @@
+Number of consecutive occurrences++	--	+-	-+
+37	2	7	6
