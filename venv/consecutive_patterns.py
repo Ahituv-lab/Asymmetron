@@ -23,7 +23,7 @@ def fun1(args):
     if max_distance == None:
         max_distance = 100;
 
-    patterns = args.patterns
+    patterns = args.patterns.split(",")
 
     bins = args.bins
     plots = args.plots
