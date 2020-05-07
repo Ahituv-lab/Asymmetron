@@ -108,9 +108,6 @@ def fun1(args):
 
         # Table with all the outputs for all strands
         functions.table_consecutive(ConsecutiveD_Total,patterns,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_Total"))
-        #with open(wf.output_path("consecutive_patterns","txt","Consecutive_Strand_Asymmetries", 'w') as the_file:
-        #        for k in OccsLL:
-        #        the_file.write()
 
     return
 
