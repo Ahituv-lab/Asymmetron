@@ -36,11 +36,16 @@ def fun2(args):
         if expected_asym_conv_div==None:
             expected_asym_conv_div=0.5
 
+
         plots=args.plots 
 
-        score=args.score
-
+        score = args.score
+        bins_score = args.bins_score
+        if score == True and bins_score == None:
+            bins_score = 10
+    
         bins=args.bins
+
 
         number_of_files = len(motifsL) * len(regionsL)
 	# All possible pairs between region files and motif files
@@ -98,12 +103,13 @@ def fun2(args):
 
             if score:
                 # Here we need to decide if we want to include the score for both -regions and -motifs and perform the analyses separately, score needs to go with number of score_bins
-                if score_regions != False:
-                    Ratio_Same_Opposite, Score_names = separate_on_score(regions, motifs, number_of_bins)
-                    visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names, "Strand Orientation",output_plot)
-                    if score_motifs != False:
-                        Ratio_Same_Opposite, Score_names = separate_on_score(motifs, regions, number_of_bins)
-                        visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names, output_plot)
+                #if score_regions != False:
+                    print(bins_score)
+                    Ratio_Same_Opposite, Score_names = functions.separate_on_score(motif_region_pairs[i][1], motif_region_pairs[i][0], bins_score)
+                    visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names, "Strand Orientation", wf.output_path("contained_asymmetries","png", "same_opposite_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
+                    #if score_motifs != False:
+                    #    Ratio_Same_Opposite, Score_names = functions.separate_on_score(motifs, regions, number_of_bins)
+                    #    visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names, output_plot)
 
             # I think we don't need bins here. Only type of bins would have been spliting the regions in sub-parts and doing the analysis in those but I don't think it adds much.
             # if bins:
@@ -139,8 +145,11 @@ def contained_asymmetries_parser():
         parser.add_argument("-s", "--score",
 	                    help="Optional flag. If provided, assumes the last column of the region files is a scoring metric and uses it to subdivide the analysis into quartiles",
 	                    action="store_true")
+        parser.add_argument("-sb", "--bins_score",
+                            help="Optional flag. Number of bins to separate the score into",
+                            type=int)
         parser.add_argument("-b", "--bins",
-	                    help="Optional argument. Number of bins to subdivide the results into. Only runs when --score is provided. Default value is 10.",
+	                    help="Optional argument. Number of bins to subdivide the results into based on the division of regions into quantiles. Default value is 10.",
 	                    type=wf.check_positive_int)
         args = parser.parse_args()
         return args

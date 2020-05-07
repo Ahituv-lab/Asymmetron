@@ -100,14 +100,12 @@ def separate_on_score(path_score, path, number_of_bins):
 
     Ratio_Same_Opposite = [];
     for step in range(len(StepsL)):
-        p_p_step, m_m_step, p_m_step, m_p_step, same_strand_step, opposite_strand_step, convergent_step, divergent_step = functions.overlap(
-            DataStepsL, DataL2)
-        if same_strand_step + opposite_strand_step != []:
-            Ratio_Same_Opposite.append(same_strand_step / float(same_strand_step + opposite_strand_step))
-        else:
-            Ratio_Same_Opposite.append(0.5)
-    visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names, output_plot)
-    return Ratio_Same_Opposite, Score_names
+            p_p_step, m_m_step, p_m_step, m_p_step, same_strand_step, opposite_strand_step, convergent_step, divergent_step = overlap(DataStepsL[step],DataL2)
+            if same_strand_step + opposite_strand_step != []:
+                Ratio_Same_Opposite.append(same_strand_step / float(same_strand_step + opposite_strand_step))
+            else:
+                Ratio_Same_Opposite.append(0.5)
+    return Ratio_Same_Opposite, StepsL
 
 
 def strand_annotate_third_BED_overlap(unnotated_path, annotated_path):
