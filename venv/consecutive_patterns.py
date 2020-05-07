@@ -61,16 +61,16 @@ def fun1(args):
                 for line in DataL_significant:
                     output_file.write('\t'.join([str(x) for x in line])+'\n')
 
-	         
-            consecutive = consecutiveL[i].keys()
-            times_found = [consecutiveL[i][x] for x in consecutive]
+            consecutiveLT = sorted(consecutiveL[i].items())
+            consecutive,times_found = zip(*consecutiveLT) 
 
-            consecutive_control = consecutive_controlL[i].keys()
-            times_found_found = [consecutive_controlL[i][x] for x in consecutive]
+            consecutive_controlLT = sorted(consecutive_controlL[i].items())
+            consecutive_control,times_found_control = zip(*consecutive_controlLT)
+
  
             if plots==True:
-                     visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Occurrences","Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
-                     visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1]+"_with_controls",str(patterns[i])))
+                     visualizations.barplot_single_gen(times_found,range(1,consecutive+1),"Occurrences","Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
+                     visualizations.barplot_pair_lists_gen(range(1,consecutive+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1]+"_with_controls",str(patterns[i])))
                      # We want to show biases in distances of consecutive
                      visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],"distances_inconsecutive_pattern_"+str(patterns[i])))
 
