@@ -1,0 +1,5 @@
+Number of consecutive occurrences1	2	3
+029009	589	4
+128634	600	5
+243233	916	8
+343473	886	9
