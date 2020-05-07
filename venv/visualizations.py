@@ -60,14 +60,14 @@ def barplot_pair_lists_gen(x_tickL,List1,List2,name1,name2,x_label,title_legend,
         plt.close()
         return
 
-def barplot_single_gen(List1,List1_names,x_label,output):
+def barplot_single_gen(List1,List1_names,y_label,x_label,output):
         """ 
         This should be an option for the user if he wants to generate vizualizations too.
         """
         plot_styler()
         plt.bar(range(1,len(List1)*1+1,1),List1,align="center")
         plt.xticks(range(1,len(List1)*1+1,1),List1_names)
-        plt.ylabel("Occurrences")
+        plt.ylabel(y_label)
         plt.xlabel(x_label)
         plt.tight_layout()
         plt.savefig(output)

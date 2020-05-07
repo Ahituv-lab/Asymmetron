@@ -80,7 +80,7 @@ def fun1(args):
                           TimesFullList_control.append(0)
                  
                  if plots==True:
-                     visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
+                     visualizations.barplot_single_gen(TimesFullList,range(1,len(TimesFullList)+1),"Occurrences","Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
                      visualizations.barplot_pair_lists_gen(range(1,len(TimesFullList)+1),TimesFullList_control,TimesFullList,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1]+"_with_controls",str(patterns[i])))
                      # We want to show biases in distances of consecutive
                      visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],"distances_inconsecutive_pattern_"+str(patterns[i])))
@@ -99,7 +99,7 @@ def fun1(args):
                      consecutiveLL_binT = np.array(consecutiveLL_bin).T.tolist();occsLL_binT = np.array(occsLL_bin).T.tolist();
                      consecutive_controlLL_binT = np.arrray(consecutive_controlLL_bin).T.tolist(); occs_controlLL_binT = np.array(occs_controlLL_bin).T.tolist()
                      # Plot barplot of occs consecutive in each bin
-                     visualizations.barplot_single_gen(OccsL,OccsL,wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
+                     visualizations.barplot_single_gen(OccsL,OccsL,"Occurrences",wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
 
                 # Need to add here vizualization as heatmap for all patterns and number of consecutive
 

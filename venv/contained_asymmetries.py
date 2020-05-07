@@ -106,7 +106,7 @@ def fun2(args):
                 #if score_regions != False:
                     print(bins_score)
                     Ratio_Same_Opposite, Score_names = functions.separate_on_score(motif_region_pairs[i][1], motif_region_pairs[i][0], bins_score)
-                    visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names, "Strand Orientation", wf.output_path("contained_asymmetries","png", "same_opposite_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
+                    visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names,"Strand Bias", "Strand Orientation", wf.output_path("contained_asymmetries","png", "same_opposite_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
                     #if score_motifs != False:
                     #    Ratio_Same_Opposite, Score_names = functions.separate_on_score(motifs, regions, number_of_bins)
                     #    visualizations.barplot_single_gen(Ratio_Same_Opposite, Score_names, output_plot)
