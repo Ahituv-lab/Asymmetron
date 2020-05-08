@@ -337,12 +337,12 @@ def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, 
 def table_consecutive(ConsecutiveL,StrandsL,path_out):
     max_consecutive = max([max(k.keys()) for k in ConsecutiveL])
     with open(path_out, 'w') as output:
-        output.write(str("Number of consecutive occurrences")+'\t'.join([str(x) for x in range(1,max_consecutive+1)])+'\n')
+        output.write(str("Number of consecutive occurrences")+'\t'+'\t'.join([str(x) for x in range(1,max_consecutive+1)])+'\n')
 
         for i in range(len(ConsecutiveL)):
             ConsecutiveLT = sorted(ConsecutiveL[i].items()) 
             consecutive, times_found = zip(*ConsecutiveLT) 
-            output.write(str(i)+'\t'.join([str(x) for x in times_found])+'\n')
+            output.write(str(i)+'\t'+'\t'.join([str(x) for x in times_found])+'\n')
     return
 
 def find_sub_str(my_str, sub_str):
@@ -427,8 +427,6 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         index_next = occs[i+1]
         distance = max(0, int(DataL[occs[i+1]][1]) - int(DataL[occs[i]+n-1][2]))
         distancesL.append(distance)
-
-
 
     return consecutiveL,distancesL,DataL_significant
 
