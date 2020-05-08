@@ -333,6 +333,13 @@ def table_consecutive(ConsecutiveL,StrandsL,path_out):
         for i in range(len(ConsecutiveL)):
             ConsecutiveLT = sorted(ConsecutiveL[i].items()) 
             consecutive, times_found = zip(*ConsecutiveLT) 
+            consecutiveL = list(consecutive)
+            times_foundL = list(times_found)            
+
+            for k in range(1,max_consecutive):
+               if k not in consecutiveL:
+                   consecutiveL=consecutiveL[:k-1]+[k]+consecutiveL[k:]
+                   times_foundL=times_foundL[:k-1]+[0]+times_foundL[k:]
             output.write(str(StrandsL[i])+'\t'+'\t'.join([str(x) for x in times_found])+'\n')
     return
 
