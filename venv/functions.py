@@ -375,7 +375,6 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     # Find all occurences of the pattern in the string of signs without accounting for distances
     occs = list(find_sub_str(signs, pattern))
 
-
     # Remove occurences that do not meet the distance criterion
     for i in range(len(occs)):
         index = occs[i]
@@ -394,7 +393,8 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     probability["+"]=total_plus/float(total_plus+total_minus)
     probability["-"] = 1-probability["+"]
     probability_pattern = np.prod([probability[k] for k in list(pattern)])
-    consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if (probability_pattern**x)*number_of_tests > threshold)
+    consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if (probability_pattern**x)*number_of_tests < threshold)
+    print(probability_pattern,consecutive_threshold)
 
     # Filter for number of consecutive occurences that meet the threshold criterion and are within the distance window
     DataL_significant = []
