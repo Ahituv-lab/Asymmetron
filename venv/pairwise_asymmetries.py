@@ -71,7 +71,7 @@ def fun3(args):
 
             # convergent vs divergent analysis
             Ratio_conv_diverg,p_val_conv_diverg,p_val_conv_diver_Bonferoni=functions.statistical_evaluation(p_m,m_p,number_of_files,expected_asym=expected_asym_conv_div)
-            p_val_conv_divergL.append(p_val_conv_diverg);p_val_conv_diver_BonferoniL.append(p_val_conv_diver_BonferoniL);
+            p_val_conv_divergL.append(p_val_conv_diverg);p_val_conv_diver_BonferoniL.append(p_val_conv_diver_Bonferoni);
             Ratio_conv_divergL.append(Ratio_conv_diverg);
 
             if plots:
