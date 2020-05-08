@@ -95,12 +95,12 @@ def separate_on_score(path_score, path, number_of_bins):
             if ScoreL[i] >= step[0] and ScoreL[i] < step[1]:
                 DataStep += [DataL[i]]
                 ScoreStep += [ScoreL[i]]
-        DataStepsL += DataStep
+        DataStepsL += [DataStep]
         ScoresStepsL += [ScoreStep]
 
     Ratio_Same_Opposite = [];
     for step in range(len(StepsL)):
-        p_p_step, m_m_step, p_m_step, m_p_step, same_strand_step, opposite_strand_step, convergent_step, divergent_step = overlap(DataStepsL, DataL2)
+        p_p_step, m_m_step, p_m_step, m_p_step, same_strand_step, opposite_strand_step, convergent_step, divergent_step = overlap(DataStepsL[step], DataL2)
         if same_strand_step + opposite_strand_step != []:
             Ratio_Same_Opposite.append(same_strand_step / float(same_strand_step + opposite_strand_step))
         else:
