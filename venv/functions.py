@@ -193,8 +193,7 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
         # Performs the same analysis for each bin.
         Bins = binner(window_min, window_max, bins)
         for index, bin_i in enumerate(Bins):
-            Strand1Bin = [];
-            Strand2Bin = [];
+            Strand1Bin = [];Strand2Bin = [];
             min_bin, max_bin = bin_i
             for k in range(len(Distance)):
                 if Distance[k] >= min_bin and Distance[k] < max_bin:
@@ -235,10 +234,8 @@ def asym_binned(window_min, window_max, bins, DistancesL, Strand1L, Strand2L):
                 Strand2D[index + 1] += [Strand2L[i]]
                 DistancesD[index + 1] += [DistancesL[i]]
 
-    p_pL = [];
-    m_mL = [];
-    p_mL = [];
-    m_pL = [];
+    p_pL = [];m_mL = []; # Same strand orientation
+    p_mL = [];m_pL = []; # Opposite strand orientation
     same_strandL = [];
     opposite_strandL = [];
     convergentL = [];
