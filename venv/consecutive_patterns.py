@@ -61,9 +61,7 @@ def fun1(args):
         for i in range(len(patterns)):
 
             # Write significant results in an output file
-            with open(wf.output_path("consecutive_patterns","bed",path.split("/")[-1],"statistically_siginificant",patterns[i]), 'w') as output_file:
-                for line in DataL_significant:
-                    output_file.write('\t'.join([str(x) for x in line])+'\n')
+            functions.write_BED_out(DataL_significant,wf.output_path("consecutive_patterns","bed",path.split("/")[-1],"statistically_siginificant",patterns[i]))
 
             consecutiveLT = sorted(consecutiveL[i].items())
             consecutive,times_found = zip(*consecutiveLT) 
