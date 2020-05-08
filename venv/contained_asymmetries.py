@@ -52,9 +52,8 @@ def fun2(args):
         same_strandL = []; opposite_strandL = []; # Summed
         convergentL = []; divergentL = [];
         p_val_same_oppositeL = []; p_val_same_opposite_BonferoniL = [];
-        Ratio_same_oppositeL = [];
+        Ratio_same_oppositeL = [];Ratio_conv_divergL = [];
         p_val_conv_divergL = [];p_val_conv_diver_BonferoniL = [];
-        Ratio_conv_divergL = [];
 
         # Perform all comparisons of each pair
         for i in range(len(motif_region_pairs)):
