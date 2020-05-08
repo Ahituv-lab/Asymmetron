@@ -33,7 +33,7 @@ def fun1(args):
     if patterns == None:
         patterns = ["++","--","+-","-+"];
     else:
-        patterns = patterns.spli(",")
+        patterns = patterns.split(",")
 
     if bins == None:
         bins = 1;
@@ -56,12 +56,12 @@ def fun1(args):
         DataL_significant,consecutiveL,occsL,consecutive_controlL,occs_controlL = functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
 
         # Table with all the outputs for all strands, number of consecutive occurrences found for each strand pattern
-        functions.table_consecutive(consecutiveL,patterns,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_Total"))
+        functions.table_consecutive(consecutiveL,patterns,wf.output_path("consecutive_patterns","txt",os.path.basename(path),"_Consecutive_Patterns_Total"))
 
         for i in range(len(patterns)):
 
             # Write significant results in an output file
-            functions.write_BED_out(DataL_significant,wf.output_path("consecutive_patterns","bed",path.split("/")[-1],"statistically_siginificant",patterns[i]))
+            functions.write_BED_out(DataL_significant,wf.output_path("consecutive_patterns","bed",os.path.basename(path),"statistically_siginificant",patterns[i]))
 
             consecutiveLT = sorted(consecutiveL[i].items())
             consecutive,times_found = zip(*consecutiveLT) 
@@ -71,10 +71,10 @@ def fun1(args):
 
             if plots==True:
                      # Plot number of consecutive occurrences of the pattern
-                     visualizations.barplot_single_gen(times_found,consecutive,"Occurrences","Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
+                     visualizations.barplot_single_gen(times_found,consecutive,"Occurrences","Consecutive occurrences",wf.output_path("consecutive_patterns","png",os.path.basename(path),str(patterns[i])))
 
                      # Plot number  of consecutive occurrences of the pattern in the real data and in the scrambled version
-                     visualizations.barplot_pair_lists_gen(consecutive,times_found_control,times_found,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1]+"_with_controls",str(patterns[i])))
+                     visualizations.barplot_pair_lists_gen(consecutive,times_found_control,times_found,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",os.path.basename(path)+"_with_controls",str(patterns[i])))
 
                      # We want to show biases in distances of consecutive
                      occsL_filtered=[];occs_controlL_filtered=[];
@@ -86,7 +86,7 @@ def fun1(args):
                          if min_distance<= occ_c <= max_distance:
                              occs_controlL_filtered.append(occ_c);
 
-                     visualizations.distribution_gen(occs_controlL_filtered,occsL_filtered,wf.output_path("consecutive_patterns","png",path.split("/")[-1],"distances_inconsecutive_pattern_"+str(patterns[i])))
+                     visualizations.distribution_gen(occs_controlL_filtered,occsL_filtered,wf.output_path("consecutive_patterns","png",os.path.basename((path),"distances_inconsecutive_pattern_"+str(patterns[i])))
 
             # I think instead of Bins here it can be gradient of distances or something like that
             if bins>1:

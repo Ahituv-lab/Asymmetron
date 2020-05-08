@@ -23,7 +23,7 @@ def fun2(args):
 
         regionsL_names=args.names_regions
         if regionsL_names==None:
-            regionsL_names=[k.split("/")[-1] for k in regionsL]
+            regionsL_names=[os.path.basename(k) for k in regionsL]
         else:
             regionsL_names=regionsL_names.split(",")
 

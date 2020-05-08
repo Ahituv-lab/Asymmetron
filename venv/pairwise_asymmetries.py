@@ -14,13 +14,13 @@ def fun3(args):
 
     motifsAL_names = args.names_A
     if motifsAL_names == None:
-        motifsAL_names = [k.split("/")[-1] for k in motifsAL]
+        motifsAL_names = [os.path.basename(k) for k in motifsAL]
     else:
         motifsAL_names = motifsAL_names.split(",") 
 
     motifsBL_names = args.names_B
     if motifsBL_names == None:
-        motifsBL_names = [k.split("/")[-1] for k in motifsBL]
+        motifsBL_names = [os.path.basename(k) for k in motifsBL]
     else:
         motifsBL_names = motifsBL_names.split(",") 
 
@@ -90,7 +90,7 @@ def fun3(args):
                 visualizations.barplot_pair_lists_gen(BinsL, convergent_binsL, divergent_binsL, "Convergent", "Divergent","Distance","Strand Orientation",wf.output_path("pairwise_asymmetries", "png","bins_convergent_divergent_orientation", names_pairs[i][0],names_pairs[i][1]))
 
     # generates table <- this should be done for all pairs together.
-    functions.table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_val_same_oppositeL,p_val_same_opposite_BonferoniL,RatiosL,p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL,wf.output_path("pairwise_asymmetries","all_assymetries"))
+    functions.table_gen(names_pairs,p_pL,m_mL,p_mL,m_pL,p_val_same_oppositeL,p_val_same_opposite_BonferoniL,RatiosL,p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL,wf.output_path("pairwise_asymmetries","txt","all_assymetries"))
     return
 
 def pairwise_asymmetries_parser():
