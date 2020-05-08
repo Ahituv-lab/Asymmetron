@@ -1,5 +1,0 @@
-Number of consecutive occurrences	1	2	3
-++	29094	629	9
---	28985	585	5
-+-	42948	932	7
--+	43429	922	9
