@@ -1,4 +1,5 @@
 import sys,os
+import numpy as np
 import functions
 import argparse
 import wrapper_functions as wf
@@ -54,7 +55,7 @@ def fun1(args):
         name = names[index]
         DataL_significant,consecutiveL,occsL,consecutive_controlL,occs_controlL = functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
 
-        # Table with all the outputs for all strands
+        # Table with all the outputs for all strands, number of consecutive occurrences found for each strand pattern
         functions.table_consecutive(consecutiveL,patterns,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_Total"))
 
         for i in range(len(patterns)):
@@ -71,10 +72,23 @@ def fun1(args):
             consecutive_control,times_found_control = zip(*consecutive_controlLT)
 
             if plots==True:
+                     # Plot number of consecutive occurrences of the pattern
                      visualizations.barplot_single_gen(times_found,consecutive,"Occurrences","Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
+
+                     # Plot number  of consecutive occurrences of the pattern in the real data and in the scrambled version
                      visualizations.barplot_pair_lists_gen(consecutive,times_found_control,times_found,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1]+"_with_controls",str(patterns[i])))
+
                      # We want to show biases in distances of consecutive
-                     visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],"distances_inconsecutive_pattern_"+str(patterns[i])))
+                     occsL_filtered=[];occs_controlL_filtered=[];
+                     for occ in occsL[i]:
+                         if min_distance<= occ <= max_distance:
+                             occsL_filtered.append(occ);
+
+                     for occ_c in occs_controlL[i]:
+                         if min_distance<= occ_c <= max_distance:
+                             occs_controlL_filtered.append(occ_c);
+
+                     visualizations.distribution_gen(occs_controlL_filtered,occsL_filtered,wf.output_path("consecutive_patterns","png",path.split("/")[-1],"distances_inconsecutive_pattern_"+str(patterns[i])))
 
             # I think instead of Bins here it can be gradient of distances or something like that
             if bins>1:
@@ -88,12 +102,14 @@ def fun1(args):
                          occs_controlLL_bin.append(occs_controlL_bin);
                      
                      consecutiveLL_binT = np.array(consecutiveLL_bin).T.tolist();occsLL_binT = np.array(occsLL_bin).T.tolist();
-                     consecutive_controlLL_binT = np.arrray(consecutive_controlLL_bin).T.tolist(); occs_controlLL_binT = np.array(occs_controlLL_bin).T.tolist()
+                     consecutive_controlLL_binT = np.array(consecutive_controlLL_bin).T.tolist(); occs_controlLL_binT = np.array(occs_controlLL_bin).T.tolist()
+
                      # Plot barplot of occs consecutive in each bin
-                     visualizations.barplot_single_gen(OccsL,OccsL,"Occurrences",wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
+                     #visualizations.barplot_single_gen(occsLL_bin,occs_controlLL_bin,"Occurrences","Bins",wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
 
+                     #print(consecutiveLL_bin)
+                     #functions.table_consecutive_bins(consecutiveLL_bin,Bins,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_bins",str(patterns[i])))
 
-        # Need to add here vizualization as heatmap for all patterns and number of consecutive
 
 
     return
