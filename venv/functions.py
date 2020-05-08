@@ -98,14 +98,18 @@ def separate_on_score(path_score, path, number_of_bins):
         DataStepsL += [DataStep]
         ScoresStepsL += [ScoreStep]
 
-    Ratio_Same_Opposite = [];
+    Ratio_Same_Opposite = [];Ratio_Convergent_Divergent=[];
     for step in range(len(StepsL)):
         p_p_step, m_m_step, p_m_step, m_p_step, same_strand_step, opposite_strand_step, convergent_step, divergent_step = overlap(DataStepsL[step], DataL2)
-        if same_strand_step + opposite_strand_step != []:
+        if same_strand_step + opposite_strand_step != 0:
             Ratio_Same_Opposite.append(same_strand_step / float(same_strand_step + opposite_strand_step))
         else:
             Ratio_Same_Opposite.append(0.5)
-    return Ratio_Same_Opposite,StepsL
+
+        if p_m_step+m_p_step != 0:
+            Ratio_Convergent_Divergent.append(p_m_step/ float(p_m_step+ m_p_step))
+
+    return Ratio_Same_Opposite,Ratio_Convergent_Divergent,StepsL
 
 
 def strand_annotate_third_BED_overlap(unnotated_path, annotated_path):

@@ -61,15 +61,11 @@ def fun2(args):
 
             p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = functions.overlap(motif_region_pairs[i][0], motif_region_pairs[i][1])
 
-            p_pL.append(p_p);
-            m_mL.append(m_m);  # Same strand orientation
-            p_mL.append(p_m);
-            m_pL.append(m_p);  # Opposite strand orientation
+            p_pL.append(p_p);m_mL.append(m_m);  # Same strand orientation
+            p_mL.append(p_m);m_pL.append(m_p);  # Opposite strand orientation
 
-            same_strandL.append(same_strand);
-            opposite_strandL.append(opposite_strand);
-            convergentL.append(convergent);
-            divergentL.append(divergent);
+            same_strandL.append(same_strand);opposite_strandL.append(opposite_strand);
+            convergentL.append(convergent);divergentL.append(divergent);
 
             # same vs opposite analysis
             Ratio_same_opposite, p_val_same_opposite, p_val_same_opposite_Bonferoni = functions.statistical_evaluation(same_strand, opposite_strand, number_of_files, expected_asym=expected_asym)
@@ -91,9 +87,9 @@ def fun2(args):
                 visualizations.barplot_gen(p_m, m_p,"Convergent","Divergent", wf.output_path("contained_asymmetries", "png","convergent_divergent_orientation", names_pairs[i][0],names_pairs[i][1]))
 
             if score:
-                Ratio_Bins, Score_names = functions.separate_on_score(motif_region_pairs[i][1], motif_region_pairs[i][0], bins_score)
+                Ratio_Bins,Ratio_Convergent_Divergent_Bins, Score_names = functions.separate_on_score(motif_region_pairs[i][1], motif_region_pairs[i][0], bins_score)
                 visualizations.barplot_single_gen(Ratio_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names], "Strand Orientation","Score", wf.output_path("contained_asymmetries","png", "same_opposite_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
-                visualizations.barplot_single_gen(Ratio_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names], "Strand Orientation","Score", wf.output_path("contained_asymmetries","png", "convergent_divergent_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
+                visualizations.barplot_single_gen(Ratio_Convergent_Divergent_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names], "Strand Orientation","Score", wf.output_path("contained_asymmetries","png", "convergent_divergent_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
 
         # generates table <- this should be done for all pairs.
         functions.table_gen(names_pairs, p_pL, m_mL, p_mL, m_pL, p_val_same_oppositeL, p_val_same_opposite_BonferoniL, Ratio_same_oppositeL, p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL,wf.output_path("contained_asymmetries","txt","table", names_pairs[i][0],names_pairs[i][1]))
