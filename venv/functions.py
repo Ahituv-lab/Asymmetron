@@ -447,7 +447,7 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
         consecutive_control,occs_control, DataL_significant_control = extract_pattern(DataL_random, pattern, min_distance, max_distance, threshold)
         consecutiveL.append(consecutive);occsL.append(occs);consecutive_controlL.append(consecutive_control);occs_controlL.append(occs_control);
         DataL_significantL.append(DataL_significant);
-    return DataL_significant,consecutiveL,occsL,consecutive_controlL,occs_controlL
+    return DataL_significantL,consecutiveL,occsL,consecutive_controlL,occs_controlL
 
 # Ensures that code below is not run when this file is imported into another file
 if __name__ == "__main__":
