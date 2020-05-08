@@ -109,7 +109,6 @@ def fun1(args):
                      #functions.table_consecutive_bins(consecutiveLL_bin,Bins,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_bins",str(patterns[i])))
 
 
-
     return
 
 def consecutive_patterns_parser():
