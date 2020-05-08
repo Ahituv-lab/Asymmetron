@@ -342,8 +342,16 @@ def table_consecutive(ConsecutiveL,StrandsL,path_out):
         for i in range(len(ConsecutiveL)):
             ConsecutiveLT = sorted(ConsecutiveL[i].items()) 
             consecutive, times_found = zip(*ConsecutiveLT) 
-            output.write(str(i)+'\t'+'\t'.join([str(x) for x in times_found])+'\n')
+            output.write(str(StrandsL[i])+'\t'+'\t'.join([str(x) for x in times_found])+'\n')
     return
+
+def write_BED_out(DataL,path_out):
+    # Write significant results in an output file
+    with open(path_out, 'w') as output_file:
+        for line in DataL:
+            output_file.write('\t'.join([str(x) for x in line])+'\n')
+    return 
+
 
 def find_sub_str(my_str, sub_str):
     start = 0
