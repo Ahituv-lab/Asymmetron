@@ -394,7 +394,6 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     probability["-"] = 1-probability["+"]
     probability_pattern = np.prod([probability[k] for k in list(pattern)])
     consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if (probability_pattern**x)*number_of_tests < threshold)
-    print(probability_pattern,consecutive_threshold)
 
     # Filter for number of consecutive occurences that meet the threshold criterion and are within the distance window
     DataL_significant = []
@@ -415,6 +414,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                 DataL_significant.extend(DataL_temp)
             DataL_temp.clear()
             counter = 1
+
     # Add last lines
     if counter >= consecutive_threshold:
         DataL_significant.extend(DataL_temp)
@@ -432,8 +432,15 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
 def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     from random import shuffle
     DataL = read_BED(path,False)
-    DataL_random = DataL
-    shuffle(DataL_random)
+
+    # Here we want to shuffle the strand column
+    ColL = [k[4] for k in DataL]
+    shuffle(ColL)
+    DataL_random=[]
+    for i in range(len(DataL)):
+        line = DataL[:-1] + Col[i]
+        DataL_random.append(line)
+
     consecutiveL=[];occsL=[];DataL_significantL=[];consecutive_controlL=[];occs_controlL=[];DataL_significant_controlL=[];
     for pattern in patternsL:
         consecutive,occs, DataL_significant = extract_pattern(DataL, pattern, min_distance, max_distance, threshold)
