@@ -179,14 +179,11 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
           dist < window_max and dist >= window_min))
     p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = orientation(Strand1, Strand2)
 
-    p_pL_bin = [];
-    m_mL_bin = [];
-    p_mL_bin = [];
-    m_pL_bin = [];
-    same_strandL_bin = [];
-    opposite_strandL_bin = [];
-    convergentL_bin = [];
-    divergentL_bin = [];
+    p_pL_bin = [];m_mL_bin = []; # Same orientation
+    p_mL_bin = [];m_pL_bin = []; # Opposite orientation
+    same_strandL_bin = []; opposite_strandL_bin = []; # Combined same / opposite orientations
+    convergentL_bin = [];divergentL_bin = [];
+    Bins = [];
     if bins != None:
         Bins = binner(window_min, window_max, bins)
         for index, bin_i in enumerate(Bins):
