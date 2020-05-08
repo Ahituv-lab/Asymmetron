@@ -438,7 +438,7 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     shuffle(ColL)
     DataL_random=[]
     for i in range(len(DataL)):
-        line = DataL[:-1] + Col[i]
+        line = DataL[i][:-1] + [ColL[i]]
         DataL_random.append(line)
 
     consecutiveL=[];occsL=[];DataL_significantL=[];consecutive_controlL=[];occs_controlL=[];DataL_significant_controlL=[];
