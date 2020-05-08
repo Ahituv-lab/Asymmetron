@@ -86,7 +86,7 @@ def fun1(args):
                          if min_distance<= occ_c <= max_distance:
                              occs_controlL_filtered.append(occ_c);
 
-                     visualizations.distribution_gen(occs_controlL_filtered,occsL_filtered,wf.output_path("consecutive_patterns","png",os.path.basename((path),"distances_inconsecutive_pattern_"+str(patterns[i])))
+                     visualizations.distribution_gen(occs_controlL_filtered,occsL_filtered,wf.output_path("consecutive_patterns","png",os.path.basename(path),"distances_inconsecutive_pattern_"+str(patterns[i])))
 
             # I think instead of Bins here it can be gradient of distances or something like that
             if bins>1:
