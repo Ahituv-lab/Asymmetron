@@ -29,18 +29,18 @@ def fun2(args):
 
         expected_asym=args.expected_asym
         if expected_asym==None:
-            expected_asym=0.5
+            expected_asym=0.5;
 
         expected_asym_conv_div = args.expected_asym_conv_div
         if expected_asym_conv_div==None:
-            expected_asym_conv_div=0.5
+            expected_asym_conv_div=0.5;
 
         plots=args.plots 
 
         score = args.score
         bins_score = args.bins_score
         if score == True and bins_score == None:
-            bins_score = 10
+            bins_score = 10;
     
         number_of_files = len(motifsL) * len(regionsL)
 	# All possible pairs between region files and motif files

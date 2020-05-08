@@ -25,9 +25,8 @@ def pairs_generator(pathL1, pathL2, NamesL1, NamesL2):
 def read_BED(path, last_col=False):
     """
     This function reads bed files.
-    If an extra column for a score (e.g. replication timing) is given
-    Then last_Col=True and also returns another list
-    The idea of the last column is to sub-divide the  file  into groups based on the scores and do separate the analysis in each of them
+    last_col=True: If an extra column for a score (e.g. replication timing or gene expression) is given
+    This function returns a list of lists with the BED file information and the list of scores.
     """
     if last_col == False:
         Data = [];
@@ -76,21 +75,21 @@ def binner(min_size, max_size, bin_no):
 
 def separate_on_score(path_score, path, number_of_bins):
     """
-    Score list is ordered as DataL list of lists and the first is used to bin the second.
-    This requires binning this feature and calculating the asymmetry at each bin of this column values.
+    path_score: is the path to the BED file with last column containing the scores.
+    path: the path to the second BED file.
+    number_of_bins: number of groups to generate based on the score min and max values and in which to perform the strand asymmetry analysis.
     This would be useful e.g. if we want to see if expression levels are associated with mutational strand asymmetry or if replication timing is.
-    This function should divide a list of lists representing a file to list of lists (DataL) based on
-    the Score bins
+    returns the strand asymmetry scores for same / opposite and convergent / divergent for each bin as two lists.
     """
     # We should check Score to be integer / float in our checks
     DataL, ScoreL = read_BED(path_score, last_col=True)
     DataL2 = read_BED(path, last_col=False)
     StepsL = binner(min(ScoreL), max(ScoreL), number_of_bins)
-    DataStepsL = [];
-    ScoresStepsL = [];
+
+    # Separates the DataL based on the ScoreL bins intro groups.
+    DataStepsL = [];ScoresStepsL = [];
     for step in StepsL:
-        DataStep = [];
-        ScoreStep = [];
+        DataStep = [];ScoreStep = [];
         for i in range(len(ScoreL)):
             if ScoreL[i] >= step[0] and ScoreL[i] < step[1]:
                 DataStep += [DataL[i]]
@@ -98,6 +97,7 @@ def separate_on_score(path_score, path, number_of_bins):
         DataStepsL += [DataStep]
         ScoresStepsL += [ScoreStep]
 
+    # Calculates the asymmetry for same / opposite and convergent / divergent asymmetry for each bin.
     Ratio_Same_Opposite = [];Ratio_Convergent_Divergent=[];
     for step in range(len(StepsL)):
         p_p_step, m_m_step, p_m_step, m_p_step, same_strand_step, opposite_strand_step, convergent_step, divergent_step = overlap(DataStepsL[step], DataL2)
@@ -139,7 +139,10 @@ def strand_annotate_third_BED_overlap(unnotated_path, annotated_path):
 
 def overlap(path1, path2):
     """
-    Uses pybedtools intersect function to find overlapping coordinates
+    This is the main function of contained_asymmetries.py
+    Takes as inputs the paths to the two BED files to compare.
+    Uses pybedtools intersect function to find overlapping coordinates between regions and motifs.
+    Returns the number of occurrences in each orientation for Regions:BED path1 to Motifs:BED path2.
     """
     DataL1 = BedTool(path1).sort()
     DataL2 = BedTool(path2).sort()
@@ -159,6 +162,7 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
        # the flags it uses from here https://bedtools.readthedocs.io/en/latest/content/tools/closest.html
        if bins==True then return not the counts but the lists of counts to bin them
        """
+    # Finds the occurrences within the proximity limits and saves their pairwise orientation.
     DataL1 = BedTool(path1).sort()
     DataL2 = BedTool(path2).sort()
     if upstream == downstream and upstream == True:
@@ -183,8 +187,10 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
     p_mL_bin = [];m_pL_bin = []; # Opposite orientation
     same_strandL_bin = []; opposite_strandL_bin = []; # Combined same / opposite orientations
     convergentL_bin = [];divergentL_bin = [];
+
     Bins = [];
     if bins != None:
+        # Performs the same analysis for each bin.
         Bins = binner(window_min, window_max, bins)
         for index, bin_i in enumerate(Bins):
             Strand1Bin = [];
@@ -197,19 +203,10 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
 
             p_p_bin, m_m_bin, p_m_bin, m_p_bin, same_strand_bin, opposite_strand_bin, convergent_bin, divergent_bin = orientation(
                 Strand1Bin, Strand2Bin)
-            p_pL_bin.append(p_p_bin);
-            m_mL_bin.append(m_m_bin);
-            p_mL_bin.append(p_m_bin);
-            m_pL_bin.append(m_p_bin);
-            same_strandL_bin.append(same_strand_bin);
-            opposite_strandL_bin.append(opposite_strand_bin);
-            convergentL_bin.append(convergent_bin);
-            divergentL_bin.append(divergent_bin)
-
-    # Same Opposite orientation
-    # visualizations.barplot_pair_lists_gen(Bins, same_strandL_bin, opposite_strandL_bin, name1, name2,"same_opposite_bins_" + name1 + "_" + name2 + ".png")
-    # Convergent Divergent orientation
-    # visualizations.barplot_pair_lists_gen(Bins, convergentL_bin, divergentL_bin, name1, name2,"convergent_divergent_bins_" + name1 + "_" + name2 + ".png")
+            p_pL_bin.append(p_p_bin);m_mL_bin.append(m_m_bin); #Same orientation, per bin
+            p_mL_bin.append(p_m_bin);m_pL_bin.append(m_p_bin); #Opposite orientation per bin
+            same_strandL_bin.append(same_strand_bin);opposite_strandL_bin.append(opposite_strand_bin);
+            convergentL_bin.append(convergent_bin);divergentL_bin.append(divergent_bin)
 
     return (p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent), (Bins,p_pL_bin,m_mL_bin,p_mL_bin,m_pL_bin,same_strandL_bin,opposite_strandL_bin,convergentL_bin,divergentL_bin)
 
@@ -248,10 +245,8 @@ def asym_binned(window_min, window_max, bins, DistancesL, Strand1L, Strand2L):
     divergentL = []
     for i in range(1, len(Range_Bins) + 1):
         p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = orientation(Strand1D[i], Strand2D[i])
-        p_pL.append(p_p)
-        m_mL.append(m_m)
-        p_mL.append(p_m)
-        m_pL.append(m_p)
+        p_pL.append(p_p);m_mL.append(m_m);
+        p_mL.append(p_m);m_pL.append(m_p);
         same_strandL.append(same_strand)
         opposite_strandL.append(opposite_strand)
         convergentL.append(convergent)
