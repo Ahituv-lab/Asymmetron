@@ -81,12 +81,13 @@ def fun2(args):
             Ratio_conv_diverg, p_val_conv_diverg, p_val_conv_diver_Bonferoni = functions.statistical_evaluation(p_m, m_p,number_of_files,expected_asym=expected_asym_conv_div)
             p_val_conv_divergL.append(p_val_conv_diverg);
             Ratio_conv_divergL.append(Ratio_conv_diverg);
-            p_val_conv_diver_BonferoniL.append(p_val_conv_diver_BonferoniL);
+            p_val_conv_diver_BonferoniL.append(p_val_conv_diver_Bonferoni);
 
             if plots:
-                # generates histogram same opposite, we need to decide the output1
+                # generates histogram same opposite
                 visualizations.barplot_gen(same_strand, opposite_strand,"Same","Opposite", wf.output_path("contained_asymmetries","png", "same_opposite_orientation", names_pairs[i][0],names_pairs[i][1]))
-                # generates historam covergent divergent, we need to decide the output2
+
+                # generates historam covergent divergent
                 visualizations.barplot_gen(p_m, m_p,"Convergent","Divergent", wf.output_path("contained_asymmetries", "png","convergent_divergent_orientation", names_pairs[i][0],names_pairs[i][1]))
 
             if score:
