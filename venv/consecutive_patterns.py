@@ -72,7 +72,7 @@ def fun1(args):
 
             if plots==True:
                      visualizations.barplot_single_gen(times_found,consecutive,"Occurrences","Consecutive occurrences",wf.output_path("consecutive_patterns","png",path.split("/")[-1],str(patterns[i])))
-                     visualizations.barplot_pair_lists_gen(times_found_control,times_found_control,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1]+"_with_controls",str(patterns[i])))
+                     visualizations.barplot_pair_lists_gen(consecutive,times_found_control,times_found,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",path.split("/")[-1]+"_with_controls",str(patterns[i])))
                      # We want to show biases in distances of consecutive
                      visualizations.distribution_gen(occsL[i],occs_controlL[i],wf.output_path("consecutive_patterns","png",path.split("/")[-1],"distances_inconsecutive_pattern_"+str(patterns[i])))
 
