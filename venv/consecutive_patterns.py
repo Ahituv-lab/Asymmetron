@@ -124,7 +124,7 @@ def fun1(args):
                      #visualizations.barplot_single_gen(occsLL_bin,occs_controlLL_bin,"Occurrences","Bins",wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
 
                      #
-                     visualizations.heatmap_gen(consecutiveLL_binT,consecutive_controlLL_binT,wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
+                     visualizations.heatmap_gen(consecutiveLL_bin,consecutive_controlLL_binT,wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
                      #print(consecutiveLL_bin)
                      #functions.table_consecutive_bins(consecutiveLL_bin,Bins,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_bins",str(patterns[i])))
 

@@ -79,6 +79,7 @@ def heatmap_gen(DataLL,DataLL_control,output):
        import seaborn as sns
        import pandas as pd
        RatioLL=[]
+       print(len(DataLL),len(DataLL[0]))
        for i in range(len(DataLL[0])):
            RatioL=[];
            for k in (DataLL[0][i].keys()):
