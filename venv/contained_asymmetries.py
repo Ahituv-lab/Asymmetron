@@ -17,7 +17,7 @@ def fun2(args):
 
         motifsL_names=args.names_motifs
         if motifsL_names==None:
-            motifsL_names=[k.split("/")[-1] for k in motifsL]
+            motifsL_names=[os.path.basename(k) for k in motifsL]
         else:
             motifsL_names = motifsL_names.split(",")
 
