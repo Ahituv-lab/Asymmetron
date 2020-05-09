@@ -74,20 +74,20 @@ def fun1(args):
                      consecutive_total = list(consecutive)
                      times_found_total = list(times_found)
 
-                     consecutive_control_total=list(consecutive_control)
-                     times_found_control_total=list(times_found_control)
+                     consecutive_control_total = list(consecutive_control)
+                     times_found_control_total = list(times_found_control)
 
-                     max_consecutive=max(max(consecutive_control_total),max(consecutive_total))
+                     max_consecutive = max(max(consecutive_control_total),max(consecutive_total))
 
                      # Adding the consecutive occurrences not found
                      for k in range(1,max_consecutive+1):
                          if k not in consecutive_total:
-                             consecutive_total=consecutive_total[:k-1]+[k]+consecutive_total[k-1:]
-                             times_found_total=times_found_total[:k-1]+[0]+times_found_total[k-1:]
+                             consecutive_total = consecutive_total[:k-1]+[k] + consecutive_total[k-1:]
+                             times_found_total = times_found_total[:k-1]+[0] + times_found_total[k-1:]
  
                          if k not in consecutive_control_total:
-                             consecutive_control_total=consecutive_control_total[:k-1]+[k]+consecutive_control_total[k-1:]
-                             times_found_control_total=times_found_control_total[:k-1]+[0]+times_found_control_total[k-1:]
+                             consecutive_control_total = consecutive_control_total[:k-1] + [k]+consecutive_control_total[k-1:]
+                             times_found_control_total = times_found_control_total[:k-1] + [0]+times_found_control_total[k-1:]
 
                      visualizations.barplot_single_gen(times_found_total,consecutive_total,"Occurrences","Consecutive occurrences",wf.output_path("consecutive_patterns","png",os.path.basename(path),str(patterns[i])))
 
@@ -120,9 +120,11 @@ def fun1(args):
                      consecutiveLL_binT = np.array(consecutiveLL_bin).T.tolist();occsLL_binT = np.array(occsLL_bin).T.tolist();
                      consecutive_controlLL_binT = np.array(consecutive_controlLL_bin).T.tolist(); occs_controlLL_binT = np.array(occs_controlLL_bin).T.tolist()
 
-                     # Plot barplot of occs consecutive in each bin
+                     # Plot barplot of occs consecutive in each bin  
                      #visualizations.barplot_single_gen(occsLL_bin,occs_controlLL_bin,"Occurrences","Bins",wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
 
+                     #
+                     visualizations.heatmap_gen(consecutiveLL_binT,consecutive_controlLL_binT,wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
                      #print(consecutiveLL_bin)
                      #functions.table_consecutive_bins(consecutiveLL_bin,Bins,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_bins",str(patterns[i])))
 
