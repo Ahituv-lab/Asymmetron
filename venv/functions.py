@@ -230,6 +230,7 @@ def get_distance_orientations(DistanceL,Strand1L,Strand2L,window_min,window_max)
                          convergentL_distance.append(DistanceL[index])
                      elif sign1 == "-" and sign2 == "+":
                          divergentL_distance.append(DistanceL[index])
+
     return (same_strandL_distance,opposite_strandL_distance,divergentL_distance,convergentL_distance)
 
 def asym_binned(window_min, window_max, bins, DistancesL, Strand1L, Strand2L):
