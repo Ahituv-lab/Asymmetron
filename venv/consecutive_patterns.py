@@ -125,7 +125,7 @@ def fun1(args):
 
                 if plots:
                     # Plot barplot of consecutive in each bin  
-                    visualizations.heatmap_gen(consecutiveLL_bin,consecutive_controlLL_bin,wf.output_path("consecutive_patterns", "png", 'distribution_distances',pat))
+                    visualizations.heatmap_gen(consecutiveLL_bin,consecutive_controlLL_bin,Bins,wf.output_path("consecutive_patterns", "png", 'distribution_distances',pat))
 
     return
 

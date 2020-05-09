@@ -75,7 +75,7 @@ def barplot_single_gen(List1,List1_names,y_label,x_label,output):
         return
 
 
-def heatmap_gen(DataLL,DataLL_control,output):
+def heatmap_gen(DataLL,DataLL_control,BinsL,output):
        import seaborn as sns
        import pandas as pd
        max_cons = max([max(k.keys()) for k in DataLL])
@@ -92,7 +92,7 @@ def heatmap_gen(DataLL,DataLL_control,output):
                    RatioL.append(np.nan)
            RatioLL.append(RatioL)
 
-       df = pd.DataFrame(np.array(RatioLL))
+       df = pd.DataFrame(np.array(RatioLL),index=BinsL)
        sns.heatmap(df,cbar_kws={'label': 'Enrichment'})
        plt.xlabel("Consecutive occurrences")
        plt.ylabel("Distance bins")
