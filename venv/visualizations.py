@@ -125,8 +125,8 @@ def distribution_gen(occsL,occsL_control,output):
 
 def distnace_distribution_gen(same_strandL_distance,opposite_strandL_distance,name1,name2,min_dist,max_dist,output):
       import seaborn as sns
-      plt.hist(same_strandL_distance,50,label=name1)
-      plt.hist(opposite_strandL_distance,50,label=name2)
+      plt.hist(same_strandL_distance,50,histtype='step',label=name1)
+      plt.hist(opposite_strandL_distance,50,histtype='step',label=name2)
       plt.xlabel("Distance")
       plt.ylabel("Occurrences")
       plt.xlim(min_dist,max_dist)
