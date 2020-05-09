@@ -76,8 +76,16 @@ def barplot_single_gen(List1,List1_names,y_label,x_label,output):
 
 
 def heatmap_gen(DataLL,DataLL_control,BinsL,output):
-       import seaborn as sns
-       import pandas as pd
+       try:
+           import seaborn as sns
+       except:
+            print("seaborn not imported")
+
+       try:
+           import pandas as pd
+       except: 
+            print("pandas not imported")
+
        max_cons = max([max(k.keys()) for k in DataLL])
        RatioLL=[]
        for i in range(len(DataLL)):
@@ -124,7 +132,12 @@ def distribution_gen(occsL,occsL_control,output):
        return
 
 def distnace_distribution_gen(same_strandL_distance,opposite_strandL_distance,name1,name2,min_dist,max_dist,output):
-      import seaborn as sns
+      try:
+          import seaborn as sns
+      except: 
+           print("seaborn not imported")
+
+      plot_styler()
       plt.hist(same_strandL_distance,50,histtype='step',label=name1)
       plt.hist(opposite_strandL_distance,50,histtype='step',label=name2)
       plt.xlabel("Distance")
