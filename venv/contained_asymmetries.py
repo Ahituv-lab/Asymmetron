@@ -9,36 +9,35 @@ except:
 
 
 def fun2(args):
-	#paths, orientation_paths, names = wf.sanitize(args.motifs, args.orientation, args.names)
 	# Missing link to fun4 if provided
 
-        regionsL=args.regions.split(",")
-        motifsL=args.motifs.split(",")
+        regionsL=args.regions.split(",");
+        motifsL=args.motifs.split(",");
 
-        motifsL_names=args.names_motifs
+        motifsL_names=args.names_motifs;
         if motifsL_names==None:
-            motifsL_names=[os.path.basename(k) for k in motifsL]
+            motifsL_names=[os.path.basename(k) for k in motifsL];
         else:
-            motifsL_names = motifsL_names.split(",")
+            motifsL_names = motifsL_names.split(",");
 
-        regionsL_names=args.names_regions
+        regionsL_names=args.names_regions;
         if regionsL_names==None:
-            regionsL_names=[os.path.basename(k) for k in regionsL]
+            regionsL_names=[os.path.basename(k) for k in regionsL];
         else:
-            regionsL_names=regionsL_names.split(",")
+            regionsL_names=regionsL_names.split(",");
 
-        expected_asym=args.expected_asym
+        expected_asym=args.expected_asym;
         if expected_asym==None:
             expected_asym=0.5;
 
-        expected_asym_conv_div = args.expected_asym_conv_div
+        expected_asym_conv_div = args.expected_asym_conv_div;
         if expected_asym_conv_div==None:
             expected_asym_conv_div=0.5;
 
-        plots=args.plots 
+        plots=args.plots;
 
-        score = args.score
-        bins_score = args.bins_score
+        score = args.score;
+        bins_score = args.bins_score;
         if score == True and bins_score == None:
             bins_score = 10;
     
