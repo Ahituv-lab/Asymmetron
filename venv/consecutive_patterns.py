@@ -106,27 +106,27 @@ def fun1(args):
 
                      visualizations.distribution_gen(occs_controlL_filtered,occsL_filtered,wf.output_path("consecutive_patterns","png",os.path.basename(path),"distances_inconsecutive_pattern_"+str(patterns[i])))
 
-            # I think instead of Bins here it can be gradient of distances or something like that
-            if bins>1:
-                     consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
-                     Bins=functions.binner(min_distance,max_distance,bins)
-                     for min_bin,max_bin in Bins:
-                         DataL_significant_bin,consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,patterns[i],min_bin,max_bin,threshold)
-                         consecutiveLL_bin.append(consecutiveL_bin);
-                         occsLL_bin.append(occsL_bin);
-                         consecutive_controlLL_bin.append(consecutive_controlL_bin);
-                         occs_controlLL_bin.append(occs_controlL_bin);
+        # I think instead of Bins here it can be gradient of distances or something like that
+        if bins>1:
+            Bins=functions.binner(min_distance,max_distance,bins)
+            for pat in patterns:
+                consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
+                for min_bin,max_bin in Bins:
+                    DataL_significant_bin,consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,pat,min_bin,max_bin,threshold)
+                    consecutiveLL_bin.append(consecutiveL_bin);
+                    occsLL_bin.append(occsL_bin);
+                    consecutive_controlLL_bin.append(consecutive_controlL_bin);
+                    occs_controlLL_bin.append(occs_controlL_bin);
                      
-                     consecutiveLL_binT = np.array(consecutiveLL_bin).T.tolist();occsLL_binT = np.array(occsLL_bin).T.tolist();
-                     consecutive_controlLL_binT = np.array(consecutive_controlLL_bin).T.tolist(); occs_controlLL_binT = np.array(occs_controlLL_bin).T.tolist()
+                consecutiveLL_binT = np.array(consecutiveLL_bin).T.tolist();occsLL_binT = np.array(occsLL_bin).T.tolist();
+                consecutive_controlLL_binT = np.array(consecutive_controlLL_bin).T.tolist(); occs_controlLL_binT = np.array(occs_controlLL_bin).T.tolist()
 
-                     # Plot barplot of occs consecutive in each bin  
-                     #visualizations.barplot_single_gen(occsLL_bin,occs_controlLL_bin,"Occurrences","Bins",wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
-
-                     #
-                     visualizations.heatmap_gen(consecutiveLL_bin,consecutive_controlLL_binT,wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
-                     #print(consecutiveLL_bin)
-                     #functions.table_consecutive_bins(consecutiveLL_bin,Bins,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_bins",str(patterns[i])))
+                # Plot barplot of occs consecutive in each bin  
+                #visualizations.barplot_single_gen(occsLL_bin,occs_controlLL_bin,"Occurrences","Bins",wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
+                #
+                visualizations.heatmap_gen(consecutiveLL_bin,consecutive_controlLL_binT,wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
+                #print(consecutiveLL_bin)
+                #functions.table_consecutive_bins(consecutiveLL_bin,Bins,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_bins",str(patterns[i])))
 
 
     return
