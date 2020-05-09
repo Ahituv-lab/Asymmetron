@@ -96,8 +96,8 @@ def distribution_gen(occsL,occsL_control,output):
        Distances_consecutiveD = Counter(Distances_consecutiveL).most_common()
        Distances_consecutive_controlD = Counter(Distances_consecutive_controlL).most_common()
 
-       plt.plot([k[0] for k in Distances_consecutiveD],[m[1] for m in Distances_consecutiveD],"o",s=2,label="Observed")
-       plt.plot([k[0] for k in Distances_consecutive_controlD],[m[1] for m in Distances_consecutive_controlD],"o",s=2,label="Expected")
+       plt.plot([k[0] for k in Distances_consecutiveD],[m[1] for m in Distances_consecutiveD],"o",markersize=2,label="Observed")
+       plt.plot([k[0] for k in Distances_consecutive_controlD],[m[1] for m in Distances_consecutive_controlD],"o",markersize=2,label="Expected")
        plt.xlabel("Distance of consecutive")
        plt.ylabel("Occurrences")
        plt.legend(frameon=False)
