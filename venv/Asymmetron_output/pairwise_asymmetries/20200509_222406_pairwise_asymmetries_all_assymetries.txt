@@ -1,0 +1,2 @@
+Feature 1	Feature 2	plus-plus	minus-minus	plus-minus	minus-plus	p-value same opposite	p-value same opposite Bonferoni corrected	Ratio same opposite	p-value divergent convergent	p-value divergent convergent Bonferoni corrected	Ratio divergent convergent
+Ensembl.genes_hg19_TSSs.bed	All_G4.bed	19182	18678	15628	15148	2.914671256820225e-161	2.914671256820225e-161	0.55160557142	0.006324456050725759	0.006324456050725759	0.507798284377
