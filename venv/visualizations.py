@@ -85,7 +85,7 @@ def heatmap_gen(DataLL,DataLL_control,BinsL,output):
            for k in range(1,max_cons+1):
                if k in DataLL_control[i].keys():
                    if float(DataLL_control[i][k])!=0:
-                       RatioL.append(DataLL[i][k]/float(DataLL_control[i][k]))
+                       RatioL.append(math.log10(DataLL[i][k]/float(DataLL_control[i][k])))
                    else:
                        RatioL.append(np.nan)
                else:
@@ -93,7 +93,8 @@ def heatmap_gen(DataLL,DataLL_control,BinsL,output):
            RatioLL.append(RatioL)
 
        df = pd.DataFrame(np.array(RatioLL),index=BinsL)
-       sns.heatmap(df,cbar_kws={'label': 'Enrichment'})
+       mask = df.isnull()
+       sns.heatmap(df,cbar_kws={'label': 'log(Enrichment)'}, mask=mask)
        plt.xlabel("Consecutive occurrences")
        plt.ylabel("Distance bins")
        plt.tight_layout()
