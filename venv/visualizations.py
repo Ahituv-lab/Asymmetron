@@ -79,15 +79,14 @@ def heatmap_gen(DataLL,DataLL_control,output):
        import seaborn as sns
        import pandas as pd
        RatioLL=[]
-       print(DataLL[0])
-       print(DataLL[1])
        for i in range(len(DataLL[0])):
            RatioL=[];
            for k in (DataLL[0][i].keys()):
                if float(DataLL_control[0][i][k])!=0:
-                   RatioL = DataLL[0][i][k]/float(DataLL_control[0][i][k])
+                   RatioL.append(DataLL[0][i][k]/float(DataLL_control[0][i][k]))
                else:
-                   RatioL = np.nan
+                   RatioL.append(np.nan)
+
            RatioLL.append(RatioL)
 
        df = pd.DataFrame(np.array(RatioLL))

@@ -112,7 +112,7 @@ def fun1(args):
             for pat in patterns:
                 consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
                 for min_bin,max_bin in Bins:
-                    DataL_significant_bin,consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,pat,min_bin,max_bin,threshold)
+                    DataL_significant_bin,consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,[pat],min_bin,max_bin,threshold)
                     consecutiveLL_bin.append(consecutiveL_bin);
                     occsLL_bin.append(occsL_bin);
                     consecutive_controlLL_bin.append(consecutive_controlL_bin);
