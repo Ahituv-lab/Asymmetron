@@ -340,7 +340,7 @@ def table_consecutive(ConsecutiveL,StrandsL,path_out):
                if k not in consecutiveL:
                    consecutiveL=consecutiveL[:k-1]+[k]+consecutiveL[k-1:]
                    times_foundL=times_foundL[:k-1]+[0]+times_foundL[k-1:]
-
+           
             output.write(str(StrandsL[i])+'\t'+'\t'.join([str(x) for x in times_foundL])+'\n')
     return
 
@@ -349,8 +349,7 @@ def write_BED_out(DataL,path_out):
     with open(path_out, 'w') as output_file:
         for group_line in DataL:
             for line in group_line:
-            
-            	output_file.write('\t'.join([str(x) for x in line])+'\n')
+                output_file.write('\t'.join([str(x) for x in list(line)])+'\n')
     return 
 
 
