@@ -82,7 +82,7 @@ def fun3(args):
                  visualizations.barplot_gen(p_m, m_p, "Convergent","Divergent",wf.output_path("pairwise_asymmetries","png", "convergent_divergent_orientation", names_pairs[i][0],names_pairs[i][1]))
 
                  same_strandL_distance,opposite_strandL_distance,divergentL_distance,convergentL_distance = Distances_orientations
-                 visualizations.distnace_distribution_gen(same_strandL_distance,opposite_strandL_distance,"Same","Opposite",wf.output_path("pairwise_asymmetries","png", "ditribution_same_opposite", names_pairs[i][0],names_pairs[i][1]))
+                 visualizations.distnace_distribution_gen(same_strandL_distance,opposite_strandL_distance,"Same","Opposite",min_distance,max_distance,wf.output_path("pairwise_asymmetries","png", "ditribution_same_opposite", names_pairs[i][0],names_pairs[i][1]))
 
             # If bins is true I already put in functions.proximal that it generates two barplots. Also consider a table to be generated. Also, we need to put the output of that in the same directory as outputs_pairwise_asymmetries
             if bins:

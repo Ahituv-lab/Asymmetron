@@ -123,16 +123,13 @@ def distribution_gen(occsL,occsL_control,output):
        plt.close()
        return
 
-def distnace_distribution_gen(same_strandL_distance,opposite_strandL_distance,name1,name2,output):
+def distnace_distribution_gen(same_strandL_distance,opposite_strandL_distance,min_dist,max_dist,name1,name2,output):
       import seaborn as sns
-      same_strandL_distance.sort(reverse=True)
-      opposite_strandL_distance.sort(reverse=True)
       sns.distplot(same_strandL_distance,hist = False, kde = True,kde_kws = {'linewidth': 3},label=name1)
       sns.distplot(opposite_strandL_distance,hist = False, kde = True,kde_kws = {'linewidth': 3},label=name2)
-      #plt.plot(range(1,len(same_strandL_distance)+1),same_strandL_distance,label=name1)
-      #plt.plot(range(1,len(opposite_strandL_distance)+1),opposite_strandL_distance,label=name2)
       plt.xlabel("Distance")
       plt.ylabel("Density")
+      plt.xlim(min_dist,max_dist)
       plt.legend(frameon=False,title="Orientation")
       plt.savefig(output)
       plt.close()
