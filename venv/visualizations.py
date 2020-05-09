@@ -122,3 +122,14 @@ def distribution_gen(occsL,occsL_control,output):
        plt.savefig(output)
        plt.close()
        return
+
+def distnace_distribution_gen(same_strandL_distance,opposite_strandL_distance,xlabel,ylabel,output):
+      same_strandL_distance.sort(reverse=True)
+      opposite_strandL_distance.sort(reverse=True)
+      plt.plot(range(1,len(same_strandL_distance)+1),same_strandL_distance,label="Same")
+      plt.plot(range(1,len(opposite_strandL_distance)+1),opposite_strandL_distance,label="Opposite")
+      plt.xlabel(xlabel)
+      plt.ylabel(ylabel)
+      plt.legend(frameon=False,title="Orientation")
+      plt.savefig(output)
+      plt.close()

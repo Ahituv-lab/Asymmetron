@@ -61,7 +61,8 @@ def fun3(args):
 
             # for a pair of files finds the orientations
             total_asymmetries,per_bin_asymmetries = functions.proximal(motifA,motifB,names_pairs[i][0],names_pairs[i][1],min_distance,max_distance,upstream=upstream_only,downstream=downstream_only,bins=bins)
-            p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=total_asymmetries
+            Distances_orientations,p_p,m_m,p_m,m_p,same_strand,opposite_strand,convergent,divergent=total_asymmetries
+            
             #same vs opposite analysis
             Ratio_same_opposite,p_val_same_opposite,p_val_same_opposite_Bonferoni=functions.statistical_evaluation(same_strand,opposite_strand,number_of_files,expected_asym=expected_asym)
             p_pL.append(p_p);m_mL.append(m_m); # same orientation data
@@ -79,6 +80,9 @@ def fun3(args):
                  visualizations.barplot_gen(same_strand, opposite_strand, "Same", "Opposite",wf.output_path("pairwise_asymmetries","png", "same_opposite_orientation", names_pairs[i][0],names_pairs[i][1]))
                  # generates historam covergent divergent
                  visualizations.barplot_gen(p_m, m_p, "Convergent","Divergent",wf.output_path("pairwise_asymmetries","png", "convergent_divergent_orientation", names_pairs[i][0],names_pairs[i][1]))
+
+                 same_strandL_distance,opposite_strandL_distance,divergentL_distance,convergentL_distance = Distances_orientations
+                 visualizations.distnace_distribution_gen(same_strandL_distance,opposite_strandL_distance,"Same","Opposite",wf.output_path("pairwise_asymmetries","png", "ditribution_same_opposite", names_pairs[i][0],names_pairs[i][1]))
 
             # If bins is true I already put in functions.proximal that it generates two barplots. Also consider a table to be generated. Also, we need to put the output of that in the same directory as outputs_pairwise_asymmetries
             if bins:
