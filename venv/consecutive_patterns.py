@@ -7,7 +7,6 @@ import visualizations
 from collections import Counter
 
 def fun1(args):
-    #paths, orientation_paths, names = wf.sanitize (args.path, args.orientation, args.names)
 
     paths = args.paths.split(",")
     names = args.names
@@ -24,24 +23,23 @@ def fun1(args):
     if max_distance == None:
         max_distance = 100;
 
-    patterns = args.patterns
+    plots = args.plots;
 
-    bins = args.bins
-    plots = args.plots
-    threshold = args.threshold
-
+    patterns = args.patterns;
     if patterns == None:
         patterns = ["++","--","+-","-+"];
     else:
-        patterns = patterns.split(",")
+        patterns = patterns.split(",");
 
-    if bins == None:
+    bins = args.bins;
+    if bins == None:   # Number of bins to subdivide the distance range into
         bins = 1;
 
-    if threshold == None:
+    threshold = args.threshold;
+    if threshold == None:    # p-value threshold 
         threshold = 0.05;
 
-    ConsecutiveD_Total=[]
+    ConsecutiveD_Total=[];
     # A simple way to integrate orientation in the flags here. Probably needs a lot of improvement though.
     orientation = args.orientation
     if orientation != None:

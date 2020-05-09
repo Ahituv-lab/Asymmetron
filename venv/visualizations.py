@@ -84,7 +84,7 @@ def heatmap_gen(DataLL,DataLL_control,BinsL,output):
            RatioL=[];
            for k in range(1,max_cons+1):
                if k in DataLL_control[i].keys():
-                   if float(DataLL_control[i][k])!=0:
+                   if float(DataLL_control[i][k])!=0 and float(DataLL[i][k])!=0:
                        RatioL.append(math.log10(DataLL[i][k]/float(DataLL_control[i][k])))
                    else:
                        RatioL.append(np.nan)
