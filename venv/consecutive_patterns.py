@@ -113,21 +113,19 @@ def fun1(args):
                 consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
                 for min_bin,max_bin in Bins:
                     DataL_significant_bin,consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,[pat],min_bin,max_bin,threshold)
-                    consecutiveLL_bin.append(consecutiveL_bin);
+                    consecutiveLL_bin.append(consecutiveL_bin[0]);
                     occsLL_bin.append(occsL_bin);
-                    consecutive_controlLL_bin.append(consecutive_controlL_bin);
+                    consecutive_controlLL_bin.append(consecutive_controlL_bin[0]);
                     occs_controlLL_bin.append(occs_controlL_bin);
                      
                 consecutiveLL_binT = np.array(consecutiveLL_bin).T.tolist();occsLL_binT = np.array(occsLL_bin).T.tolist();
                 consecutive_controlLL_binT = np.array(consecutive_controlLL_bin).T.tolist(); occs_controlLL_binT = np.array(occs_controlLL_bin).T.tolist()
 
-                # Plot barplot of occs consecutive in each bin  
-                #visualizations.barplot_single_gen(occsLL_bin,occs_controlLL_bin,"Occurrences","Bins",wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
-                #
-                visualizations.heatmap_gen(consecutiveLL_bin,consecutive_controlLL_binT,wf.output_path("consecutive_patterns", "png", 'distribution_distances'))
-                #print(consecutiveLL_bin)
-                #functions.table_consecutive_bins(consecutiveLL_bin,Bins,wf.output_path("consecutive_patterns","txt",path.split("/")[-1],"_Consecutive_Patterns_bins",str(patterns[i])))
+                functions.table_consecutive(consecutiveLL_bin,["Bin:"+str(bin_range[0])+"-"+str(bin_range[1]) for bin_range in Bins],wf.output_path("consecutive_patterns","txt",os.path.basename(path),"_Consecutive_Patterns_bins",str(pat)))
 
+                if plots:
+                    # Plot barplot of consecutive in each bin  
+                    visualizations.heatmap_gen(consecutiveLL_bin,consecutive_controlLL_bin,wf.output_path("consecutive_patterns", "png", 'distribution_distances',pat))
 
     return
 
