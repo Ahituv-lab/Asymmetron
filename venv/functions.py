@@ -183,6 +183,9 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
           dist < window_max and dist >= window_min))
     p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = orientation(Strand1, Strand2)
 
+    # Calculate the distance distributions for all orientations
+    Distances_orientations = get_distance_orientations(Distance,Strand1,Strand2,window_min,window_max)
+
     p_pL_bin = [];m_mL_bin = []; # Same orientation
     p_mL_bin = [];m_pL_bin = []; # Opposite orientation
     same_strandL_bin = []; opposite_strandL_bin = []; # Combined same / opposite orientations
@@ -207,8 +210,27 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
             same_strandL_bin.append(same_strand_bin);opposite_strandL_bin.append(opposite_strand_bin);
             convergentL_bin.append(convergent_bin);divergentL_bin.append(divergent_bin)
 
-    return (p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent), (Bins,p_pL_bin,m_mL_bin,p_mL_bin,m_pL_bin,same_strandL_bin,opposite_strandL_bin,convergentL_bin,divergentL_bin)
+    return (Distances_orientations, p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent), (Bins,p_pL_bin,m_mL_bin,p_mL_bin,m_pL_bin,same_strandL_bin,opposite_strandL_bin,convergentL_bin,divergentL_bin)
 
+
+def get_distance_orientations(DistanceL,Strand1L,Strand2L,window_min,window_max):
+    same_strandL_distance=[];opposite_strandL_distance=[];
+    divergentL_distance=[];convergentL_distance=[];
+    for index in range(len(Strand1L)):
+        if (DistanceL[index]< window_max and DistanceL[index] >= window_min):
+            sign1 = Strand1L[index]
+            sign2 = Strand2L[index]
+            if sign1 in ["+", "-"] and sign2 in ["+", "-"]:
+                if sign1 == sign2:
+                     same_strandL_distance.append(DistanceL[index])
+                else:
+                     opposite_strandL_distance.append(DistanceL[index])
+
+                     if sign1 == "+" and sign2 == "-":
+                         convergentL_distance.append(DistanceL[index])
+                     elif sign1 == "-" and sign2 == "+":
+                         divergentL_distance.append(DistanceL[index])
+    return (same_strandL_distance,opposite_strandL_distance,divergentL_distance,convergentL_distance)
 
 def asym_binned(window_min, window_max, bins, DistancesL, Strand1L, Strand2L):
     """
