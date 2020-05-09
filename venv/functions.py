@@ -347,8 +347,10 @@ def table_consecutive(ConsecutiveL,StrandsL,path_out):
 def write_BED_out(DataL,path_out):
     # Write significant results in an output file
     with open(path_out, 'w') as output_file:
-        for line in DataL:
-            output_file.write('\t'.join([str(x) for x in line])+'\n')
+        for group_line in DataL:
+            for line in group_line:
+            
+            	output_file.write('\t'.join([str(x) for x in line])+'\n')
     return 
 
 
