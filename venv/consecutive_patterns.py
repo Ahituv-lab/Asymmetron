@@ -54,7 +54,7 @@ def fun1(args):
     for index,path in enumerate(paths):
         name = names[index]
         DataL_significant,consecutiveL,occsL,consecutive_controlL,occs_controlL = functions.asymmetries_single(path,patterns,min_distance,max_distance,threshold)
-
+        
         # Table with all the outputs for all strands, number of consecutive occurrences found for each strand pattern
         functions.table_consecutive(consecutiveL,patterns,wf.output_path("consecutive_patterns","txt",os.path.basename(path),"_Consecutive_Patterns_Total"))
 
@@ -71,10 +71,28 @@ def fun1(args):
 
             if plots==True:
                      # Plot number of consecutive occurrences of the pattern
-                     visualizations.barplot_single_gen(times_found,consecutive,"Occurrences","Consecutive occurrences",wf.output_path("consecutive_patterns","png",os.path.basename(path),str(patterns[i])))
+                     consecutive_total = list(consecutive)
+                     times_found_total = list(times_found)
+
+                     consecutive_control_total=list(consecutive_control)
+                     times_found_control_total=list(times_found_control)
+
+                     max_consecutive=max(max(consecutive_control_total),max(consecutive_total))
+
+                     # Adding the consecutive occurrences not found
+                     for k in range(1,max_consecutive+1):
+                         if k not in consecutive_total:
+                             consecutive_total=consecutive_total[:k-1]+[k]+consecutive_total[k-1:]
+                             times_found_total=times_found_total[:k-1]+[0]+times_found_total[k-1:]
+ 
+                         if k not in consecutive_control_total:
+                             consecutive_control_total=consecutive_control_total[:k-1]+[k]+consecutive_control_total[k-1:]
+                             times_found_control_total=times_found_control_total[:k-1]+[0]+times_found_control_total[k-1:]
+
+                     visualizations.barplot_single_gen(times_found_total,consecutive_total,"Occurrences","Consecutive occurrences",wf.output_path("consecutive_patterns","png",os.path.basename(path),str(patterns[i])))
 
                      # Plot number  of consecutive occurrences of the pattern in the real data and in the scrambled version
-                     visualizations.barplot_pair_lists_gen(consecutive,times_found_control,times_found,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",os.path.basename(path)+"_with_controls",str(patterns[i])))
+                     visualizations.barplot_pair_lists_gen(consecutive_total,times_found_control_total,times_found_total,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",os.path.basename(path)+"_with_controls",str(patterns[i])))
 
                      # We want to show biases in distances of consecutive
                      occsL_filtered=[];occs_controlL_filtered=[];
