@@ -75,13 +75,23 @@ def barplot_single_gen(List1,List1_names,y_label,x_label,output):
         return
 
 
-def heatmap_gen(DataLL,output):
+def heatmap_gen(DataLL,DataLL_control,output):
        import seaborn as sns
        import pandas as pd
-       df = pd.DataFrame(np.array(DataLL))
+       RatioLL=[]
+       for i in range(len(DataLL[0])):
+           RatioL=[];
+           for k in (DataLL[0][i].keys()):
+               if float(DataLL_control[0][i][k])!=0:
+                   RatioL = DataLL[0][i][k]/float(DataLL_control[0][i][k])
+               else:
+                   RatioL = np.nan
+           RatioLL.append(RatioL)
+
+       df = pd.DataFrame(np.array(RatioLL))
        sns.heatmap(df)
-       sns.savefig(output)
-       sns.close()
+       plt.savefig(output)
+       plt.close()
        return
 
 def distribution_gen(occsL,occsL_control,output):
