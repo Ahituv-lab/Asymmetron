@@ -96,6 +96,7 @@ def heatmap_gen(DataLL,DataLL_control,BinsL,output):
        sns.heatmap(df,cbar_kws={'label': 'Enrichment'})
        plt.xlabel("Consecutive occurrences")
        plt.ylabel("Distance bins")
+       plt.tight_layout()
        plt.savefig(output)
        plt.close()
        return
