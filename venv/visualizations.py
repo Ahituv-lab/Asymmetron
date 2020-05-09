@@ -125,10 +125,10 @@ def distribution_gen(occsL,occsL_control,output):
 
 def distnace_distribution_gen(same_strandL_distance,opposite_strandL_distance,name1,name2,min_dist,max_dist,output):
       import seaborn as sns
-      sns.rugplot(same_strandL_distance,label=name1)
-      sns.rugplot(opposite_strandL_distance,label=name2)
+      plt.hist(same_strandL_distance,50,label=name1)
+      plt.hist(opposite_strandL_distance,50,label=name2)
       plt.xlabel("Distance")
-      plt.ylabel("Density")
+      plt.ylabel("Occurrences")
       plt.xlim(min_dist,max_dist)
       plt.legend(frameon=False,title="Orientation")
       plt.savefig(output)
