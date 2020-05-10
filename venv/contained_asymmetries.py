@@ -86,7 +86,7 @@ def fun2(args):
 
             if score:
                 Ratio_Bins,Ratio_Convergent_Divergent_Bins, Score_names = functions.separate_on_score(motif_region_pairs[i][1], motif_region_pairs[i][0], bins_score)
-                functions.table_bins_gen(names_pairs,Score_names,Ratio_Bins,Ratio_Convergent_Divergent_Bins,wf.output_path("contained_asymmetries","txt", "Table_Strand_Asymmetries_Scores", names_pairs[i][0],names_pairs[i][1]))
+                functions.table_bins_gen(Score_names,Ratio_Bins,Ratio_Convergent_Divergent_Bins,wf.output_path("contained_asymmetries","txt", "Table_Strand_Asymmetries_Scores", names_pairs[i][0],names_pairs[i][1]))
                  
                 visualizations.barplot_single_gen(Ratio_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names], "Strand Asymmetry","Score", wf.output_path("contained_asymmetries","png", "same_opposite_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
                 visualizations.barplot_single_gen(Ratio_Convergent_Divergent_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names], "Strand Asymmetry","Score", wf.output_path("contained_asymmetries","png", "convergent_divergent_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
