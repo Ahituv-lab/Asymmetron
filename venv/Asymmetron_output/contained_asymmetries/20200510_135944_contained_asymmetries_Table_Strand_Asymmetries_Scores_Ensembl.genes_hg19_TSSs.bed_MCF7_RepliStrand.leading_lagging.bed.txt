@@ -1,2 +1,0 @@
-Score Range Min	Score Range Max	Feature 1	Feature 2	Ratio same opposite	Ratio divergent convergent
-35.0-208.0	Ensembl.genes_hg19_TSSs.bed	MCF7_RepliStrand.leading_lagging.bed	0.503255760191	0.471436881908
