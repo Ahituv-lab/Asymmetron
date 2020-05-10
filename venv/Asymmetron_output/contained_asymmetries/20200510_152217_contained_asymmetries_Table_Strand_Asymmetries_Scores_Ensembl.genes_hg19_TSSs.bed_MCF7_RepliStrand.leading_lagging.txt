@@ -1,1 +1,0 @@
-Score Range Min	Score Range Max	Feature 1	Feature 2	Ratio same opposite	Ratio divergent convergent
