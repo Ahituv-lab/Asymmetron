@@ -66,7 +66,7 @@ def fun2(args):
             convergentL.append(convergent);divergentL.append(divergent);
 
             # same vs opposite analysis
-            Ratio_same_opposite, p_val_same_opposite, p_val_same_opposite_Bonferoni = functions.statistical_evaluation(same_strand, opposite_strand, number_of_files, expected_asym=expected_asym)
+            Ratio_same_opposite, p_val_same_opposite, p_val_same_opposite_Bonferoni = functions.statistical_evaluation(same_strand, opposite_strand, number_of_files, expected_asym = expected_asym)
             Ratio_same_oppositeL.append(Ratio_same_opposite);
             p_val_same_oppositeL.append(p_val_same_opposite);
             p_val_same_opposite_BonferoniL.append(p_val_same_opposite_Bonferoni)
@@ -85,7 +85,8 @@ def fun2(args):
                 visualizations.barplot_gen(p_m, m_p,"Convergent","Divergent", wf.output_path("contained_asymmetries", "png","convergent_divergent_orientation", names_pairs[i][0],names_pairs[i][1]))
 
             if score:
-                Ratio_Bins,Ratio_Convergent_Divergent_Bins, Score_names = functions.separate_on_score(motif_region_pairs[i][1], motif_region_pairs[i][0], bins_score)
+                Ratio_Bins,Ratio_Convergent_Divergent_Bins,Score_names,Binom_Test_Same_Opposite,Binom_Test_Same_Opposite_Bonferoni,Binom_Test_Convergent_Divergent,Binom_Test_Convergent_Divergent_Bonferoni = functions.separate_on_score(motif_region_pairs[i][1], motif_region_pairs[i][0], bins_score,number_of_files,expected_asym,expected_asym_conv_div)
+                print(Score_names,Ratio_Bins,Ratio_Convergent_Divergent_Bins)
                 functions.table_bins_gen(Score_names,Ratio_Bins,Ratio_Convergent_Divergent_Bins,wf.output_path("contained_asymmetries","txt", "Table_Strand_Asymmetries_Scores", names_pairs[i][0],names_pairs[i][1]))
                  
                 visualizations.barplot_single_gen(Ratio_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names], "Strand Asymmetry","Score", wf.output_path("contained_asymmetries","png", "same_opposite_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))

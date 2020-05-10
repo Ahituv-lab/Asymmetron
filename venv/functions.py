@@ -73,7 +73,7 @@ def binner(min_size, max_size, bin_no):
     return Bins
 
 
-def separate_on_score(path_score, path, number_of_bins):
+def separate_on_score(path_score, path, number_of_bins,number_of_files,expected_asym,expected_asym_c_d):
     """
     path_score: is the path to the BED file with last column containing the scores.
     path: the path to the second BED file.
@@ -99,6 +99,8 @@ def separate_on_score(path_score, path, number_of_bins):
 
     # Calculates the asymmetry for same / opposite and convergent / divergent asymmetry for each bin.
     Ratio_Same_Opposite = [];Ratio_Convergent_Divergent=[];
+    Binom_Test_Same_Opposite=[]; Binom_Test_Same_Opposite_Bonferoni=[];
+    Binom_Test_Convergent_Divergent=[];Binom_Test_Convergent_Divergent_Bonferoni=[];
     for step in range(len(StepsL)):
         p_p_step, m_m_step, p_m_step, m_p_step, same_strand_step, opposite_strand_step, convergent_step, divergent_step = overlap(DataStepsL[step], DataL2)
         if same_strand_step + opposite_strand_step != 0:
@@ -109,7 +111,15 @@ def separate_on_score(path_score, path, number_of_bins):
         if p_m_step+m_p_step != 0:
             Ratio_Convergent_Divergent.append(p_m_step/ float(p_m_step+ m_p_step))
 
-    return Ratio_Same_Opposite,Ratio_Convergent_Divergent,StepsL
+        binom_same_opposite = binom_test(same_strand_step, same_strand_step + opposite_strand_step, expected_asym)
+        binom_same_opposite_Bonferoni = min(1,binom_same_opposite*number_of_files)
+
+        binom_convergent_divergent = binom_test(p_m_step, p_m_step + m_p_step, expected_asym_c_d)
+        binom_convergent_divergent_Bonferoni = min(1,binom_convergent_divergent*number_of_files)
+        Binom_Test_Same_Opposite.append(binom_same_opposite);Binom_Test_Same_Opposite_Bonferoni.append(Binom_Test_Same_Opposite_Bonferoni);
+        Binom_Test_Convergent_Divergent.append(binom_convergent_divergent);Binom_Test_Convergent_Divergent_Bonferoni.append(binom_convergent_divergent_Bonferoni)
+
+    return Ratio_Same_Opposite,Ratio_Convergent_Divergent,StepsL,Binom_Test_Same_Opposite,Binom_Test_Same_Opposite_Bonferoni,Binom_Test_Convergent_Divergent,Binom_Test_Convergent_Divergent_Bonferoni
 
 
 def strand_annotate_third_BED_overlap(unnotated_path, annotated_path):
@@ -232,46 +242,6 @@ def get_distance_orientations(DistanceL,Strand1L,Strand2L,window_min,window_max)
                          divergentL_distance.append(DistanceL[index])
 
     return (same_strandL_distance,opposite_strandL_distance,divergentL_distance,convergentL_distance)
-
-def asym_binned(window_min, window_max, bins, DistancesL, Strand1L, Strand2L):
-    """
-    This function should take as input:
-    window:Maximum distance to look into
-    Bins:Number of bins to divide the signal into
-    Distances already calculated
-    Strands for factors in those distances
-    This function should return:
-    The strand asymmetries for each bin
-    #***There is a bug with an extra bin being generated than those expected***#
-    """
-    Range_Bins = binner(window_min, window_max, bins)
-
-    Strand1D = {i: [] for i in range(min(Range_Bins), max(Range_Bins) + 1)}
-    Strand2D = {i: [] for i in range(min(Range_Bins), max(Range_Bins) + 1)}
-    DistancesD = {i: [] for i in range(min(Range_Bins), max(Range_Bins) + 1)}
-    for i in range(len(DistancesL)):
-        for index, k in enumerate(Range_Bins):
-            if k[0] <= DistancesL[i] < k[1]:
-                bin_of_distance = index + 1
-                Strand1D[index + 1] += [Strand1L[i]]
-                Strand2D[index + 1] += [Strand2L[i]]
-                DistancesD[index + 1] += [DistancesL[i]]
-
-    p_pL = [];m_mL = []; # Same strand orientation
-    p_mL = [];m_pL = []; # Opposite strand orientation
-    same_strandL = [];
-    opposite_strandL = [];
-    convergentL = [];
-    divergentL = []
-    for i in range(1, len(Range_Bins) + 1):
-        p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = orientation(Strand1D[i], Strand2D[i])
-        p_pL.append(p_p);m_mL.append(m_m);
-        p_mL.append(p_m);m_pL.append(m_p);
-        same_strandL.append(same_strand)
-        opposite_strandL.append(opposite_strand)
-        convergentL.append(convergent)
-        divergentL.append(divergent)
-    return p_pL, m_mL, p_mL, m_pL, same_strandL, opposite_strandL, convergentL, convergentL
 
 
 def orientation(sign1L, sign2L):
@@ -521,5 +491,4 @@ if __name__ == "__main__":
 # works - minor error with extra bin, needs fixing
 # Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),"G4","hg19_TSS",0,500,False,False,10)
 # print len(Strand1),len(Strand2),len(DistancesL)
-# print asym_binned(0,500,10,DistancesL,Strand1,Strand2)
 # asymmetries_single(read_BED("All_G4.bed"),0,1000,["++--"],0,False,0.0001,"test")
