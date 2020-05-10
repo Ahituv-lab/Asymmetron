@@ -91,7 +91,7 @@ def separate_on_score(path_score, path, number_of_bins):
     for step in StepsL:
         DataStep = [];ScoreStep = [];
         for i in range(len(ScoreL)):
-            if ScoreL[i] >= step[0] and ScoreL[i] < step[1]:
+            if ScoreL[i] >= step[0] and ScoreL[i] <= step[1]:
                 DataStep += [DataL[i]]
                 ScoreStep += [ScoreL[i]]
         DataStepsL += [DataStep]
