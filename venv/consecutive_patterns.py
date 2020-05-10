@@ -3,7 +3,11 @@ import numpy as np
 import functions
 import argparse
 import wrapper_functions as wf
-import visualizations
+try:
+    import visualizations
+except:
+    print("visualisations not imported")
+
 from collections import Counter
 
 def fun1(args):
