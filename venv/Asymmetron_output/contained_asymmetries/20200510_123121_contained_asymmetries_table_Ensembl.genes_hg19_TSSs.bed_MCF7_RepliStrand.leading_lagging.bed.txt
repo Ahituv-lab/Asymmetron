@@ -1,2 +1,0 @@
-Feature 1	Feature 2	plus-plus	minus-minus	plus-minus	minus-plus	p-value same opposite	p-value same opposite Bonferoni corrected	Ratio same opposite	p-value divergent convergent	p-value divergent convergent Bonferoni corrected	Ratio divergent convergent
-Ensembl.genes_hg19_TSSs.bed	MCF7_RepliStrand.leading_lagging.bed	41842	41615	43002	41751	0.0015911857975799404	0.0015911857975799404	0.4961476725521669	1.7565551903055923e-05	1.7565551903055923e-05	0.5073802697249655

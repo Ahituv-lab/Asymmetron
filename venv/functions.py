@@ -348,6 +348,14 @@ def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, 
     datafile.close()
     return
 
+def table_bins_gen(NamesL_pairs,Score_names,Ratio_Bins,Ratio_Convergent_Divergent_Bins,output_table):
+    datafile = open(output_table, "w")
+    datafile.write("Score Range Min"+'\t'+str("Score Range Max")+'\t'+"Feature 1"+'\t'+"Feature 2"+"\t"+"Ratio same opposite"+'\t'+"Ratio divergent convergent" + '\n')
+    for i in range(len(NamesL_pairs)):
+        datafile.write(str(round(Score_names[i][0],0))+"-"+str(round(Score_names[i][1],0))+'\t'+str(NamesL_pairs[i][0])+'\t'+str(NamesL_pairs[i][1])+'\t'+str(Ratio_Bins[i])+'\t'+str(Ratio_Convergent_Divergent_Bins[i])+'\n')
+    datafile.close()
+    return
+
 def table_consecutive(ConsecutiveL,namesL,path_out):
     max_consecutive = max([max(k.keys()) for k in ConsecutiveL])
     with open(path_out, 'w') as output:
