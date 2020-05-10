@@ -116,7 +116,8 @@ def separate_on_score(path_score, path, number_of_bins,number_of_files,expected_
 
         binom_convergent_divergent = binom_test(p_m_step, p_m_step + m_p_step, expected_asym_c_d)
         binom_convergent_divergent_Bonferoni = min(1,binom_convergent_divergent*number_of_files)
-        Binom_Test_Same_Opposite.append(binom_same_opposite);Binom_Test_Same_Opposite_Bonferoni.append(Binom_Test_Same_Opposite_Bonferoni);
+
+        Binom_Test_Same_Opposite.append(binom_same_opposite);Binom_Test_Same_Opposite_Bonferoni.append(binom_same_opposite_Bonferoni);
         Binom_Test_Convergent_Divergent.append(binom_convergent_divergent);Binom_Test_Convergent_Divergent_Bonferoni.append(binom_convergent_divergent_Bonferoni)
 
     return Ratio_Same_Opposite,Ratio_Convergent_Divergent,StepsL,Binom_Test_Same_Opposite,Binom_Test_Same_Opposite_Bonferoni,Binom_Test_Convergent_Divergent,Binom_Test_Convergent_Divergent_Bonferoni
