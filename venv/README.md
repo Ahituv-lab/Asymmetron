@@ -54,13 +54,13 @@ It encompasses four functions:
 	--expected_asym: The expected asymmetry bias between the regions and the motifs regarding same or opposite strand orientation. Default is 0.5.
 	--expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the regions and the motifs. Default is 0.5.
 	--score: Optional flag. If provided, assumes the last column of the region files is a scoring metric and uses it to subdivide the analysis into bins.
-	--bins: Number of bins to subdivide the score column into. Only runs when --score is provided. Default value is 10.
+	--bins_score: Number of bins to subdivide the score column into. Only runs when --score is provided. Default value is 10.
 	--plots: Returns the associated plots of the asymmetries for each file.
 #### Outputs:
-	-Table containing strand asymmetries of ++/+-/-+/-- orientations, same-strand, opposite strand, p-value, p-value with Binomial correction.
+	-Table containing strand asymmetries of ++/+-/-+/-- orientations, same-strand, opposite strand, p-value, p-value with Bonferoni correction.
 	-Barplot of strand asymmetries for each pair of comparisons.
-	-Barplot of strand-asymmetries across the quartiles.
-	
+	-Barplot of strand-asymmetries across the score quantiles.
+	-Table of strand asymmetries for same / opposite and convergent / divergent asymmetries per bin, associated p-vaues and p-values Bonferoni correction.
 
 ### 3. pairwise_asymmetries.py
 #### Required inputs:
@@ -69,13 +69,13 @@ It encompasses four functions:
 #### Optional inputs:
 	--names_A: The name of each of the inputted BED-formatted motif A files.
 	--names_B: The name of each of the inputted BED-formatted motif B files.
-        --upstream: Only look for occurrences of motif A upstream of motif B. Incompattible with -downstream.
-        --downstream: Only look for occurrences of motif A downstream of motif B. Incompatible with -upstream.
+        --upstream_only: Only look for occurrences of motif A upstream of motif B. Incompattible with -downstream.
+        --downstream_only: Only look for occurrences of motif A downstream of motif B. Incompatible with -upstream.
 	--orientation: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
 	--expected_asym: The expected asymmetry bias between the pairs of motifs regarding same or opposite strand orientation. Default is 0.5.
         --expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the pairs of motifs. Default is 0.5.
-	--min_dist: Minimum distance to consider in the analysis. Default is 0.
-	--max_dist: Maximum distance to consider in the analysis. Default is 100.
+	--min_distance: Minimum distance to consider in the analysis. Default is 0.
+	--max_distance: Maximum distance to consider in the analysis. Default is 100.
 	--bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
 	--plots: Returns the associated plots of the asymmetries for each file.
 #### Outputs:
