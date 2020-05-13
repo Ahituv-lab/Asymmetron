@@ -1,2 +1,2 @@
 Feature 1	Feature 2	plus-plus	minus-minus	plus-minus	minus-plus	p-value same opposite	p-value same opposite Bonferoni corrected	Ratio same opposite	p-value divergent convergent	p-value divergent convergent Bonferoni corrected	Ratio divergent convergent
-TATA_box_motif.bed	Ensembl.genes_hg19_TSSs.bed	0	0	0	0	1.0	1	nan	1.0	1	nan
+gencode.v33.annotation.bed.TSS	TATA_box_motif.bed	0	0	0	0	1.0	1	nan	1.0	1	nan
