@@ -3,12 +3,11 @@ import functions
 import argparse
 import wrapper_functions as wf
 
-def fun4(args):
+def fun4(motif_no_annotation, motif_annotation):
     """
     This function generates the annotated file and saves it as an output"
     """
-    motif_no_annotation = wf.path_checker(args.motif_no_annotation)
-    motif_annotation = wf.path_checker(args.motif_annotation)
+    print(motif_annotation, motif_no_annotation)
     for path in motif_no_annotation:
         for path2 in motif_annotation:
             Annotation_data=functions.strand_annotate_third_BED_overlap(path,path2)
@@ -25,7 +24,13 @@ def orientation_parser():
     args = parser.parse_args()
     return args
 
+def orientation_wrapper(args):
+    """Wrapper calling fun4 with the appropriate arguments"""
+    motif_no_annotation = wf.path_checker(args.motif_no_annotation)
+    motif_annotation = wf.path_checker(args.motif_annotation)
+    fun4(motif_no_annotation=motif_no_annotation, motif_annotation=motif_annotation)
 
 if __name__ == "__main__":
-    orientation_parser()
-    fun4(args)
+    args = orientation_parser()
+    orientation_wrapper(args)
+
