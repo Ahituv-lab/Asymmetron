@@ -1,0 +1,2 @@
+Feature 1	Feature 2	plus-plus	minus-minus	plus-minus	minus-plus	p-value same opposite	p-value same opposite Bonferoni corrected	Ratio same opposite	p-value divergent convergent	p-value divergent convergent Bonferoni corrected	Ratio divergent convergent
+TATA_box_hg38_promoter.bed	gencode.v33.annotation.bed.TSS	3802	3631	3285	3357	2.7268085300505165e-11	2.7268085300505165e-11	0.52809946714	0.38365620480207396	0.38365620480207396	0.494579945799

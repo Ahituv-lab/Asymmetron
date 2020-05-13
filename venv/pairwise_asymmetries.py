@@ -45,6 +45,14 @@ def fun3(args):
     plots = args.plots
     bins = args.bins
 
+    orientation = args.orientation
+    if orientation!= None:
+        paths_after_orientation=[];
+        for path in motifsAL:
+            name_orientation=orientation.fun4(orientation,path)
+            paths_after_orientation.append([name_orientation])
+        motifsAL = paths_after_orientation
+
     # I think orientation analysis if user points to file(s) should go here before we start the asymmetries estimations
 
     number_of_files= len(motifsAL)*len(motifsBL)
@@ -81,11 +89,11 @@ def fun3(args):
                  # generates historam covergent divergent
                  visualizations.barplot_gen(p_m, m_p, "Convergent","Divergent",wf.output_path("pairwise_asymmetries","png", "convergent_divergent_orientation", names_pairs[i][0],names_pairs[i][1]))
 
-                 same_strandL_distance,opposite_strandL_distance,divergentL_distance,convergentL_distance = Distances_orientations
+                 same_strandL_distance,opposite_strandL_distance,divergentL_distance,convergentL_distance = Distances_orientations 
+                 print(same_strandL_distance)
                  visualizations.distnace_distribution_gen(same_strandL_distance,opposite_strandL_distance,"Same","Opposite",min_distance,max_distance,wf.output_path("pairwise_asymmetries","png", "ditribution_same_opposite", names_pairs[i][0],names_pairs[i][1]))
                  visualizations.distnace_distribution_gen(convergentL_distance,divergentL_distance,"Convergent","Divergent",min_distance,max_distance,wf.output_path("pairwise_asymmetries","png", "ditribution_convergent_divergent", names_pairs[i][0],names_pairs[i][1]))          
 
-            # If bins is true I already put in functions.proximal that it generates two barplots. Also consider a table to be generated. Also, we need to put the output of that in the same directory as outputs_pairwise_asymmetries
             if bins:
                 BinsL,p_p_binsL,m_m_binsL,p_m_binsL,m_p_binsL,same_strand_binsL,opposite_strand_binsL,convergent_binsL,divergent_binsL=per_bin_asymmetries
                 # Here we need to decide what is the outputs we want to provide since they can be too many and complicated or focus on the plots and a small table
