@@ -1,6 +1,7 @@
 import sys,os
 import numpy as np
 import functions
+import orientation
 import argparse
 import wrapper_functions as wf
 try:
@@ -49,8 +50,8 @@ def fun1(args):
     if orientation != None:
         paths_after_orientation=[];
         for path in paths:
-            os.system("python orientation.py "  + path + " " + orientation)
-            paths_after_orientation.append(["ASYMMETRON"+os.path.basename(path)+"_ANNOTATED_"+os.path.basename(orientation)])
+            name_orientation=orientation.fun4(path,orientation)
+            paths_after_orientation.append([name_orientation])
         paths = paths_after_orientation
     
     for index,path in enumerate(paths):

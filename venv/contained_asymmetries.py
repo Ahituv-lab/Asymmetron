@@ -1,5 +1,6 @@
 import sys,os
 import functions
+import orientation
 import argparse
 import wrapper_functions as wf
 try:
@@ -40,6 +41,17 @@ def fun2(args):
         bins_score = args.bins_score;
         if score == True and bins_score == None:
             bins_score = 10;
+
+        # Orientation of third file using the motifs
+        orientation_motifs = args.orientation_motifs;
+        orientation = args.orientation
+        if orientation_motifs!= None:
+            paths_after_orientation=[];
+            for path in motifsL:
+                 name_orientation=orientation.fun4(orientation,path)
+                 paths_after_orientation.append([name_orientation])
+            motifsL = paths_after_orientation
+
     
         number_of_files = len(motifsL) * len(regionsL)
 	# All possible pairs between region files and motif files
@@ -107,8 +119,6 @@ def contained_asymmetries_parser():
 	                    help="Optional argument. A name for each of the region files for more human-readable output. Each name must correspond to a region file path")
         parser.add_argument("-nm", "--names_motifs",
 	                    help="Optional argument. A name for each of the motif files for more human-readable output. Each name must correspond to a motif file path")
-        parser.add_argument("-or", "--orientation_regions",
-	                    help="Optional argument. Orient file(s) relative to annotated BED-formated region file(s) and perform the analysis for the un-annoated file with the new annotations. ")
         parser.add_argument("-om", "--orientation_motifs",
 	                    help="Optional argument. Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations. ")
         parser.add_argument("-p", "--plots", help="Optional flag. Display output plots", action="store_true")
