@@ -1,2 +1,2 @@
 Feature 1	Feature 2	plus-plus	minus-minus	plus-minus	minus-plus	p-value same opposite	p-value same opposite Bonferoni corrected	Ratio same opposite	p-value divergent convergent	p-value divergent convergent Bonferoni corrected	Ratio divergent convergent
-TATA_box.bed.i_u.promoter_1kB_each_side	INR_box.bed.i_u.promoter_1kB_each_side	331	357	466	500	8.685771874165332e-12	8.685771874165332e-12	0.415961305925	0.2883405019804769	0.2883405019804769	0.482401656315
+INR_up_only	TATA_box_up_only	146	207	313	175	3.654998407862635e-06	3.654998407862635e-06	0.419738406659	4.305027283574227e-10	4.305027283574227e-10	0.641393442623
