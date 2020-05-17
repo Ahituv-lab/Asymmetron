@@ -44,7 +44,7 @@ def fun2(args):
 
         # Orientation of third file using the motifs
         orientation_motifs = args.orientation_motifs;
-        orientation = args.orientation
+        #orientation = args.orientation
         if orientation_motifs!= None:
             paths_after_orientation=[];
             for path in motifsL:

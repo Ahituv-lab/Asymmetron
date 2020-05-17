@@ -329,15 +329,28 @@ def table_bins_gen(Score_names,Ratio_Bins,Ratio_Convergent_Divergent_Bins,Binom_
     return
 
 def table_consecutive(ConsecutiveL,namesL,path_out):
-    max_consecutive = max([max(k.keys()) for k in ConsecutiveL])
+
+    for k in range(len(ConsecutiveL)):
+        if ConsecutiveL[k]==[]:
+            ConsecutiveL[k]={}
+
+    consecutives_all = ([max(k.keys()) for k in ConsecutiveL if k!={}])
+    if consecutives_all!=[]:
+       max_consecutive = max(consecutives_all);
+    else:
+      max_consecutive = 0;
+
     with open(path_out, 'w') as output:
         output.write(str("Number of consecutive occurrences")+'\t'+'\t'.join([str(x) for x in range(1,max_consecutive+1)])+'\n')
 
         for i in range(len(ConsecutiveL)):
-            ConsecutiveLT = sorted(ConsecutiveL[i].items()) 
-            consecutive, times_found = zip(*ConsecutiveLT) 
-            consecutiveL = list(consecutive)
-            times_foundL = list(times_found)            
+            if ConsecutiveL[i]!={}:
+                ConsecutiveLT = sorted(ConsecutiveL[i].items()) 
+                consecutive, times_found = zip(*ConsecutiveLT) 
+                consecutiveL = list(consecutive)
+                times_foundL = list(times_found)            
+            else:
+                consecutiveL=[];times_foundL=[];
 
             for k in range(1,max_consecutive+1):
                if k not in consecutiveL:
@@ -449,7 +462,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
 
 def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     from random import shuffle
-    DataL = read_BED(path,False)
+    DataL = list(BedTool(path,False).sort())
 
     # Here we want to shuffle the strand column
     ColL = [k[4] for k in DataL]

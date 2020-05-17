@@ -86,7 +86,20 @@ def heatmap_gen(DataLL,DataLL_control,BinsL,output):
        except: 
             print("pandas not imported")
 
-       max_cons = max([max(k.keys()) for k in DataLL])
+       for k in range(len(DataLL)):
+          if DataLL[k]==[]:
+             DataLL[k]={};
+       for k in range(len(DataLL_control)):
+         if DataLL_control[k]==[]:
+             DataLL_control[k]={};
+
+       all_cons = [max(k.keys()) for k in DataLL if k!={}]
+
+       if all_cons==[]:
+          return
+
+       else:
+          max_cons = max(all_cons)
        RatioLL=[]
        for i in range(len(DataLL)):
            RatioL=[];
