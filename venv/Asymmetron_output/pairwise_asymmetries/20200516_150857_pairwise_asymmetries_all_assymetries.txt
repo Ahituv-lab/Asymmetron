@@ -1,2 +1,0 @@
-Feature 1	Feature 2	plus-plus	minus-minus	plus-minus	minus-plus	p-value same opposite	p-value same opposite Bonferoni corrected	Ratio same opposite	p-value divergent convergent	p-value divergent convergent Bonferoni corrected	Ratio divergent convergent
-INR_down_only	TATA_box_down_only	198	161	170	337	5.531404444492023e-07	5.531404444492023e-07	0.41454965358	1.0098230789001714e-13	1.0098230789001714e-13	0.335305719921

@@ -66,11 +66,19 @@ def fun1(args):
             # Write significant results in an output file
             functions.write_BED_out(DataL_significant[i],wf.output_path("consecutive_patterns","bed",os.path.basename(path),"statistically_siginificant",patterns[i]))
 
+      
+            
             consecutiveLT = sorted(consecutiveL[i].items())
-            consecutive,times_found = zip(*consecutiveLT) 
+            if consecutiveLT!=[]:
+                consecutive,times_found = zip(*consecutiveLT) 
+            else:
+                consecutive=[];times_found=[];
 
             consecutive_controlLT = sorted(consecutive_controlL[i].items())
-            consecutive_control,times_found_control = zip(*consecutive_controlLT)
+            if consecutive_controlLT!=[]:
+                consecutive_control,times_found_control = zip(*consecutive_controlLT)
+            else:
+                consecutive_control=[];times_found_control=[];
 
             if plots==True:
                      # Plot number of consecutive occurrences of the pattern
@@ -80,7 +88,15 @@ def fun1(args):
                      consecutive_control_total = list(consecutive_control)
                      times_found_control_total = list(times_found_control)
 
-                     max_consecutive = max(max(consecutive_control_total),max(consecutive_total))
+                     print(consecutive_control_total,consecutive_total)
+                     if consecutive_control_total!=[] and consecutive_total!=[]:
+                         max_consecutive = max(max(consecutive_control_total),max(consecutive_total));
+                     elif consecutive_total!=[]:
+                         max_consecutive = max(consecutive_total);
+                     elif consecutive_control_total!=[]:
+                         max_consecutive = max(consecutive_control_total)
+                     else:
+                         max_consecutive =0;
 
                      # Adding the consecutive occurrences not found
                      for k in range(1,max_consecutive+1):
@@ -109,7 +125,7 @@ def fun1(args):
 
                      visualizations.distribution_gen(occs_controlL_filtered,occsL_filtered,wf.output_path("consecutive_patterns","png",os.path.basename(path),"distances_inconsecutive_pattern_"+str(patterns[i])))
 
-        # I think instead of Bins here it can be gradient of distances or something like that
+        
         if bins>1:
             Bins=functions.binner(min_distance,max_distance,bins)
             for pat in patterns:
