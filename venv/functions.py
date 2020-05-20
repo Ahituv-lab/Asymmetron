@@ -486,7 +486,7 @@ if __name__ == "__main__":
         DataL = []
         for line in f.readlines():
             DataL.append(line.strip().split("\t"))
-    out = extract_pattern(DataL, "+-+++++", 0, 3, 2)
+    out = extract_pattern(DataL, "+-", 0, 3, 2)
     print("The following dictionary includes the number of consecutive appearances of the pattern, e.g. when looking "
           "for +- in +-+-+---+- the result should be {1:1}, {3:1}", out[0])
     print("The distances between consecutive appearances of the pattern are: ", out[1] )

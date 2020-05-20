@@ -1,6 +1,7 @@
 import os
 import time
 import argparse
+import configparser
 
 # Catch number of bins negative or 0 --> check_positive_int
 # Catch distance limits have to be >=0 --> check_positive_int
@@ -35,14 +36,19 @@ def output_path(fun_name, extension, *args):
     :param extension: file extension for the file
     :return: Path under which to save the output. No file type is selected
     """
-
-    time_stamp = time.strftime("%Y%m%d_%H%M%S", time.localtime())  # To add timestamp to output file names
+    config = configparser.ConfigParser()
+    config.read('config.txt')
+    time_stamp = time.strftime("%Y%m%d_%H%M%S", time.localtime()) +"_"  # To add timestamp to output file names
+    # Remove the time stamp if chosen by the user
+    print(config.sections())
+    if config['DEFAULT']['time_stamp'] == "False":
+        time_stamp = ""
     if not os.path.exists("Asymmetron_output"):
         os.makedirs("Asymmetron_output/")
     if not os.path.exists("Asymmetron_output/"+fun_name):
         os.makedirs("Asymmetron_output/" + fun_name)
 
-    return "Asymmetron_output/" + fun_name + "/" + time_stamp+ "_" + fun_name + "_" + "_".join(args)+ "." + extension
+    return "Asymmetron_output/" + fun_name + "/" + time_stamp + fun_name + "_" + "_".join(args)+ "." + extension
 
 
 
@@ -144,9 +150,8 @@ def check_valid_probability(value):
 
 
 
-if __name__ == "__name__":
+if __name__ == "__main__":
     print(output_path("consecutive_patterns", "bed", "test", "test2"))
-
 
 
 
