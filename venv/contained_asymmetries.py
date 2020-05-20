@@ -138,5 +138,7 @@ def contained_asymmetries_parser():
         return args
 
 if __name__ == "__main__":
-	args = contained_asymmetries_parser()
-	fun2(args)
+    args = contained_asymmetries_parser()
+    fun2(args)
+
+
