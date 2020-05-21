@@ -480,6 +480,7 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
         DataL_significantL.append(DataL_significant);
     return DataL_significantL,consecutiveL,occsL,consecutive_controlL,occs_controlL
 
+
 # Ensures that code below is not run when this file is imported into another file
 if __name__ == "__main__":
     with open("test_extract_pattern.bed", "r") as f:
