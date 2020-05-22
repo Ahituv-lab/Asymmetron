@@ -14,25 +14,22 @@ from collections import Counter
 def fun1(args):
 
     paths = wf.path_checker(args.paths)
-    names = args.names
-    if names == None:
-        names = paths
-    else: 
-       names = wf.name_splitter(names)
+    names = wf.name_splitter(args.names, paths)
+
 
     min_distance = args.min_distance
     max_distance = args.max_distance
-    plots = args.plots;
-    patterns = [x.strip() for x in args.patterns.split(',')];
-    bins = args.bins;
-    threshold = args.threshold;
+    plots = args.plots
+    patterns = [x.strip() for x in args.patterns.split(',')]
+    bins = args.bins
+    threshold = args.threshold
 
-    ConsecutiveD_Total=[];
+    ConsecutiveD_Total=[]
     # A simple way to integrate orientation in the flags here. Probably needs a lot of improvement though.
     ort = args.orientation
 
     if ort is not None:
-        paths_after_orientation=[];
+        paths_after_orientation=[]
         for path in paths:
             name_orientation=orientation.fun4(path,ort)
             paths_after_orientation.append([name_orientation])  # Are the square brackets here needed?
@@ -56,13 +53,13 @@ def fun1(args):
             if consecutiveLT!=[]:
                 consecutive,times_found = zip(*consecutiveLT) 
             else:
-                consecutive=[];times_found=[];
+                consecutive=[];times_found=[]
 
             consecutive_controlLT = sorted(consecutive_controlL[i].items())
             if consecutive_controlLT!=[]:
                 consecutive_control,times_found_control = zip(*consecutive_controlLT)
             else:
-                consecutive_control=[];times_found_control=[];
+                consecutive_control=[];times_found_control=[]
 
             if plots==True:
                      # Plot number of consecutive occurrences of the pattern
@@ -98,14 +95,14 @@ def fun1(args):
                      visualizations.barplot_pair_lists_gen(consecutive_total,times_found_control_total,times_found_total,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",os.path.basename(path)+"_with_controls",str(patterns[i])))
 
                      # We want to show biases in distances of consecutive
-                     occsL_filtered=[];occs_controlL_filtered=[];
+                     occsL_filtered=[];occs_controlL_filtered=[]
                      for occ in occsL[i]:
                          if min_distance<= occ <= max_distance:
-                             occsL_filtered.append(occ);
+                             occsL_filtered.append(occ)
 
                      for occ_c in occs_controlL[i]:
                          if min_distance<= occ_c <= max_distance:
-                             occs_controlL_filtered.append(occ_c);
+                             occs_controlL_filtered.append(occ_c)
 
                      visualizations.distribution_gen(occs_controlL_filtered,occsL_filtered,wf.output_path("consecutive_patterns","png",os.path.basename(path),"distances_inconsecutive_pattern_"+str(patterns[i])))
 
@@ -116,10 +113,10 @@ def fun1(args):
                 consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
                 for min_bin,max_bin in Bins:
                     DataL_significant_bin,consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,[pat],min_bin,max_bin,threshold)
-                    consecutiveLL_bin.append(consecutiveL_bin[0]);
-                    occsLL_bin.append(occsL_bin);
+                    consecutiveLL_bin.append(consecutiveL_bin[0])
+                    occsLL_bin.append(occsL_bin)
                     consecutive_controlLL_bin.append(consecutive_controlL_bin[0]);
-                    occs_controlLL_bin.append(occs_controlL_bin);
+                    occs_controlLL_bin.append(occs_controlL_bin)
                      
                 consecutiveLL_binT = np.array(consecutiveLL_bin).T.tolist();occsLL_binT = np.array(occsLL_bin).T.tolist();
                 consecutive_controlLL_binT = np.array(consecutive_controlLL_bin).T.tolist(); occs_controlLL_binT = np.array(occs_controlLL_bin).T.tolist()
