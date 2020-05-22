@@ -15,17 +15,17 @@ def fun2(args):
         motifsL=wf.path_checker(args.motifs)
         motifsL_names=wf.name_splitter(args.names_motifs, motifsL)
         regionsL_names=wf.name_splitter(args.names_regions, regionsL)
-        expected_asym=args.expected_asym;
-        expected_asym_conv_div = args.expected_asym_conv_div;
-        plots=args.plots;
-        score = args.score;
-        bins_score = args.bins_score;
+        expected_asym=args.expected_asym
+        expected_asym_conv_div = args.expected_asym_conv_div
+        plots=args.plots
+        score = args.score
+        bins_score = args.bins_score
 
         # Orientation of third file using the motifs
-        orientation_motifs = args.orientation_motifs;
+        orientation_motifs = args.orientation_motifs
         if orientation_motifs!= None:
             wf.path_checker(orientation_motifs)  # Test if orientation_motifs path exists
-            paths_after_orientation=[];
+            paths_after_orientation=[]
             for path in motifsL:
                  name_orientation=orientation.fun4(orientation,path)
                  paths_after_orientation.append([name_orientation])
@@ -37,13 +37,13 @@ def fun2(args):
         motif_region_pairs, names_pairs = functions.pairs_generator(motifsL, regionsL, motifsL_names, regionsL_names)
 
 	# Save the results for the final table
-        p_pL = [];m_mL = []; # Same orientation
-        p_mL = [];m_pL = []; # Opposite orientation
-        same_strandL = []; opposite_strandL = []; # Summed
-        convergentL = []; divergentL = [];
-        p_val_same_oppositeL = []; p_val_same_opposite_BonferoniL = [];
-        Ratio_same_oppositeL = [];Ratio_conv_divergL = [];
-        p_val_conv_divergL = [];p_val_conv_diver_BonferoniL = [];
+        p_pL = [];m_mL = [] # Same orientation
+        p_mL = [];m_pL = []  # Opposite orientation
+        same_strandL = []; opposite_strandL = [] # Summed
+        convergentL = []; divergentL = []
+        p_val_same_oppositeL = []; p_val_same_opposite_BonferoniL = []
+        Ratio_same_oppositeL = [];Ratio_conv_divergL = []
+        p_val_conv_divergL = [];p_val_conv_diver_BonferoniL = []
 
         # Perform all comparisons of each pair
         for i in range(len(motif_region_pairs)):
@@ -53,20 +53,20 @@ def fun2(args):
             p_pL.append(p_p);m_mL.append(m_m);  # Same strand orientation
             p_mL.append(p_m);m_pL.append(m_p);  # Opposite strand orientation
 
-            same_strandL.append(same_strand);opposite_strandL.append(opposite_strand);
-            convergentL.append(convergent);divergentL.append(divergent);
+            same_strandL.append(same_strand);opposite_strandL.append(opposite_strand)
+            convergentL.append(convergent);divergentL.append(divergent)
 
             # same vs opposite analysis
             Ratio_same_opposite, p_val_same_opposite, p_val_same_opposite_Bonferoni = functions.statistical_evaluation(same_strand, opposite_strand, number_of_files, expected_asym = expected_asym)
-            Ratio_same_oppositeL.append(Ratio_same_opposite);
-            p_val_same_oppositeL.append(p_val_same_opposite);
+            Ratio_same_oppositeL.append(Ratio_same_opposite)
+            p_val_same_oppositeL.append(p_val_same_opposite)
             p_val_same_opposite_BonferoniL.append(p_val_same_opposite_Bonferoni)
 
             # convergent vs divergent analysis
             Ratio_conv_diverg, p_val_conv_diverg, p_val_conv_diver_Bonferoni = functions.statistical_evaluation(p_m, m_p,number_of_files,expected_asym=expected_asym_conv_div)
-            p_val_conv_divergL.append(p_val_conv_diverg);
-            Ratio_conv_divergL.append(Ratio_conv_diverg);
-            p_val_conv_diver_BonferoniL.append(p_val_conv_diver_Bonferoni);
+            p_val_conv_divergL.append(p_val_conv_diverg)
+            Ratio_conv_divergL.append(Ratio_conv_diverg)
+            p_val_conv_diver_BonferoniL.append(p_val_conv_diver_Bonferoni)
 
             if plots:
                 # generates histogram same opposite
