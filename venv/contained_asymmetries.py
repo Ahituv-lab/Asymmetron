@@ -10,42 +10,21 @@ except:
 
 
 def fun2(args):
-	# Missing link to fun4 if provided
 
-        regionsL=args.regions.split(",");
-        motifsL=args.motifs.split(",");
-
-        motifsL_names=args.names_motifs;
-        if motifsL_names==None:
-            motifsL_names=[os.path.basename(k) for k in motifsL];
-        else:
-            motifsL_names = motifsL_names.split(",");
-
-        regionsL_names=args.names_regions;
-        if regionsL_names==None:
-            regionsL_names=[os.path.basename(k) for k in regionsL];
-        else:
-            regionsL_names=regionsL_names.split(",");
-
+        regionsL=wf.path_checker(args.regions)
+        motifsL=wf.path_checker(args.motifs)
+        motifsL_names=wf.name_splitter(args.names_motifs, motifsL)
+        regionsL_names=wf.name_splitter(args.names_regions, regionsL)
         expected_asym=args.expected_asym;
-        if expected_asym==None:
-            expected_asym=0.5;
-
         expected_asym_conv_div = args.expected_asym_conv_div;
-        if expected_asym_conv_div==None:
-            expected_asym_conv_div=0.5;
-
         plots=args.plots;
-
         score = args.score;
         bins_score = args.bins_score;
-        if score == True and bins_score == None:
-            bins_score = 10;
 
         # Orientation of third file using the motifs
         orientation_motifs = args.orientation_motifs;
-        #orientation = args.orientation
         if orientation_motifs!= None:
+            wf.path_checker(orientation_motifs)  # Test if orientation_motifs path exists
             paths_after_orientation=[];
             for path in motifsL:
                  name_orientation=orientation.fun4(orientation,path)
@@ -124,16 +103,16 @@ def contained_asymmetries_parser():
         parser.add_argument("-p", "--plots", help="Optional flag. Display output plots", action="store_true")
         parser.add_argument("-ea", "--expected_asym",
 	                    help="Optional argument. The expected asymmetry bias between the regions and the motifs. Default is 0.5",
-	                    type=float)
+	                    type=float, default=0.5)
         parser.add_argument("-ec", "--expected_asym_conv_div",
 	                    help="Optional argument. The expected convergent / divergent asymmetry bias between the regions and the motifs. Default is 0.5.",
-	                    type=float)
+	                    type=float, default=0.5)
         parser.add_argument("-s", "--score",
 	                    help="Optional flag. If provided, assumes the last column of the region files is a scoring metric and uses it to subdivide the analysis into quartiles",
 	                    action="store_true")
-        parser.add_argument("-sb", "--bins_score",
+        parser.add_argument("-bs", "--bins_score",
                             help="Optional flag. Number of bins to separate the score into",
-                            type=int)
+                            type=wf.check_positive_int, default=10)
         args = parser.parse_args()
         return args
 
