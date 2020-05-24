@@ -398,6 +398,27 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     for line in DataL:
         signs += line[4]
 
+    # Calculate alternating pattern
+    if pattern == ".":
+        DataL_alternating = []
+        DataL_temp = []
+        DataL_temp.append(DataL[0])
+        counter = 0
+        for i in range(1, len(DataL)):
+            distance = max(0, int(DataL[i][1]) - int(DataL[i-1][2]))
+            if DataL[i][4] != DataL[i -1][4] and (distance >= min_distance or distance < max_distance):
+                counter += 1
+                DataL_temp.append(DataL[i])
+            else:
+                if counter >= threshold:
+                    DataL_alternating.extend(DataL_temp)
+                DataL_temp.clear()
+                counter = 0
+        if counter >= threshold:
+            DataL_alternating.extend(DataL_temp)
+
+        return None, None, DataL_alternating
+
     # Find all occurences of the pattern in the string of signs without accounting for distances
     occs = list(find_sub_str(signs, pattern))
 
@@ -415,8 +436,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     if not occs:
         return [], [], []
 
-
-    # Here we translate the probability threshold to consecutive occcurrences 
+    # Here we translate the probability threshold to consecutive occcurrences
     number_of_tests = len(DataL)
     total_plus = signs.count("+")
     total_minus = signs.count("-")
@@ -425,6 +445,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     probability["-"] = 1-probability["+"]
     probability_pattern = np.prod([probability[k] for k in list(pattern)])
     consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if (probability_pattern**x)*number_of_tests < threshold)
+
 
     # Filter for number of consecutive occurences that meet the threshold criterion and are within the distance window
     DataL_significant = []
@@ -487,7 +508,7 @@ if __name__ == "__main__":
         DataL = []
         for line in f.readlines():
             DataL.append(line.strip().split("\t"))
-    out = extract_pattern(DataL, "+-", 0, 3, 2)
+    out = extract_pattern(DataL, ".", 1, 4, 2)
     print("The following dictionary includes the number of consecutive appearances of the pattern, e.g. when looking "
           "for +- in +-+-+---+- the result should be {1:1}, {3:1}", out[0])
     print("The distances between consecutive appearances of the pattern are: ", out[1] )

@@ -40,7 +40,7 @@ def output_path(fun_name, extension, *args):
     config.read('config.txt')
     time_stamp = time.strftime("%Y%m%d_%H%M%S", time.localtime()) +"_"  # To add timestamp to output file names
     # Remove the time stamp if chosen by the user
-    print(config.sections())
+
     if config['DEFAULT']['time_stamp'] == "False":
         time_stamp = ""
     if not os.path.exists("Asymmetron_output"):
@@ -73,8 +73,6 @@ def name_splitter(names, paths):
     :param paths: List of paths used to extract the names, if the names argument is None
     :return: a list of all names given by the user (a list with one element if only one path and name was given
     """
-    print("name_split")
-
     if names != None:
         namesL = [x.strip() for x in names.split(',')]
         if len(namesL) != len(paths):
@@ -137,10 +135,10 @@ def check_valid_pattern(value):
     Checks if the value is a valid pattern consisting of + and -. Raises an argparser error otherwise.
     Returns the pattern.
     """
-    for char in value:
-        if char not in ("+", "-", ",", " "):
-            msg = "{} is an invalid pattern. Please enter a pattern consisting of + or - only.".format(value)
-            raise argparse.ArgumentTypeError(msg)
+    chars = set(value)
+    if not chars.issubset(("+", "-", ",", " ", ".")):
+        msg = "{} is an invalid pattern. Please enter a pattern consisting of + or - only".format(value)
+        raise argparse.ArgumentTypeError(msg)
     return value
 
 
