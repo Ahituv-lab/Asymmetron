@@ -406,13 +406,14 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         counter = 0
         for i in range(1, len(DataL)):
             distance = max(0, int(DataL[i][1]) - int(DataL[i-1][2]))
-            if DataL[i][4] != DataL[i -1][4] and (distance >= min_distance or distance < max_distance):
+            if DataL[i][4] != DataL[i -1][4] and (distance >= min_distance and distance < max_distance):
                 counter += 1
                 DataL_temp.append(DataL[i])
             else:
                 if counter >= threshold:
                     DataL_alternating.extend(DataL_temp)
                 DataL_temp.clear()
+                DataL_temp.append(DataL[i])
                 counter = 0
         if counter >= threshold:
             DataL_alternating.extend(DataL_temp)
