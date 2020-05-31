@@ -1,4 +1,5 @@
 import re,os,sys,glob
+from scipy.stats import binom_test
 import functions
 import operator
 import numpy as np
@@ -55,7 +56,10 @@ print(template_LINEs,template_SINEs,template_LTRs,"LINEs","SINEs","LTRs")
 Scores_LINEs=[];Scores_SINEs=[];Scores_LTRs=[];
 Scores_LINEsLL=[];Scores_SINEsLL=[];Scores_LTRsLL=[];
 NamesL=[]
-for cancer_tissue in tissuesD.keys()[:10]:
+datafile_LTR=open("Scores_LTRs","w")
+datafile_LINE=open("Scores_LINEs","w")
+datafile_SINE=open("Scores_SINEs","w")
+for cancer_tissue in tissuesD.keys():
 	p_pL_LINE=0; m_mL_LINE=0; p_mL_LINE=0; m_pL_LINE=0;
 	p_pL_SINE=0; m_mL_SINE=0; p_mL_SINE=0; m_pL_SINE=0;
 	p_pL_LTRs=0; m_mL_LTRs=0; p_mL_LTRs=0; m_pL_LTRs=0;
@@ -70,14 +74,14 @@ for cancer_tissue in tissuesD.keys()[:10]:
 			# Annotate LINEs
 			print(one,cancer)
 			try:
-				Annotation_data_LINEs=functions.strand_annotate_third_BED_overlap(one,read_BED("/nfs/compgen-04/team218/ilias/strand_program/gnomad/types/LINE_hg38.txt"))
-				p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = functions.overlap(Annotation_data_LINEs,read_BED("/nfs/compgen-04/team218/ilias/strand_program/TFBSs/gencode.v33.annotation.bed"))
+                                Annotation_data_LINEs=functions.strand_annotate_third_BED_overlap(one,read_BED("/nfs/compgen-04/team218/ilias/strand_program/gnomad/types/LINE_hg38.txt"))
+                                p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = functions.overlap(Annotation_data_LINEs,read_BED("/nfs/compgen-04/team218/ilias/strand_program/TFBSs/gencode.v33.annotation.bed"))
 
-				p_pL_LINE+=p_p
-				m_mL_LINE+=m_m
-				p_mL_LINE+=p_m
-				m_pL_LINE+=m_p
-        	                if p_p+m_m+p_m+m_p!=0:
+                                p_pL_LINE+=p_p
+                                m_mL_LINE+=m_m
+                                p_mL_LINE+=p_m
+                                m_pL_LINE+=m_p
+                                if p_p+m_m+p_m+m_p!=0:
                         	        perLine_LINE+=[((p_p+m_m)/float(p_p+m_m+p_m+m_p))/float(template_LINEs)]
 				print(p_p+m_m+p_m+m_p)
 			except:
@@ -115,7 +119,9 @@ for cancer_tissue in tissuesD.keys()[:10]:
 		Ratio = ((p_pL_LINE+m_mL_LINE)/float(p_pL_LINE+m_mL_LINE+p_mL_LINE+m_pL_LINE))
 		Scores_LINEs.append(Ratio/float(template_LINEs))
 		Scores_LINEsLL.append(perLine_LINE)
-	#else:
+		datafile_LINE.write(str(Ratio)+'\t'+str(binom_test(p_pL_LINE+m_mL_LINE,p_pL_LINE+m_mL_LINE+p_mL_LINE+m_pL_LINE,template_LINEs))+'\t'+str(cancer_tissue)+'\n')
+	else:
+	        datafile_LINE.write(str(np.nan)+'\t'+str(1)+'\t'+str(cancer_tissue)+'\n')
 	#	Scores_LINEsLL.append(1)
 	#	Scores_LINEs.append(1)
 
@@ -123,7 +129,9 @@ for cancer_tissue in tissuesD.keys()[:10]:
         	Ratio = ((p_pL_SINE+m_mL_SINE)/float(p_pL_SINE+m_mL_SINE+p_mL_SINE+m_pL_SINE))
         	Scores_SINEs.append(Ratio/float(template_SINEs))
 		Scores_SINEsLL.append(perLine_SINE)
-	#else:
+		datafile_SINE.write(str(Ratio)+'\t'+str(binom_test(p_pL_SINE+m_mL_SINE,p_pL_SINE+m_mL_SINE+p_mL_SINE+m_pL_SINE,template_SINEs))+'\t'+str(cancer_tissue)+'\n')
+	else:
+		datafile_SINE.write(str(np.nan)+'\t'+str(1)+'\t'+str(cancer_tissue)+'\n')
 	#	Scores_SINEs.append(1)
 	#	Scores_SINEsLL.append(1)
 
@@ -131,11 +139,17 @@ for cancer_tissue in tissuesD.keys()[:10]:
         	Ratio = ((p_pL_LTRs+m_mL_LTRs)/float(p_pL_LTRs+m_mL_LTRs+p_mL_LTRs+m_pL_LTRs))
         	Scores_LTRs.append(Ratio/float(template_LTRs))
 		Scores_LTRsLL.append(perLine_LTRs)
-	#else:
+		datafile_LTR.write(str(Ratio)+'\t'+str(binom_test(p_pL_LTRs+m_mL_LTRs,p_pL_LTRs+m_mL_LTRs+p_mL_LTRs+m_pL_LTRs,template_LTRs))+'\t'+str(cancer_tissue)+'\n')
+	else:
+		datafile_LTR.write(str(np.nan)+'\t'+str(1)+'\t'+str(cancer_tissue)+'\n')
 	#	Scores_LTRs.append(1)
 	#	Scores_LTRsLL.append(1)
 
 	NamesL.append(cancer_tissue)
+
+datafile_LINE.close()
+datafile_SINE.close()
+datafile_LTR.close()
 print(NamesL)
 
 import matplotlib.patches as mpatches

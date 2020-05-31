@@ -1,0 +1,4 @@
+  File "runner.py", line 80
+    if p_p+m_m+p_m+m_p!=0:
+                         ^
+TabError: inconsistent use of tabs and spaces in indentation
