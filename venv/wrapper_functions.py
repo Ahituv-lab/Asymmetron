@@ -1,6 +1,7 @@
 import os
 import time
 import argparse
+import configparser
 
 # Catch number of bins negative or 0 --> check_positive_int
 # Catch distance limits have to be >=0 --> check_positive_int
@@ -35,14 +36,19 @@ def output_path(fun_name, extension, *args):
     :param extension: file extension for the file
     :return: Path under which to save the output. No file type is selected
     """
+    config = configparser.ConfigParser()
+    config.read('config.txt')
+    time_stamp = time.strftime("%Y%m%d_%H%M%S", time.localtime()) +"_"  # To add timestamp to output file names
+    # Remove the time stamp if chosen by the user
 
-    time_stamp = time.strftime("%Y%m%d_%H%M%S", time.localtime())  # To add timestamp to output file names
+    if config['DEFAULT']['time_stamp'] == "False":
+        time_stamp = ""
     if not os.path.exists("Asymmetron_output"):
         os.makedirs("Asymmetron_output/")
     if not os.path.exists("Asymmetron_output/"+fun_name):
         os.makedirs("Asymmetron_output/" + fun_name)
 
-    return "Asymmetron_output/" + fun_name + "/" + time_stamp+ "_" + fun_name + "_" + "_".join(args)+ "." + extension
+    return "Asymmetron_output/" + fun_name + "/" + time_stamp + fun_name + "_" + "_".join(args)+ "." + extension
 
 
 
@@ -56,50 +62,57 @@ def path_checker(paths):
     for path in pathsL:
         if not os.path.exists(path):
             err= "File \"" + path + "\" was not found"
-            raise IOError(err)
+            raise InputError(err)
     return pathsL
 
-def name_splitter(names):
+def name_splitter(names, paths):
     """
     This function splits the optional argument names into a list of the different names
 
     :param names: Input given by the user as a string of names, corresponding to the paths in the path argument, comma seperated
+    :param paths: List of paths used to extract the names, if the names argument is None
     :return: a list of all names given by the user (a list with one element if only one path and name was given
     """
-    namesL = [x.strip() for x in names.split(',')]
+    if names != None:
+        namesL = [x.strip() for x in names.split(',')]
+        if len(namesL) != len(paths):
+            err = "If the names argument is used, a name for every corresponding path must be provided"
+            raise InputError(err)
+    else:
+        namesL = [os.path.basename(x) for x in paths];
     return namesL
 
-def sanitize(paths, orientation, names):
-    """
-    All three parameters are entered by the user in string format. If multiple paths are given, they are in "path1, path2",
-    comma-seperated format. If orientation or names is given as an optional argument by the user, there needs to be one file
-    for each corresponding path.
-
-    This function takes the three inputs, converts them to lists of paths and verifies that each each orientation or name
-    file, corresponds to one path file. If orientation or names was not given, they are set to none
-
-    :param paths: String of paths entered by the user. If multiple, as comma-seperated string.
-    :param orientation: String of orientation files entered by the user
-    :param names: String of names entered by the user. Each name must correspond to a file entered in --paths
-    :return: A tuple consisting of the three input arguments in list form
-    """
-    paths = path_checker(paths)  # Converts the input to a list of paths. List can include only one element, if one path is given by the user
-    # Converts the input to a list of path for the orientation files. If this optional argument was not given, the variable is set to None
-    try:
-        orientation_paths = path_checker(orientation)
-    except AttributeError:
-        orientation_paths = None
-    # Converts the input to a list of names. If this optional argument was not given, the variable is set to none
-    try:
-        names = name_splitter(names)
-    except AttributeError:
-        names = None
-    print(paths, orientation_paths, names)
-    if names is not None:
-        if len(paths) != len(names):
-            err = "Please enter the same number of arguments for paths and names"
-            raise InputError(err)
-    return paths, orientation_paths, names
+# def sanitize(paths, orientation, names):
+#     """
+#     All three parameters are entered by the user in string format. If multiple paths are given, they are in "path1, path2",
+#     comma-seperated format. If orientation or names is given as an optional argument by the user, there needs to be one file
+#     for each corresponding path.
+#
+#     This function takes the three inputs, converts them to lists of paths and verifies that each each orientation or name
+#     file, corresponds to one path file. If orientation or names was not given, they are set to none
+#
+#     :param paths: String of paths entered by the user. If multiple, as comma-seperated string.
+#     :param orientation: String of orientation files entered by the user
+#     :param names: String of names entered by the user. Each name must correspond to a file entered in --paths
+#     :return: A tuple consisting of the three input arguments in list form
+#     """
+#     paths = path_checker(paths)  # Converts the input to a list of paths. List can include only one element, if one path is given by the user
+#     # Converts the input to a list of path for the orientation files. If this optional argument was not given, the variable is set to None
+#     try:
+#         orientation_paths = path_checker(orientation)
+#     except AttributeError:
+#         orientation_paths = None
+#     # Converts the input to a list of names. If this optional argument was not given, the variable is set to none
+#     try:
+#         names = name_splitter(names)
+#     except AttributeError:
+#         names = None
+#     print(paths, orientation_paths, names)
+#     if names is not None:
+#         if len(paths) != len(names):
+#             err = "Please enter the same number of arguments for paths and names"
+#             raise InputError(err)
+#     return paths, orientation_paths, names
 
 
 def check_positive_int(value):
@@ -122,10 +135,10 @@ def check_valid_pattern(value):
     Checks if the value is a valid pattern consisting of + and -. Raises an argparser error otherwise.
     Returns the pattern.
     """
-    for char in value:
-        if char not in ("+", "-", ",", " "):
-            msg = "{} is an invalid pattern. Please enter a pattern consisting of + or - only.".format(value)
-            raise argparse.ArgumentTypeError(msg)
+    chars = set(value)
+    if not chars.issubset(("+", "-", ",", " ", ".")):
+        msg = "{} is an invalid pattern. Please enter a pattern consisting of + or - only".format(value)
+        raise argparse.ArgumentTypeError(msg)
     return value
 
 
@@ -144,7 +157,11 @@ def check_valid_probability(value):
 
 
 
-if __name__ == "__name__":
+
+
+
+
+if __name__ == "__main__":
     print(output_path("consecutive_patterns", "bed", "test", "test2"))
 
 

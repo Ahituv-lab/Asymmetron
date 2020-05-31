@@ -13,45 +13,26 @@ from collections import Counter
 
 def fun1(args):
 
-    paths = args.paths.split(",")
-    names = args.names
-    if names == None:
-        names = paths
-    else: 
-       names = wf.name_splitter(names)
+    paths = wf.path_checker(args.paths)
+    names = wf.name_splitter(args.names, paths)
+
 
     min_distance = args.min_distance
-    if min_distance == None:
-        min_distance = 0;
-
     max_distance = args.max_distance
-    if max_distance == None:
-        max_distance = 100;
+    plots = args.plots
+    patterns = [x.strip() for x in args.patterns.split(',')]
+    bins = args.bins
+    threshold = args.threshold
 
-    plots = args.plots;
-
-    patterns = args.patterns;
-    if patterns == None:
-        patterns = ["++","--","+-","-+"];
-    else:
-        patterns = patterns.split(",");
-
-    bins = args.bins;
-    if bins == None:   # Number of bins to subdivide the distance range into
-        bins = 1;
-
-    threshold = args.threshold;
-    if threshold == None:    # p-value threshold 
-        threshold = 0.05;
-
-    ConsecutiveD_Total=[];
+    ConsecutiveD_Total=[]
     # A simple way to integrate orientation in the flags here. Probably needs a lot of improvement though.
-    orientation = args.orientation
-    if orientation != None:
-        paths_after_orientation=[];
+    ort = args.orientation
+
+    if ort is not None:
+        paths_after_orientation=[]
         for path in paths:
-            name_orientation=orientation.fun4(path,orientation)
-            paths_after_orientation.append([name_orientation])
+            name_orientation=orientation.fun4(path,ort)
+            paths_after_orientation.append([name_orientation])  # Are the square brackets here needed?
         paths = paths_after_orientation
     
     for index,path in enumerate(paths):
@@ -72,13 +53,13 @@ def fun1(args):
             if consecutiveLT!=[]:
                 consecutive,times_found = zip(*consecutiveLT) 
             else:
-                consecutive=[];times_found=[];
+                consecutive=[];times_found=[]
 
             consecutive_controlLT = sorted(consecutive_controlL[i].items())
             if consecutive_controlLT!=[]:
                 consecutive_control,times_found_control = zip(*consecutive_controlLT)
             else:
-                consecutive_control=[];times_found_control=[];
+                consecutive_control=[];times_found_control=[]
 
             if plots==True:
                      # Plot number of consecutive occurrences of the pattern
@@ -114,14 +95,14 @@ def fun1(args):
                      visualizations.barplot_pair_lists_gen(consecutive_total,times_found_control_total,times_found_total,"Expected","Observed","Consecutive occurrences",'',wf.output_path("consecutive_patterns","png",os.path.basename(path)+"_with_controls",str(patterns[i])))
 
                      # We want to show biases in distances of consecutive
-                     occsL_filtered=[];occs_controlL_filtered=[];
+                     occsL_filtered=[];occs_controlL_filtered=[]
                      for occ in occsL[i]:
                          if min_distance<= occ <= max_distance:
-                             occsL_filtered.append(occ);
+                             occsL_filtered.append(occ)
 
                      for occ_c in occs_controlL[i]:
                          if min_distance<= occ_c <= max_distance:
-                             occs_controlL_filtered.append(occ_c);
+                             occs_controlL_filtered.append(occ_c)
 
                      visualizations.distribution_gen(occs_controlL_filtered,occsL_filtered,wf.output_path("consecutive_patterns","png",os.path.basename(path),"distances_inconsecutive_pattern_"+str(patterns[i])))
 
@@ -132,10 +113,10 @@ def fun1(args):
                 consecutiveLL_bin=[];occsLL_bin=[];consecutive_controlLL_bin=[];occs_controlLL_bin=[];
                 for min_bin,max_bin in Bins:
                     DataL_significant_bin,consecutiveL_bin,occsL_bin,consecutive_controlL_bin,occs_controlL_bin = functions.asymmetries_single(path,[pat],min_bin,max_bin,threshold)
-                    consecutiveLL_bin.append(consecutiveL_bin[0]);
-                    occsLL_bin.append(occsL_bin);
+                    consecutiveLL_bin.append(consecutiveL_bin[0])
+                    occsLL_bin.append(occsL_bin)
                     consecutive_controlLL_bin.append(consecutive_controlL_bin[0]);
-                    occs_controlLL_bin.append(occs_controlL_bin);
+                    occs_controlLL_bin.append(occs_controlL_bin)
                      
                 consecutiveLL_binT = np.array(consecutiveLL_bin).T.tolist();occsLL_binT = np.array(occsLL_bin).T.tolist();
                 consecutive_controlLL_binT = np.array(consecutive_controlLL_bin).T.tolist(); occs_controlLL_binT = np.array(occs_controlLL_bin).T.tolist()
@@ -154,18 +135,19 @@ def consecutive_patterns_parser():
     parser.add_argument("paths", help="Enter the path of the file to analyze. Can enter multiple paths as a comma separated string, e.g. \"path1, path2\"")
     parser.add_argument("-n", "--names", help="Optional argument. A name for each of the motif files for more human-readable output. Each name must correspond to a path")	   # --patterns eg.. ++/+-+
     parser.add_argument("-pt","--patterns", help = "Patterns to search, comma separated. Default is ++,--,+-,-+.",
-                        type=wf.check_valid_pattern)
+                        type=wf.check_valid_pattern, default="++,--,+-,-+")
     parser.add_argument("-min", "--min_distance", help="Two consecutive motifs with distance lower than the "
                                                        "min_distance will not be considered as significant for the "
-                                                       "purpose of this analysis. Default = 0", type=wf.check_positive_int)
+                                                       "purpose of this analysis. Default = 0",
+                        type=wf.check_positive_int, default=0)
     parser.add_argument("-max", "--max_distance", help="Two consecutive motifs with distance higher than the "
                                                        "max_distance will not be considered as significant for the "
                                                        "purpose of this analysis. Default = 100",
-                        type=wf.check_positive_int)
-    parser.add_argument("-b", "--bins", help="Optional argument. Split output data and graphs in the specified number of bins. Default = 1", type=int)  # Needs rephrasing
+                        type=wf.check_positive_int, default=100)
+    parser.add_argument("-b", "--bins", help="Optional argument. Split output data and graphs in the specified number of bins. Default = 1", type=int, default=1)  # Needs rephrasing
     parser.add_argument("-p", "--plots", help="Optional flag. Display output plots", action="store_true")
     parser.add_argument("-o", "--orientation", help="Optional argument. Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations. Can enter multiple paths as a comma separated string, e.g. \"path1, path2\"")
-    parser.add_argument("-t", "--threshold", help="Optional argument. Threshold of p-value of consecutive patterns to save in new BED file.", type=float)
+    parser.add_argument("-t", "--threshold", help="Optional argument. Threshold of p-value of consecutive patterns to save in new BED file.", type=float, default=0.05)
     args = parser.parse_args()
     return args
 
