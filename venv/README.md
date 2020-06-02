@@ -7,7 +7,7 @@ Copyright 2020. All rights reserved.
 ## Installation
 
 ## Introduction
-DNA strand specificity can have a major effect on numerous biological functions, including DNA replication, mRNA transcription, transcription factor binding and many others. The directionality of these processes results in the inhomogeneous distribution of genomic sequences relative to the two complementary DNA strands. By studying systematically strand asymmetries we can identify novel DNA elements, improve our comprehension regarding their interactions with one another and advance our understanding regarding the contribution of underlying processes in mutagenesis and evolution. To date, there is no versatile tool to perform analysis of strand asymmetries across biological problems. 
+DNA strand specificity can have a major effect on numerous biological functions, including DNA replication, mRNA transcription and transcription factor binding. The directionality of these processes results in the inhomogeneous distribution of genomic sequences relative to the two complementary DNA strands. By studying systematically strand asymmetries we can identify novel DNA elements, improve our comprehension regarding their interactions with one another and advance our understanding regarding the contribution of underlying processes in mutagenesis and evolution. To date, there is no versatile tool to perform analysis of strand asymmetries across biological problems. 
 
 ## Summary 
 Asymmetron is a toolkit for the identifcation of asymmetry patterns in biological sequences. Asymmetron can identify strand asymmetries within consecutive occurrences of a single genomic element and for pairs of overlapping and non-overlapping genomic elements. It can also measure strand asymmetries of genomic elements relative to transcriptional and replicative orientations. Asymmetron can assign strand orientation to third features such as mutations, by orienting them relative to other genomic elements. 
@@ -69,11 +69,11 @@ It encompasses four functions:
 #### Optional inputs:
 	--names_A: The name of each of the inputted BED-formatted motif A files.
 	--names_B: The name of each of the inputted BED-formatted motif B files.
-        --upstream_only: Only look for occurrences of motif A upstream of motif B. Incompattible with -downstream.
-        --downstream_only: Only look for occurrences of motif A downstream of motif B. Incompatible with -upstream.
+	--upstream_only: Only look for occurrences of motif A upstream of motif B. Incompattible with -downstream.
+	--downstream_only: Only look for occurrences of motif A downstream of motif B. Incompatible with -upstream.
 	--orientation: Orient file(s) relative to annotated BED-formated motif file(s) and perform the analysis for the un-annoated file with the new annotations.
 	--expected_asym: The expected asymmetry bias between the pairs of motifs regarding same or opposite strand orientation. Default is 0.5.
-        --expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the pairs of motifs. Default is 0.5.
+	--expected_asym_conv_div: The expected convergent / divergent asymmetry bias between the pairs of motifs. Default is 0.5.
 	--min_distance: Minimum distance to consider in the analysis. Default is 0.
 	--max_distance: Maximum distance to consider in the analysis. Default is 100.
 	--bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
