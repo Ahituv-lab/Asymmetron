@@ -1,4 +1,0 @@
-/nfs/users/nfs_i/igs/miniconda2/lib/python2.7/site-packages/numpy/core/fromnumeric.py:3118: RuntimeWarning: Mean of empty slice.
-  out=out, **kwargs)
-/nfs/users/nfs_i/igs/miniconda2/lib/python2.7/site-packages/numpy/core/_methods.py:85: RuntimeWarning: invalid value encountered in double_scalars
-  ret = ret.dtype.type(ret / rcount)
