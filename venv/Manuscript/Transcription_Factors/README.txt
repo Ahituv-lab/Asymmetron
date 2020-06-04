@@ -55,4 +55,12 @@ python contained_asymmetries.py promoters/gencode.v33.annotation.bed.promoters_1
 python contained_asymmetries.py promoters/gencode.v33.annotation.bed.promoters_1kB_downstream Unibind_TF_X.bed
 
 
+Command for pairwise asymmetries between TATA and INR motifs within 1kB around the TSS of protein-coding genes:
+cat promoters/gencode.v33.annotation.bed.promoters_1kB_upstream >> promoters/gencode.v33.annotation.bed.promoters_1kB_window
+cat promoters/gencode.v33.annotation.bed.promoters_1kB_downstream >> promoters/gencode.v33.annotation.bed.promoters_1kB_window
+
+bedtools intersect -a TATA_box.bed -b promoters/gencode.v33.annotation.bed.promoters_1kB_window -u > TATA_box.bed.at_promoters
+bedtools intersect -a INR_box.bed -b promoters/gencode.v33.annotation.bed.promoters_1kB_window -u > INT_box.bed.at_promoters
+python pairwise_asymmetries.py TATA_box.bed.at_promoters INR.bed.at_promoters
+
 
