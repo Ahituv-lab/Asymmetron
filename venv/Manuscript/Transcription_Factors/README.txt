@@ -61,6 +61,6 @@ cat promoters/gencode.v33.annotation.bed.promoters_1kB_downstream >> promoters/g
 
 bedtools intersect -a TATA_box.bed -b promoters/gencode.v33.annotation.bed.promoters_1kB_window -u > TATA_box.bed.at_promoters
 bedtools intersect -a INR_box.bed -b promoters/gencode.v33.annotation.bed.promoters_1kB_window -u > INT_box.bed.at_promoters
-python pairwise_asymmetries.py TATA_box.bed.at_promoters INR.bed.at_promoters
+python pairwise_asymmetries.py TATA_box.bed.at_promoters INR.bed.at_promoters --min_distance=1 --max_distance=100 --bins=10 --plots
 
 
