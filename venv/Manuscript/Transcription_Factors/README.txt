@@ -14,6 +14,9 @@ http://jaspar.genereg.net/api/v1/matrix/POL002.1.meme
 Genes were downloaded from:
 ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_33/gencode.v33.annotation.gtf.gz
 
+Unibind TFBSs for PWMs and peak-caller MACS were downloaded from:
+https://unibind.uio.no/static/data/bulk/pwm_tfbs.tar.gz
+
 
 # Analysis
 
@@ -30,6 +33,8 @@ cat gencode.v33.annotation.gtf | grep 'gene_type "protein_coding"'  | awk '$3 ==
 
 Promoter upstream and promoter downstream regions were extracted with the script get_promoters.py
 
+
+Step 3: Filtering of the Unibind TFBS files was performed with the script unibind_filtering.py
 
 
 
