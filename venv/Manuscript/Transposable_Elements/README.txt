@@ -8,8 +8,8 @@ Protein coding genes were filtered for "gene" and gene_type "protein_coding" usi
 cat gencode.v33.annotation.gtf | grep 'gene_type "protein_coding"'  | awk '$3 == "gene" {print $1 "\t" $4 "\t" $5 "\t" $3 "\t"  $7}' > gencode.v33.annotation.bed.protein_coding
 
 # Genes were separated relative to their orientation with the command:
-cat gencode.v33.annotation.bed.protein_coding | awk '$5=="+" {print $0}' > gencode.v33.basic.annotation.bed.genes_protein_coding.formatted.plus
-cat gencode.v33.annotation.bed.protein_coding | awk '$5=="-" {print $0}' > gencode.v33.basic.annotation.bed.genes_protein_coding.formatted.minus
+cat gencode.v33.annotation.bed.protein_coding | awk '$5=="+" {print $0}' > gencode.v33.annotation.bed.genes_protein_coding.formatted.plus
+cat gencode.v33.annotation.bed.protein_coding | awk '$5=="-" {print $0}' > gencode.v33.annotation.bed.genes_protein_coding.formatted.minus
 Genes were adivided into bins with the command:
 python bin.py
 
