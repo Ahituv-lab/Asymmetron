@@ -9,15 +9,21 @@ def reader(path):
 		Data+=[i.strip().split('\t')]
 	return Data
 
+# Only analyze chromosomes 1-22 and "X","Y"
 chroms = range(1,23)+["X","Y"]
 chromsL=["chr"+str(i) for i in chroms]
+
+# Create output directory
 files_total=glob.glob("outs/MA*")
-os.system("mkdir beds")
+if not os.path.exists('beds'):
+	os.makedirs('beds')
+
+
 for path in files_total:
+
 	name=path+"/fimo.tsv"
 	if len(glob.glob(path+"/*tsv"))>0:
 		DataL=reader(name)[1:]
-		length=len(DataL[0])
 		datafile=open("beds/"+path.split("/")[-1].split(".tsv")[0]+".bed","w")
 		for i in DataL:
 			if len(i)>1:

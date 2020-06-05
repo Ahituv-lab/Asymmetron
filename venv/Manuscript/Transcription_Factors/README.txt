@@ -24,7 +24,7 @@ https://unibind.uio.no/static/data/bulk/pwm_tfbs.tar.gz
 # Analysis
 
 Step 1: Extraction of transcription factor binding sites for the JASPAR non-redundant motif list
--The background file was generated using the coomand: fasta-get-markov hg38.fa
+-The background file was generated using the command: fasta-get-markov hg38.fa
 
 -Motif extraction was performed with FIMO using the script fimo_motifs.py which is provided in this directory.
 
