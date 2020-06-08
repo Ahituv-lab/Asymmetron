@@ -1,0 +1,5 @@
+"0","```r
+zebra.total_lift <- fread(\"../../Zebrafish/Conserved/out.high_quality.bed.liftover_0.001_mm10\")
+
+zebra.total_lift[!V4 %in%  zebra_to_mouse$V4, ]
+```"

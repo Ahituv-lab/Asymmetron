@@ -1,0 +1,29 @@
+"0","```r
+
+library(ggrepel)
+
+PCA_plot[, `:=`(mPC1=mean(PC1), mPC2=mean(PC2)), by=\"cluster\" ]
+
+
+
+
+Sup.Tissue_clusters.a <- ggplot(PCA_plot) +
+  geom_point(aes(PC1, PC2 , colour=factor(cluster) ),  alpha=0.3 ) +
+  stat_ellipse(aes(PC1, PC2 , colour=factor(cluster) )) +
+  geom_text_repel(data=PCA_plot[, .(mPC1=mean(PC1), mPC2=mean(PC2)), by=\"cluster\" ],
+                  aes(mPC1, mPC2, label=cluster), size=7, point.padding = NA, fontface = \"bold\" ) +
+  scale_color_manual(values=my_col) + 
+  theme(legend.position = \"none\") 
+
+Sup.Tissue_clusters.b <- ggplot(PCA_plot) +
+  geom_point(aes(PC1, PC3 , colour=factor(cluster) ),  alpha=0.3 ) +
+  stat_ellipse(aes(PC1, PC3 , colour=factor(cluster) )) +
+  geom_text_repel(data=PCA_plot[, .(mPC1=mean(PC1), mPC2=mean(PC3)), by=\"cluster\" ],
+                  aes(mPC1, mPC2, label=cluster), size=7, point.padding = NA, fontface = \"bold\" ) +
+  scale_color_manual(values=my_col) + 
+  theme(legend.position = \"none\") 
+  
+
+Sup.Tissue_clusters.ab <- plot_grid(Sup.Tissue_clusters.a, Sup.Tissue_clusters.b, labels = c(\"E\", \"F\"))
+Sup.Tissue_clusters.ab
+```"

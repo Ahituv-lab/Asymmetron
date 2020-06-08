@@ -1,0 +1,20 @@
+"0","```r
+
+ME_cluster_names$ME_cluster.name <- factor(ME_cluster_names$ME_cluster.name, 
+       levels = ME_cluster_names.levels)
+
+Fig5.X.1 <- ggplot(ME_cluster_names) +
+  geom_bar(aes(ME_cluster.name, total,  fill = ME_cluster.type ), stat = \"identity\") +
+  theme(legend.position=\"top\") + 
+  xlab(\"Number of microexons\") +
+  ylab(\"Microexon cluster\") +
+  theme(axis.text.x = element_text(angle = 45)) +
+    scale_fill_discrete(name=\"Microexon cluster class\") 
+
+Fig5.X.1
+
+
+Fig5.X.1.legend <- get_legend(Fig5.X.1 + 
+                              theme(legend.direction = \"horizontal\",legend.justification=\"center\" ,legend.box.just = \"bottom\") +
+                              guides(fill=guide_legend(nrow=1,byrow=TRUE)))
+```"

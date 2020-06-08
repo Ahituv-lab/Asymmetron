@@ -1,0 +1,51 @@
+"0","```r
+
+
+
+ME_diff_age <- Delta_HNM_whippet_ME_age_diff_total$diff_age
+names(ME_diff_age) <- Delta_HNM_whippet_ME_age_diff_total$exon_ID
+
+
+diff_ME_sing <- Delta_HNM_whippet_ME_age_diff_total$change_dir
+names(diff_ME_sing) <- Delta_HNM_whippet_ME_age_diff_total$exon_ID
+
+ME_clusters_table[, diff_age:=NA]
+ME_clusters_table[, change_dir:=NA]
+ME_clusters_table[, diff_age:=ME_diff_age[ME] ]
+ME_clusters_table[, change_dir:=diff_ME_sing[ME] ]
+
+ME_clusters_table[!is.na(diff_age)]
+
+
+ME_clusters_table[ , Total:=.N, by= ME_clusters]
+
+ME_clusters_table_stats <-  ME_clusters_table[, .N , by=c(\"ME_clusters\", \"diff_age\", \"change_dir\", \"Total\")]
+
+ME_clusters_table_stats[, Percentage:=N*100/Total]
+
+
+ME_clusters_table_stats[ , sum(N), by=c( \"change_dir\" ) ] #TOTAL
+ME_clusters_table_stats[ , sum(N), by=c( \"diff_age\", \"change_dir\" ) ] #TOTAL
+
+ME_clusters_table_stats <- merge(ME_clusters_table_stats, ME_cluster_names[, c(\"ME_cluster\", \"ME_cluster.name\", \"ME_cluster.type\")], by.x=\"ME_clusters\", by.y=\"ME_cluster\")
+
+ME_clusters_table_stats_HNM <- ME_clusters_table_stats[diff_age!=\"NA\" & change_dir!=\"NA\"]
+
+
+
+ME_clusters_table_stats_HNM_sub <- ME_clusters_table_stats_HNM[ME_cluster.name %in%  ME_cluster_names[ME_cluster.type %in% c(\"Neuronal\", \"Neuro-Muscular\", \"Muscular\", \"Non-Neuronal\"), ME_cluster.name], ]
+ME_clusters_table_stats_HNM_sub$ME_cluster.name <- factor(ME_clusters_table_stats_HNM_sub$ME_cluster.name, levels = sort(unique(as.character(ME_clusters_table_stats_HNM_sub$ME_cluster.name))))
+
+
+
+Fig5.B <- ggplot() +
+  geom_bar(data=ME_clusters_table_stats_HNM_sub[change_dir==1], aes(factor(diff_age), Percentage), stat = \"identity\", fill=\"skyblue\") +
+  geom_bar(data=ME_clusters_table_stats_HNM_sub[change_dir==-1], aes(factor(diff_age), -Percentage), stat = \"identity\", fill=\"firebrick\") +
+  facet_grid( ME_cluster.name ~ .) +
+  ylim(c(-30, 75)) +
+  ylab(\"Percentage\") +
+  xlab(\"\") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0))
+Fig5.B
+
+```"

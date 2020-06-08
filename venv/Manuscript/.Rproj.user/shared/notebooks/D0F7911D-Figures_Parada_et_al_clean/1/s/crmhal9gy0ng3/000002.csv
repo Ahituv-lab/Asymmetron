@@ -1,0 +1,15 @@
+"0","```r
+library(reshape2)
+library(ggplot2)
+library(gplots)
+library(pheatmap)
+library(plyr)
+set.seed(123)
+library(data.table)
+library(magrittr)
+library(dplyr)
+library(readr)
+library(cowplot)
+library(igraph)
+theme_set(theme_classic() )
+```"

@@ -1,0 +1,27 @@
+"0","```r
+
+ME_Tissues_clusters_PSI_neuronal <- ME_Tissues_clusters_PSI[name %in% c(\"forebrain\", \"midbrain\", \"hindbrain\", \"neural tube\", \"whole cortex\"), ]
+
+ME_Tissues_clusters_PSI_neuronal$age.name <- mapvalues(ME_Tissues_clusters_PSI_neuronal$age,
+          from = c(10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 21, 25, 27, 36, 41, 131, 651),
+          to = c( \"E10.5\", \"E11.5\", \"E12.5\", \"E13.5\", \"E14.5\", \"E15.5\", \"E16.5\", \"P0\", \"P4\", \"P7\", \"P15\", \"P30\", \"P110\", \"21Mb\") )
+
+
+ME_Tissues_clusters_PSI_neuronal <- ME_Tissues_clusters_PSI_neuronal[ME_cluster.name %in%  ME_cluster_names[ME_cluster.type %in% c(\"Neuronal\", \"Neuro-Muscular\", \"Muscular\", \"Non-Neuronal\"), ME_cluster.name], ]
+ME_Tissues_clusters_PSI_neuronal$age.name <- factor(ME_Tissues_clusters_PSI_neuronal$age.name, levels= c( \"E10.5\", \"E11.5\", \"E12.5\", \"E13.5\", \"E14.5\", \"E15.5\", \"E16.5\", \"P0\", \"P4\", \"P7\", \"P15\", \"P30\", \"P110\", \"21Mb\") )
+
+ME_Tissues_clusters_PSI_neuronal_by_ME <- ME_Tissues_clusters_PSI_neuronal[ , .(PSI_mean=mean(PSI)), by=c(\"ME\", \"age.name\", \"ME_cluster.name\") ]
+
+
+ME_Tissues_clusters_PSI_neuronal_by_ME_cluster <- ME_Tissues_clusters_PSI_neuronal[ , .(PSI_mean=mean(PSI)), by=c(\"age.name\", \"ME_cluster.name\", \"name\") ]
+
+
+  
+ggplot( ) +
+        geom_line(data= ME_Tissues_clusters_PSI_neuronal_by_ME, aes(factor(age.name), PSI_mean, group=ME), colour=\"grey\") +
+        geom_line(data = ME_Tissues_clusters_PSI_neuronal_by_ME_cluster, aes(factor(age.name), PSI_mean, group=name, colour=name ), size=1.2 ) +
+        facet_grid( ME_cluster.name ~ .)
+
+
+
+```"

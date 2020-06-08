@@ -1,0 +1,17 @@
+"0","```r
+ ggplot(PPI_diff_age_HNM) +
+  geom_jitter(aes(log(betweenness), diff_age, color=type ), width=0, height=0.1) +
+  xlab(\"Betweenness\") +
+  ylab(\"Earliest microexon differential inclusion detection (DPC)\") +
+   scale_y_continuous(breaks=seq(10.5,16.5,1)) +
+    geom_text_repel(data=PPI_diff_age_HNM[  log(betweenness)>6,  ],
+                  aes(x=log(betweenness), y=diff_age, colour=type), 
+                  nudge_y      = 0.5,
+                  direction    = \"x\",
+                  angle        = 90,
+                  segment.size = 0.2,
+                  show.legend = FALSE,
+                  label=PPI_diff_age_HNM[log(betweenness)>6  , mgi_symbol] ) 
+
+
+```"

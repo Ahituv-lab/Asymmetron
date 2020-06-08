@@ -1,0 +1,119 @@
+"0","```r
+
+
+
+file.remove('./whippet_delta.yaml')
+
+
+
+write.table( \"whippet_delta:\", file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+
+wcontrol <- paste(Tissue_clusters[cluster %in% c(1, 8, 6),  ]$File.accession, collapse=\",\")
+
+
+for (i in c(\"forebrain\", \"midbrain\", \"hindbrain\", \"neural tube\")){
+  
+  for (a in c(10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 21)) {
+    
+    if (length(Tissue_clusters[name==i & age==a , ]$File.accession)>=4){
+    
+      name = paste0(\"    \", gsub(\" \", \"_\", paste(\"control_vs\", i, paste0(a, \":\"), sep=\" \" )))
+      A =  paste0(\"        A : \", wcontrol )
+      B =  paste0(\"        B : \",  paste(Tissue_clusters[name==i & age==a , ]$File.accession, collapse=\",\"))
+      
+      write.table(name, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+      write.table( A, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+      write.table( B, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+    
+    }
+
+  }
+  
+}
+
+
+signal = c(\"hindbrain\", \"neural tube\")
+
+for (a in c(10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 21)) {
+    
+  if (length(Tissue_clusters[name %in% signal & age==a , ]$File.accession)>=4){
+    
+    name = paste0(\"    \", gsub(\" \", \"_\", paste(\"control_vs\", paste(signal, collapse=\"-\" ), paste0(a, \":\"), sep=\" \" )))
+    A =  paste0(\"        A : \", wcontrol )
+    B =  paste0(\"        B : \",  paste(Tissue_clusters[name %in% signal & age==a , ]$File.accession, collapse=\",\"))
+      
+    write.table(name, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+    write.table( A, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+    write.table( B, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+  }
+}
+ 
+
+signal = c(\"hindbrain\", \"neural tube\", \"midbrain\")
+
+for (a in c(10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 21)) {
+    
+  if (length(Tissue_clusters[name %in% signal & age==a , ]$File.accession)>=4){
+    
+    name = paste0(\"    \", gsub(\" \", \"_\", paste(\"control_vs\", paste(signal, collapse=\"-\" ), paste0(a, \":\"), sep=\" \" )))
+    A =  paste0(\"        A : \", wcontrol )
+    B =  paste0(\"        B : \",  paste(Tissue_clusters[name %in% signal & age==a , ]$File.accession, collapse=\",\"))
+      
+    write.table(name, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+    write.table( A, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+    write.table( B, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+  }
+}
+
+
+signal = c(\"hindbrain\", \"neural tube\", \"midbrain\",\"forebrain\")
+
+for (a in c(10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 21)) {
+    
+  if (length(Tissue_clusters[name %in% signal & age==a , ]$File.accession)>=4){
+    
+    name = paste0(\"    \", gsub(\" \", \"_\", paste(\"control_vs\", paste(signal, collapse=\"-\" ), paste0(a, \":\"), sep=\" \" )))
+    A =  paste0(\"        A : \", wcontrol )
+    B =  paste0(\"        B : \",  paste(Tissue_clusters[name %in% signal & age==a , ]$File.accession, collapse=\",\"))
+      
+    write.table(name, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+    write.table( A, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+    write.table( B, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+  }
+}
+
+
+
+signal = c(\"adrenal gland\", \"skeletal muscle tissue\", \"heart\")
+
+for (tissue in signal) {
+    
+  if (length(Tissue_clusters[name==tissue, ]$File.accession)>=4){
+    
+    name = paste0(\"    \", gsub(\" \", \"_\", paste(\"control_vs\", paste0(tissue, \":\"), sep=\" \" )))
+    A =  paste0(\"        A : \", wcontrol )
+    B =  paste0(\"        B : \",  paste(Tissue_clusters[name==tissue, ]$File.accession, collapse=\",\"))
+      
+    write.table(name, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+    write.table( A, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+    write.table( B, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+  }
+}
+
+
+name= \"    hindbrain_neural_tube_21_vs_forebrain_midbrain_21:\"
+A = paste0(\"        A : \",  paste(Tissue_clusters[age==21 & name %in% c(\"hindbrain\", \"neural tube\"), ]$File.accession, collapse=\",\"))
+B = paste0(\"        B : \",  paste(Tissue_clusters[age==21 & name %in% c(\"forebrain\", \"midbrain\"), ]$File.accession, collapse=\",\"))
+
+write.table(name, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+write.table( A, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+write.table( B, file=\"./whippet_delta.yaml\", append=TRUE, quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+
+
+```"

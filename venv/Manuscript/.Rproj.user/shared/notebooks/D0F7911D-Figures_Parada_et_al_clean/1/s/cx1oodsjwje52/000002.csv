@@ -1,0 +1,5 @@
+"0","```r
+Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron_old <- Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron
+
+Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron_old[ order(-abs(mean_DeltaPsi)), c(\"exon_ID\", \"mgi_symbol\", \"wikigene_description\", \"mean_DeltaPsi\", \"mean_Probability\")]
+```"

@@ -1,0 +1,13 @@
+"0","```r
+Delta_HNM_whippet_ME <- merge(Delta_HNM_whippet, Delta_HNM_ME, by=c(\"exon_ID\", \"Gene\", \"Node\",  \"Coord\", \"Strand\", \"Type\", \"age\") )
+
+Delta_HNM_whippet_ME[ (abs(DeltaPsi.x)>=0.1 &  Probability.x >= 0.9) &  (abs(DeltaPsi.y)>=0.1 &  Probability.y >= 0.9) , .N , by=(age)]
+
+Delta_HNM_whippet_ME_included <- Delta_HNM_whippet_ME[ (DeltaPsi.x<=-0.1 &  Probability.x >= 0.9) &  (DeltaPsi.y<=-0.1 &  Probability.y >= 0.9)  , .N , by=(age)]
+Delta_HNM_whippet_ME_excluded <- Delta_HNM_whippet_ME[ (DeltaPsi.x>=0.1 &  Probability.x >= 0.9) &  (DeltaPsi.y>=0.1 &  Probability.y >= 0.9)  , .N , by=(age)]
+
+
+Delta_HNM_included_stats <- cbind(Delta_HNM_whippet_included[order(age)], Delta_HNM_ME_included[order(age), 2], Delta_HNM_whippet_ME_included[order(age), 2])
+colnames(Delta_HNM_included_stats) <- c(\"age\", \"Whippet\", \"MicroExonator\", \"Both\")
+
+```"

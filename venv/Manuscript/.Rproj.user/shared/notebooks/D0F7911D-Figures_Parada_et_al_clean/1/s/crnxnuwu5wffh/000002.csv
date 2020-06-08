@@ -1,0 +1,4 @@
+"0","```r
+pairwise.wilcox.test(GO_Biological_Process_centrality$eigen_centrality, GO_Biological_Process_centrality$GO)
+pairwise.wilcox.test(GO_Biological_Process_centrality$harmonic_centrality, GO_Biological_Process_centrality$GO)
+```"

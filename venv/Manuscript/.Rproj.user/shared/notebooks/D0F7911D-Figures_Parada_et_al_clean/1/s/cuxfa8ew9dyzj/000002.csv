@@ -1,0 +1,22 @@
+"0","```r
+ME_final.ME_clusters <- merge(ME_final, ME_clusters.names, by=\"ME\")
+
+ME_cluster.conservation <- ME_final.ME_clusters[ mean_conservations_vertebrates!=\"None\" ,  .(mean_conservation=mean(as.numeric(mean_conservations_vertebrates)))  , by=c(\"ME_clusters\", \"ME_cluster.name\")]
+
+
+ME_cluster_names <-  merge(ME_cluster_names, ME_cluster.conservation,  by.x=c(\"ME_cluster\", \"ME_cluster.name\"), by.y=c(\"ME_clusters\", \"ME_cluster.name\"))
+
+round(cor(ME_cluster_names$symetrical_fraction, ME_cluster_names$mean_conservation, method=\"pearson\"), 2)
+
+
+ggplot(ME_cluster_names, aes(x=symetrical_fraction, y=mean_conservation)) +
+  geom_smooth(method=lm, linetype=\"dashed\") +
+  geom_text(aes( label = ME_cluster.name, colour = ME_cluster.type ) ) +
+  xlab(\"In-frame microexon fraction\") +
+  ylab(\"Mean Phylop conservation score\") +
+  theme(legend.position=\"top\") +
+ labs(color = \"Microexon cluster class\")
+
+
+
+```"

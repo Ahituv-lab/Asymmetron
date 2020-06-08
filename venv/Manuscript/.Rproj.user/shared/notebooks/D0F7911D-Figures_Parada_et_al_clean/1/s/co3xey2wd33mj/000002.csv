@@ -1,0 +1,32 @@
+"0","```r
+GO_Biological_Process_centrality$GO <- factor(GO_Biological_Process_centrality$GO,  levels = GO_Biological_Process_centrality[ , .(median=median(eigen_centrality)) , by=\"GO\" ][order(-median)]$GO)
+
+
+
+
+
+my_comparisons <- list(#c(\"vesicle_mediated_transport\", \"cytoskeleton_organization\" ),
+                       c(\"vesicle_mediated_transport\", \"signal_transduction\" ),
+                       c(\"vesicle_mediated_transport\", \"nervous_system_development\"),
+                       c(\"vesicle_mediated_transport\", \"synapse_assembly\" ),
+                       c(\"cytoskeleton_organization\", \"signal_transduction\" ),
+                       c(\"cytoskeleton_organization\", \"nervous_system_development\" ),
+                       c(\"cytoskeleton_organization\", \"synapse_assembly\")
+                       #c(\"signal_transduction\", \"nervous_system_development\" ),
+                       #c(\"signal_transduction\", \"nervous_system_development\" ),
+                       #c(\"nervous_system_development\", \"synapse_assembly\" )
+                       )
+
+
+F6H <-  ggplot( GO_Biological_Process_centrality, aes(GO, eigen_centrality  )  )  +
+  geom_boxplot() +
+    ylab(\"Eigencentrality\") +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.6),
+    axis.title.x = element_text(colour = NA),
+    strip.text = element_text(hjust = 0.5)) +
+  ggsignif::geom_signif(test = \"wilcox.test\", comparisons = my_comparisons, step_increase=0.15 , test.args = list(alternative = \"greater\", paired = FALSE), map_signif_level = TRUE) +
+  scale_x_discrete(labels=c(\"Vesicle mediated transportt\", \"Cytoskeleton organization\", \"Signal transduction\", \"Nervous system development\", \"Synapse assembly\"))
+
+F6H
+
+```"

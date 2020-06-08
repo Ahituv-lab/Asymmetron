@@ -1,0 +1,7 @@
+"0","```r
+Fig.4A <- ggplot(PCA_plot) +
+  geom_point(aes(PC1, PC2, colour=log(age), shape=group ), size=3 , alpha=0.7) +
+  scale_color_gradient2(low=\"blue\", mid=\"yellow\",  high=\"red\", midpoint = 3.7, name=\"ln(Age)\") +
+  scale_shape(name=\"Tissue\") +
+  theme(legend.position=\"top\") 
+```"

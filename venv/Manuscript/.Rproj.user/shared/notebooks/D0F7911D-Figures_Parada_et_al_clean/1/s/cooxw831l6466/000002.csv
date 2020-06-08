@@ -1,0 +1,27 @@
+"0","```r
+library(CINNA)
+
+PPI_betweenness <- estimate_betweenness(net, vids = V(net), directed = F, cutoff=-1,
+  weights = NULL, nobigint = TRUE)
+
+PPI_eigen_centrality <- eigen_centrality(net, directed = F, scale = T, weights = NULL)$vector
+
+
+#cbind(as.numeric(PPI_betweenness[V(net)]), as.numeric( PPI_eigen_centrality[V(net)]  ) )
+
+PPI_harmonic_centrality <- harmonic_centrality(net)
+
+
+PPI_degree_centrality <- centr_degree(net)$res
+names(PPI_degree_centrality) <- V(net)$name
+
+PPI_centrality <- data.frame(cbind(  PPI_betweenness[V(net)] ,  PPI_eigen_centrality[V(net)], PPI_harmonic_centrality, PPI_degree_centrality   ))
+
+colnames(PPI_centrality) <- c(\"betweenness\", \"eigen_centrality\", \"harmonic_centrality\", \"degree_centrality\")
+
+PPI_centrality$mapped_gene <-  row.names(PPI_centrality)
+
+PPI_centrality <- data.table(PPI_centrality)
+
+
+```"

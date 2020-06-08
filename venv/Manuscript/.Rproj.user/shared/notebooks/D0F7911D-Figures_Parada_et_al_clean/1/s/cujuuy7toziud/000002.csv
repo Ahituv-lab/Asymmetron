@@ -1,0 +1,9 @@
+"0","```r
+neuronal_clusters_genes$ME_clusters <- mapvalues(neuronal_clusters_genes$ME_clusters, 
+          from =1:18,
+          to = c(\"I1\", \"E1\", \"E3\", \"I2\", \"N1\", \"M1\", \"N2\", \"NM3\", \"NM2\", \"N5\", \"NM1\", \"N3\", \"N4\", \"NN2\", \"E2\", \"I4\", \"I3\", \"NN1\"))
+
+```"
+"1","Error in mapvalues(neuronal_clusters_genes$ME_clusters, from = 1:18, to = c(\"I1\",  : 
+  could not find function \"mapvalues\"
+"

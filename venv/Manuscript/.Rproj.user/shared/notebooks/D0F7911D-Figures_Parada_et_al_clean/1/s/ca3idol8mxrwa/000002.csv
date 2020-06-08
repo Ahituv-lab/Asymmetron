@@ -1,0 +1,19 @@
+"0","```r
+ggplot(PPI_diff_age_HNM_stats_EC) +
+  geom_bar(aes(min_dif_age, fill=central), stat = \"count\", position=\"fill\" ) +
+  xlab(\"Earliest microexon differential inclusion detection per gene (DPC)\")+
+  ylab(\"Protein type proportion\") +
+  scale_x_continuous(breaks=seq(10.5,16.5,1)) +
+  scale_fill_discrete(name = \"Protein type\", labels = c(\"Non-central\", \"Central\"))  +
+            theme(axis.text.x = element_text(angle = 90), legend.position = \"top\", legend.direction = \"horizontal\")
+
+
+ggplot(PPI_diff_age_HNM_stats_B) +
+  geom_bar(aes(min_dif_age, fill=central), stat = \"count\", position=\"fill\" ) +
+  xlab(\"Earliest microexon differential inclusion detection per gene (DPC)\")+
+  ylab(\"Protein type proportion\") +
+  scale_x_continuous(breaks=seq(10.5,16.5,1)) +
+  scale_fill_discrete(name = \"Protein type\", labels = c(\"Non-central\", \"Central\"))  +
+            theme(axis.text.x = element_text(angle = 90), legend.position = \"top\", legend.direction = \"horizontal\")
+
+```"

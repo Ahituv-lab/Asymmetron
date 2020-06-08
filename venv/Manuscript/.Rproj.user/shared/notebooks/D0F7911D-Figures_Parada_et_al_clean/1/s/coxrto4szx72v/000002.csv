@@ -1,0 +1,6 @@
+"0","```r
+Delta_HNM_whippet_included <- Delta_HNM_whippet[ DeltaPsi<=-0.1 &  Probability >= 0.9 , .N , by=(age)]
+Delta_HNM_whippet_excluded <- Delta_HNM_whippet[ DeltaPsi>=0.1 &  Probability >= 0.9 , .N , by=(age)]
+Delta_HNM_ME_included <- Delta_HNM_ME[ DeltaPsi<=-0.1 &  Probability >= 0.9 , .N , by=(age)]
+Delta_HNM_ME_excluded <- Delta_HNM_ME[ DeltaPsi>=0.1 &  Probability >= 0.9 , .N , by=(age)]
+```"

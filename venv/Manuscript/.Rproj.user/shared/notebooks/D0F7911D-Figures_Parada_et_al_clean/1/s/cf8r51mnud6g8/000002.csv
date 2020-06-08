@@ -1,0 +1,10 @@
+"0","```r
+
+PCA_loadings_stats <- PCA_loadings[ , .(PC1_mean=mean(PC1)) , by=\"ME_cluster\"]
+
+PCA_loadings_stats_PC2 <- PCA_loadings[ , .(PC2_mean=mean(PC2)) , by=\"ME_cluster\"]
+
+
+
+ME_cluster_loading_order <- PCA_loadings_stats[order(PC1_mean)]$ME_cluster
+```"

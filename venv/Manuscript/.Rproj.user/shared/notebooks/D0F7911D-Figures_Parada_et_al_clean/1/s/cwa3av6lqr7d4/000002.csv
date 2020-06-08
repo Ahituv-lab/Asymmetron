@@ -1,0 +1,6 @@
+"0","```r
+
+hc_cols <- hclust(dist(t(Tissue_PSI_matrix_dcast_ppca)), method = \"ward.D2\")
+hc_rows <- hclust(dist(Tissue_PSI_matrix_dcast_ppca), method = \"ward.D2\")
+
+```"

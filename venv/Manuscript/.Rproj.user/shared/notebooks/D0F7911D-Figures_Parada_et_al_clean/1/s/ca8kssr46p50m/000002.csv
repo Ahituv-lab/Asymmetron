@@ -1,0 +1,10 @@
+"0","```r
+PC1_cluster <- PCA[ , .(PC1=mean(PC1))  , by=cluster]
+
+tissue_cluster_PCA <- factor(PC1_cluster[order(PC1)]$cluster, levels = PC1_cluster[order(PC1)]$cluster)
+
+
+my_col <- get_colors(tissue_cluster_PCA, group.col=colorRampPalette(colors = c(\"black\",  \"purple\", \"blue\", \"seagreen\", \"gold\", \"red\"))(14))
+
+
+```"

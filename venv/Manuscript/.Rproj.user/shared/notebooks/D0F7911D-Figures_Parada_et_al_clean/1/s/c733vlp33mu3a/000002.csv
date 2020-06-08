@@ -1,0 +1,30 @@
+"0","```r
+
+Delta_HNM_whippet_ME_age_diff_total[ , ensembl_gene_id:=gsub(\"\\..*\",\"\", Gene) ]
+Delta_HNM_whippet_ME_age_diff_total[ , ensembl_gene_id:=gsub(\"\\..*\",\"\", Gene) ]
+
+
+Delta_HNMF_whippet_ME_age_diff_total <- merge(Delta_HNM_whippet_ME_age_diff_total, Delta_F_whippet_ME_age_diff_total, by=c(\"exon_ID\", \"Gene\", \"change_dir\"), all=TRUE)
+Delta_HNMF_whippet_ME_age_diff_total[, diff_age:=min(diff_age.y, diff_age.x, na.rm=TRUE), by=exon_ID]
+
+Delta_HNMF_whippet_ME_age_diff_total[ , ensembl_gene_id:=gsub(\"\\..*\",\"\", Gene) ]
+
+
+
+
+
+Delta_HNMF_whippet_ME_age_diff_total <- merge(Delta_HNMF_whippet_ME_age_diff_total, neuronal_ME_gene_names, by=\"ensembl_gene_id\")
+
+
+
+
+#merge( Delta_HNMF_whippet_ME_age_diff_total, PPI_centrality, by=\"mgi_symbol\")
+
+
+
+#Delta_HNMF_whippet_ME_age_diff_total[!mgi_symbol %in% PPI_centrality$mgi_symbol]
+
+
+fwrite(data.table(data.table(unique(Delta_HNMF_whippet_ME_age_diff_total$ensembl_gene_id))), \"../Final_Figures/Figure5/microexons_HMNF_genes.txt\", quote = FALSE, col.names = FALSE)
+
+```"

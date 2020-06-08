@@ -1,0 +1,11 @@
+"0","```r
+Fig5.X.2 <- ggplot(ME_cluster_names) +
+  geom_text(aes(x=PC1_mean, y=-PC2_mean, label = ME_cluster.name, colour = ME_cluster.type ), ) +
+  xlab(\"Mean PC1 loading\") +
+  ylab(\"Mean PC2 loading\") +
+    theme(legend.position=\"top\")
+
+
+Fig5.X.2
+
+```"

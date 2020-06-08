@@ -1,0 +1,62 @@
+"0","```r
+
+
+col_ann <- data.frame(  Tissue_clusters$cluster, row.names=Tissue_clusters$File.accession)
+colnames(col_ann) <- \"Tissue clusters\"
+
+rownames(col_ann) <- Tissue_clusters$File.accession
+
+
+
+tissue_cluster_type = data.frame(cluster=c(1, 6, 8, 14, 12, 7, 15, 5, 11, 4, 9, 3, 13, 10, 16, 2), 
+                                 `Tissue cluster type`=c(\"Non-neuronal\",
+                                                \"Non-neuronal\",
+                                                \"Non-neuronal\",
+                                                \"Non-neuronal\",
+                                                \"Embryonic neuronal\",
+                                                \"Adrenal gland\",
+                                                \"Skeletal muscle\",
+                                                \"Heart\",
+                                                \"Embryonic neuronal\",
+                                                \"Embryonic neuronal\",
+                                                \"Embryonic neuronal\",
+                                                \"Postnatal neuronal\",
+                                                \"Embryonic neuronal\",
+                                                \"Postnatal neuronal\",
+                                                \"Postnatal neuronal\",
+                                                \"Postnatal neuronal\"))
+
+col_ann$File <- rownames(col_ann)
+col_ann <- merge(col_ann, tissue_cluster_type, by.x=\"Tissue clusters\",by.y=\"cluster\")
+rownames(col_ann) <- col_ann$File
+
+colnames(col_ann) <- c(\"Tissue clusters\", \"File\", \"Tissue cluster type\")
+
+
+
+ann_colors = list(
+    cluster = c(black=\"black\"),
+    `Tissue.cluster.type` =  c(`Adrenal gland` = \"#B79F00\",
+                      `Skeletal muscle` = \"#00BFC4\",
+                      `Heart` = \"#F564E3\",
+                      `Non-neuronal` = \"#A58AFF\",
+                      `Embryonic neuronal` = \"#00BA38\",
+                      `Postnatal neuronal` = \"#F8766D\"
+                      ),
+    GeneClass = c(Path1 = \"#7570B3\", Path2 = \"#E7298A\", Path3 = \"#66A61E\")
+)
+
+col_ann$`Tissue cluster type` <- factor(col_ann$`Tissue cluster type` , levels = c(\"Adrenal gland\", \"Skeletal muscle\", \"Heart\", \"Non-neuronal\", \"Intermediate\", \"Embryonic neuronal\", \"Postnatal neuronal\"))
+
+fake_plot <- ggplot(col_ann, aes(as.numeric(`Tissue clusters`), `Tissue clusters`, fill=`Tissue cluster type` )) +
+  geom_bar(stat = \"identity\") +
+  scale_fill_manual(values=c(\"#B79F00\", \"#00BFC4\", \"#F564E3\", \"#A58AFF\", \"#00BA38\", \"#F8766D\" ), name= \"Tissue cluster type\") +
+   theme(legend.position=\"top\", legend.justification=\"center\") +
+  guides(fill=guide_legend(nrow=1,byrow=TRUE)) 
+
+
+fake_plot.legend <- get_legend(fake_plot)
+
+
+
+```"

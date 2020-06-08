@@ -1,0 +1,23 @@
+"0","```r
+
+PPI_diff_age_HNM$L1cam_and_interactors <- factor(PPI_diff_age_HNM$L1cam_and_interactors, levels=c(TRUE, FALSE))
+
+
+F6G <- ggplot(PPI_diff_age_HNM) +
+  geom_point(aes(eigen_centrality, betweenness, colour=L1cam_and_interactors)) +
+  facet_wrap( . ~ diff_age, ncol = 2)  +
+      geom_text_repel(data=PPI_diff_age_HNM[ L1cam_and_interactors==TRUE,  ], 
+                  aes(x=eigen_centrality, y=betweenness, colour=L1cam_and_interactors ), 
+                  nudge_y      = 3000,
+                  direction    = \"x\",
+                  angle        = 90,
+                  segment.size = 0.2,
+                  label=PPI_diff_age_HNM[L1cam_and_interactors==TRUE  , mgi_symbol],
+                  show.legend = FALSE) +
+          theme(axis.text.x = element_text(angle = 90), legend.position = \"top\", legend.direction = \"horizontal\") +
+    scale_fill_discrete(name = \"L1CAM pathway\", labels = c(\"Member\", \"Non-member\"))  
+
+
+
+
+```"

@@ -1,0 +1,75 @@
+"0","```r
+Mouse_Zebra.IDs[ME.mouse %in%  names(ME_clusters), ME_cluster:=ME_clusters[ME.mouse] ]
+
+
+
+Mouse_Zebra.IDs<- merge(Mouse_Zebra.IDs , 
+ME_cluster_names[, c(\"ME_cluster\", \"ME_cluster.name\")] , by=\"ME_cluster\", all.x=TRUE )
+
+
+ggplot(Mouse_Zebra.IDs) +
+  geom_bar(aes(x=ME_cluster.name), stat=\"count\")
+
+
+
+
+Mouse_Zebra.IDs[ , type:=\"Annotated\"  ]
+
+Mouse_Zebra.IDs[!ME.mouse %in% microexons_Vastdb, type:=\"Missing in VastDB\"   ]
+Mouse_Zebra.IDs[!ME.mouse %in% microexons_GENCODE, type:=\"Missing in GENCODE\"   ]
+Mouse_Zebra.IDs[!ME.mouse %in% microexons_GENCODE & !ME.mouse %in% microexons_Vastdb , type:=\"Novel\"   ]
+
+
+Mouse_Zebra.IDs[ , ensemble_zebra:=FALSE  ]
+Mouse_Zebra.IDs[ME.zebra %in%  exons.zebra$V4, ensemble_zebra:=TRUE ]
+
+Mouse_Zebra.IDs[ , ensemble_mouse:=FALSE  ]
+Mouse_Zebra.IDs[ME.mouse %in%  microexons_GENCODE, ensemble_mouse:=TRUE ]
+
+
+
+
+
+
+
+Delta_HNMF_whippet_ME_age_diff_total[exon_ID %in% Mouse_Zebra.IDs$ME.mouse]
+
+
+Delta_HNMF_whippet_ME_age_diff_total[]
+
+
+Mouse_Zebra.IDs[ME.mouse %in% Delta_HNMF_whippet_ME_age_diff_total$exon_ID][ ME.zebra %in% exons.zebra$V4]
+
+ 
+
+ggplot(Mouse_Zebra.IDs) +
+  geom_bar(aes(x=ME_cluster.name, fill=type), stat=\"count\", position=\"fill\")
+
+
+length(unique(Mouse_Zebra.IDs$ME.mouse))
+
+length(unique(Mouse_Zebra.IDs$ME.zebra))
+
+PPI_diff_age_HNMF_central[ , conserved:=FALSE ]
+PPI_diff_age_HNMF_central[exon_ID %in% Mouse_Zebra.IDs$ME.mouse, conserved:=TRUE ]
+
+ggplot(PPI_diff_age_HNMF_central) +
+  geom_jitter(aes(harmonic_centrality, diff_age,  shape= type, colour=conserved  ), width=0, height=0.1) + 
+  xlab(\"Harmonic Centrality\") +
+  ylab(\"Earliest microexon differential inclusion detection (DPC)\") +
+   scale_y_continuous(breaks=seq(10.5,16.5,1)) +
+    geom_text_repel(data=PPI_diff_age_HNMF_central[  central==TRUE  ], 
+                  aes(x=harmonic_centrality, y=diff_age,  colour=conserved  ), 
+                  nudge_y      = 0.5,
+                  direction    = \"x\",
+                  angle        = 90,
+                  segment.size = 0.2,
+                  label=PPI_diff_age_HNMF_central[central==TRUE  , mapped_gene],
+                  show.legend = FALSE) +
+          theme(axis.text.x = element_text(angle = 90), legend.position = \"top\", legend.direction = \"horizontal\")
+
+
+ggplot(PPI_diff_age_HNMF_central) +
+  geom_boxplot(aes(conserved, log2(betweenness) ))
+
+```"
