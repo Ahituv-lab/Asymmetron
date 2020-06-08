@@ -1,7 +1,0 @@
-"0","```r
-TOTAL.OK <- list(OK1 = OK1[ abs(DeltaPsi)>0.1 & Probability>0.9, paste(Gene, Node, sign(DeltaPsi), sep=\"_\")],
-                    OK2 = OK2[ abs(DeltaPsi)>0.1 & Probability>0.9, paste(Gene, Node, sign(DeltaPsi), sep=\"_\")],
-                    OK3 = OK3[ abs(DeltaPsi)>0.1 & Probability>0.9, paste(Gene, Node, sign(DeltaPsi), sep=\"_\")],
-                    OK4 = OK4[ abs(DeltaPsi)>0.1 & Probability>0.9, paste(Gene, Node, sign(DeltaPsi), sep=\"_\")])
-upset(fromList(TOTAL.OK), order.by = \"freq\", nsets = 4, keep.order = T)
-```"

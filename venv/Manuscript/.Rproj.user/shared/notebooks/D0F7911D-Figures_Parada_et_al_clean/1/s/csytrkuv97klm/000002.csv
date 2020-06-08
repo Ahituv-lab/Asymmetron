@@ -1,5 +1,0 @@
-"0","```r
-
-plot_grid(Fig7.D, Fig7.E, ncol=1)
-
-```"

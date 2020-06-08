@@ -1,6 +1,0 @@
-"0","```r
-ggplot() +
-  geom_point(data=PCA_plot[group==\"Other\"], aes(PC1, PC2, colour=log(age) ), alpha=0.8) +
-  geom_text(data=PCA_plot[group!=\"Other\"], aes(PC1, PC2, colour=log(age), label=str_sub(group, 1,1) ), size=3.5, alpha=0.8 ) +
-  scale_color_gradient2(low=\"blue\", mid=\"gold\",  high=\"red\", midpoint = 3.7)
-```"

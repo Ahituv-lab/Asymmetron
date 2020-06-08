@@ -1,3 +1,0 @@
-"0","```r
-plot_grid(Sup_PCA_age.A, Sup_PCA_age.B, labels = \"AUTO\")
-```"

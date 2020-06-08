@@ -1,4 +1,0 @@
-"0","```r
-Fig4.EFG <- plot_grid( Sup.Tissue_clusters.ab, Sup.Tissue_clusters.c, ncol=1, labels=c(\"\", \"G\"), rel_heights = c(0.8, 1) )
-Fig4.EFG
-```"

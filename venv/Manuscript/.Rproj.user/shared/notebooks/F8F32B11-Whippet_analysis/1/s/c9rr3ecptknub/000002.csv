@@ -1,8 +1,0 @@
-"0","```r
-library(data.table)
-```"
-"1","package ‘data.table’ was built under R version 3.5.2data.table 1.12.8 using 2 threads (see ?getDTthreads).  Latest news: r-datatable.com
-"
-"0","```r
-library(UpSetR)
-```"

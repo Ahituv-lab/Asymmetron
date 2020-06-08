@@ -1,6 +1,0 @@
-"0","```r
-var2str <- function(v1) {
-  deparse(substitute(v1))
-}
-
-```"
