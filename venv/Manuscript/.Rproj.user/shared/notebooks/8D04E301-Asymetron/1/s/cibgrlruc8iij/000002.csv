@@ -1,4 +1,0 @@
-"0","Unibind <- fread(""./Unibind_outputs2.txt"")"
-"0","colnames(Unibind) <- c(""Cell"", ""TF"", ""same"", ""opposite"", ""ratio"", ""adj.p.val"")"
-"0","Unibind.filter <- Unibind[ Cell %in% Unibind[ , .N, by=""Cell""][N >= 10, Cell ], ]"
-"0","Unibind.filter$Cell <-  factor(Unibind.filter$Cell, levels = Unibind[ , .N, by=""Cell""][N >= 10,  ][order(-N)][, Cell] )"

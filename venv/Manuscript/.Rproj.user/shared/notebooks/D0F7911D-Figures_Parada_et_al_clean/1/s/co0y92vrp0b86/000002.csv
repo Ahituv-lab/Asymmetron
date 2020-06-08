@@ -1,7 +1,0 @@
-"0","```r
-ggplot(PPI_centrality_GO_gene_centered, aes(GO, diff_age)) +
-+     geom_jitter(height = 0.1, width = 0.1) +
-+     theme(axis.text.x = element_text(angle = 90, vjust = 0))
-
-
-```"

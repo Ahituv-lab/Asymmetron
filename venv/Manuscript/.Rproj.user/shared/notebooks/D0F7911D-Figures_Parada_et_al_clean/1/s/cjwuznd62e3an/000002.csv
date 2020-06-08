@@ -1,6 +1,0 @@
-"0","```r
-
-PCA_stats_PC2<- PCA[ name==\"heart\" , .(mean_PC2=mean(PC2)) , by=c(\"name\", \"age\")]
-
-
-```"

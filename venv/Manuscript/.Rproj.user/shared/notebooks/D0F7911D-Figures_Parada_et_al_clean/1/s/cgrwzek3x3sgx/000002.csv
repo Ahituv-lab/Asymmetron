@@ -1,3 +1,0 @@
-"0","```r
-PCA_loadings_stats[abs(PC1_mean)>0.03, ][order(PC1_mean)]
-```"

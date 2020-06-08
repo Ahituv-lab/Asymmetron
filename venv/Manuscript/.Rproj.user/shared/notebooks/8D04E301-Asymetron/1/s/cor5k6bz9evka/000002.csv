@@ -1,3 +1,0 @@
-"0","TOTAL.bacground <- rbind(L1_L2_background_asymmetries, Alu_MIR_background_asymmetries, Asymmetries_output.txt)"
-"0","TOTAL.bacground$Feature <- factor(TOTAL.bacground$Feature, levels = c(  ""LINE"", ""L1"", ""L2"", ""SINE"", ""Alu"", ""MIR"", ""LTR""))"
-"0","TOTAL.bacground[ , Type:=str_to_title(Type)]"

@@ -1,4 +1,0 @@
-"0","```r
-F6.bottom <- plot_grid(F6FG, F6H, F6I, labels = c( \"\", 'H', 'I'), nrow=1, rel_widths = c(2.5, 1, 1))
-F6.bottom
-```"
