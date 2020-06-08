@@ -1,0 +1,6 @@
+"0","```r
+write.table(Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron, file = \"~/Desktop/Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron.txt\", append = FALSE, quote = F, sep = \"\t\",
+            eol = \"\n\", na = \"NA\", dec = \".\", row.names = F,
+            col.names = TRUE, qmethod = c(\"escape\", \"double\"),
+            fileEncoding = \"\")
+```"

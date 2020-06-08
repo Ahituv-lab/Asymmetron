@@ -1,0 +1,7 @@
+"0","Unibind[ , signf:=FALSE]"
+"0","Unibind[ adj.p.val < 0.05  , signf:=TRUE]"
+"0","Unibind[ signf==TRUE ,  N.signf:=.N  , by=""TF""]"
+"0","Unibind[  ,  N.total:=.N  , by=""TF""]"
+"0","Unibind[ is.na(N.signf) , N.signf:=0 ]"
+"0","Unibind[ , signf.ratio:= (N.signf/ N.total) ]"
+"0","top.hits <-  Unibind[ , .N , by=c(""TF"",  ""N.signf"", ""N.total"" , ""signf.ratio"")  ][order(-signf.ratio, -N.total)][N>=4 & signf.ratio>=0.75,  ]"

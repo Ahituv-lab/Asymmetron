@@ -1,0 +1,53 @@
+"0","```r
+
+
+
+
+
+Microexons.PPCA.number <- length(unique(hc_rows$labels))
+
+Tissue_clusters.table <- Tissue_clusters[ , .N , by=cluster ]
+ME_clusters.table <- ME_clusters.names[ , .N , by=ME_cluster.name ]
+
+
+samples_control.diff.number <- Tissue_clusters.table[ cluster %in% c(1, 3, 8), sum(N)]
+
+samples_sig.diff.table <- Tissue_clusters[ File.accession %in% metadata[ Biosample.term.name %in% c(\"forebrain\", \"hindbrain\", \"midbrain\", \"neural tube\", \"adrenal gland\", \"skeletal muscle tissue\", \"heart\"),  File.accession], .N, by=\"name\"  ]
+samples_sig.diff.number <- samples_sig.diff.table[, sum(N)]
+
+
+total_sample.diff.number <- samples_sig.diff.number + samples_control.diff.number
+
+HNMF_microexons.GENCODE_VASTDB.table <- neuronal_ME_HNMF[, unique(exon_ID), by=\"type\"][ , .N, by=\"type\" ]
+
+
+Novel_diff.longer4.number <- length(unique(ME_final[ ME %in% neuronal_ME_HNMF[type==\"Novel\", exon_ID] & len_micro_exon_seq_found>4, ME]))
+
+
+
+
+
+Zebra_samples <- length(total_zebra_cov[ , unique(FILE_NAME)])
+
+
+Novel_zebra <- length(unique(Mouse_Zebra.IDs[!ME.zebra %in% exons.zebra$V4, ME.zebra]))
+
+
+
+length(unique(Mouse_Zebra.IDs[, ME.zebra]))
+
+
+TOTAL_MHN_exons.number <- length(unique(Delta_HNM_merge[abs(DeltaPsi.x)>=0.1 & Probability.x>0.9 & abs(DeltaPsi.y)>=0.1 & Probability.y>0.9, exon_ID]))
+TOTAL_F_exons.number <- length(unique(Delta_F_merge[abs(DeltaPsi.x)>=0.1 & Probability.x>0.9 & abs(DeltaPsi.y)>=0.1 & Probability.y>0.9, exon_ID]))
+
+TOTAL_MHN_exons.substained.number <- length(unique(Delta_HNM_whippet_ME_age_diff_total$exon_ID))
+TOTAL_F_exons.substained.number <- length(unique(Delta_F_whippet_ME_age_diff_total$exon_ID))
+
+
+Diff_exon.Heart.number <- length(unique(Delta_Heart_whippet_ME[!is.na(change_dir), exon_ID ]))
+Diff_exon.SKM.number <- length(unique(Delta_SKM_whippet_ME[!is.na(change_dir), exon_ID ]))
+Diff_exon.AG.number <- length(unique(Delta_AG_whippet_ME[!is.na(change_dir), exon_ID ]))
+
+
+round(ME_cluster_names[ME_cluster.type %in% c(\"Neuro-Muscular\", \"Neuronal\", \"Muscular\"), mean(mean_U2_score)], 1)
+```"

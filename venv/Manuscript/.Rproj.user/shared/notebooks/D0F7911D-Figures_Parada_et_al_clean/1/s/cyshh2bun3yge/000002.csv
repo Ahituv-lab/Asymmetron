@@ -1,0 +1,27 @@
+"0","```r
+#Tasic_unpooled_diff_exons <- data.table(read_delim(\"~/Google_Drive/Results/ME/Paper/New_report/Whippet_Delta/Tasic/GABA-ergic_Neuron_vs_Glutamatergic_Neuron.diff.Potential_Exon.exon_ID.only_ME.diff\", 
+#    \"\t\", escape_double = FALSE, trim_ws = TRUE))
+
+
+
+
+#Tasic_pooled_diff_exons <- data.table(read_delim(\"~/Google_Drive/Results/ME/Paper/New_report/Whippet_Delta/Tasic/Pool/TOTAL.Pool.only_ME.diff\", 
+#    \"\t\", escape_double = FALSE, trim_ws = TRUE))
+
+
+
+Tasic_unpooled_diff_exons <- fread(\"/Users/gp7/Google_Drive/Results/ME/Paper/Final_Report/Reps/Rep1/Single_Cell/Unpooled/GABA-ergic_Neuron_vs_Glutamatergic_Neuron.diff.microexons\")
+
+Tasic_pooled_diff_exons <- data.table()
+
+for ( i in seq(1:10)){
+  
+  path <- paste0(\"/Users/gp7/Google_Drive/Results/ME/Paper/Final_Report/Reps/Rep1/Single_Cell/GABA-ergic_Neuron_vs_Glutamatergic_Neuron_rep_\", i, \".diff.microexons\")
+  file <- fread(path)
+  file[, Rep:=i]
+  Tasic_pooled_diff_exons <- rbind(Tasic_pooled_diff_exons, file)
+  
+}
+
+
+```"

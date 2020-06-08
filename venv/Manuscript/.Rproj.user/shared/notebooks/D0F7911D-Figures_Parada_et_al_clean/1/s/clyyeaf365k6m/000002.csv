@@ -1,0 +1,19 @@
+"0","```r
+
+Sup_vulcano.A <- ggplot( ) +
+  geom_point(data=Delta_HNM_whippet, aes(-DeltaPsi, Probability)) +
+  geom_point(data=Delta_HNM_whippet[ abs(DeltaPsi)>=0.1 &  Probability >= 0.9 , ], aes(-DeltaPsi, Probability), color=\"red\") +
+  facet_grid(. ~ age) +
+  xlab(\"Delta PSI\") 
+
+
+Sup_vulcano.B <- ggplot( ) +
+  geom_point(data=Delta_HNM_ME, aes(-DeltaPsi, Probability)) +
+  geom_point(data=Delta_HNM_ME[ abs(DeltaPsi)>=0.1 &  Probability >= 0.9 , ], aes(-DeltaPsi, Probability), color=\"red\") +
+  facet_grid(. ~ age) +
+  xlab(\"Delta PSI\") 
+
+
+plot_grid(Sup_vulcano.A, Sup_vulcano.B, ncol=1, labels = \"AUTO\")
+
+```"

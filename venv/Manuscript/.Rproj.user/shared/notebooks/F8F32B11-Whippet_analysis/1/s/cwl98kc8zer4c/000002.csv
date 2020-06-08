@@ -1,0 +1,29 @@
+"0","```r
+TOTAL.OK.Merge
+
+```"
+"1","                   Gene Node                  Coord Type                    ID  DeltaPsi.1 Probability.1 diff.1 DeltaPsi.2
+     1: ENSG00000000003    6 chrX:99891188-99891604   AD  ENSG00000000003_6_-1          NA            NA  FALSE         NA
+     2: ENSG00000000003    6 chrX:99891188-99891604   AD   ENSG00000000003_6_1  0.01810600         0.660  FALSE  0.0022424
+     3: ENSG00000000003    7 chrX:99890555-99890743   CE  ENSG00000000003_7_-1 -0.00061348         0.515  FALSE         NA
+     4: ENSG00000000003    7 chrX:99890555-99890743   CE   ENSG00000000003_7_1          NA            NA  FALSE  0.0027674
+     5: ENSG00000000003    8 chrX:99890175-99890249   CE  ENSG00000000003_8_-1 -0.00324060         0.555  FALSE         NA
+    ---                                                                                                                   
+375284: ENSG00000273398    9 chr2:68374599-68374699   CE   ENSG00000273398_9_1  0.00989080         0.521  FALSE         NA
+375285: ENSG00000273398   10 chr2:68371717-68371847   CE ENSG00000273398_10_-1 -0.02886200         0.592  FALSE -0.0078237
+375286: ENSG00000273398   14 chr2:68361834-68361931   CE ENSG00000273398_14_-1 -0.01019800         0.521  FALSE         NA
+375287: ENSG00000273398   14 chr2:68361834-68361931   CE  ENSG00000273398_14_1          NA            NA  FALSE  0.0171660
+375288: ENSG00000273432    2 chr7:44056033-44056122   CE  ENSG00000273432_2_-1          NA            NA  FALSE         NA
+        Probability.2 diff.2 DeltaPsi.3 Probability.3 diff.3  DeltaPsi.4 Probability.4 diff.4 Number_diff
+     1:            NA  FALSE -0.0016442         0.521  FALSE -0.01809200         0.569  FALSE           0
+     2:         0.510  FALSE         NA            NA  FALSE          NA            NA  FALSE           0
+     3:            NA  FALSE -0.0034703         0.555  FALSE          NA            NA  FALSE           0
+     4:         0.501  FALSE         NA            NA  FALSE  0.00170850         0.522  FALSE           0
+     5:            NA  FALSE -0.0047358         0.554  FALSE          NA            NA  FALSE           0
+    ---                                                                                                  
+375284:            NA  FALSE         NA            NA  FALSE          NA            NA  FALSE           0
+375285:         0.502  FALSE -0.0247520         0.592  FALSE -0.00389320         0.542  FALSE           0
+375286:            NA  FALSE         NA            NA  FALSE          NA            NA  FALSE           0
+375287:         0.550  FALSE  0.0081606         0.541  FALSE  0.00058152         0.505  FALSE           0
+375288:            NA  FALSE -0.0299880         0.562  FALSE          NA            NA  FALSE           0
+"

@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590362039124.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "BDC21D5E",
+    "lastKnownWriteTime" : 4324290560,
+    "last_content_update" : 1590362039124,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "56F90F75",
+        "caption" : "Unibind[, .N, by = c(\"Cell\", \"N.signf\", \"N.total\", \"signf.ratio\")][order(-signf.ratio, ",
+        "contentUrl" : "grid_resource/gridviewer.html?env=_rs_no_env&obj=&cache_key=56F90F75",
+        "displayedObservations" : 1423,
+        "environment" : "_rs_no_env",
+        "object" : "",
+        "preview" : 0,
+        "totalObservations" : 1423,
+        "variables" : 5
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

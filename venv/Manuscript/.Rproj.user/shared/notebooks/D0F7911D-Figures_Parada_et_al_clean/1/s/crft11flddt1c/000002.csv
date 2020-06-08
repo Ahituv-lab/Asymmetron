@@ -1,0 +1,13 @@
+"0","```r
+ensembl = useEnsembl(biomart=\"ensembl\", dataset=\"mmusculus_gene_ensembl\", host = \"www.ensembl.org\")
+
+
+ME_final.transcript <- gsub(\"\\..*\",\"\", ME_final$transcript)
+
+ME_final$ensembl_transcript_id <- gsub(\"\\..*\",\"\", ME_final$transcript) 
+
+gene_table.TOTAL <- data.table(getBM(attributes=c('ensembl_transcript_id', 'ensembl_gene_id', \"mgi_symbol\"),filters = 'ensembl_transcript_id', values = ME_final.transcript[nchar(ME_final.transcript)!=0], mart = ensembl,  ))
+
+
+gene_table.TOTAL <- merge(gene_table.TOTAL, ME_final[, c(\"ensembl_transcript_id\", \"ME\")], by=\"ensembl_transcript_id\")
+```"

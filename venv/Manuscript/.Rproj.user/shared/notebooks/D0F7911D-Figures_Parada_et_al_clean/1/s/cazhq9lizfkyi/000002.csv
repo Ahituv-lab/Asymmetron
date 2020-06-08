@@ -1,0 +1,18 @@
+"0","```r
+
+Delta_F_whippet <- Get_delta_table( c(\"forebrain\"),
+                                      c(10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 21),
+                                      \"~/Google_Drive/Results/ME/Paper/Final_Report/Reps/Rep1/Whippet/\",
+                                      \".diff.microexons\")
+
+
+Delta_F_ME <- Get_delta_table( c(\"forebrain\"),
+                                      c(10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 21),
+                                      \"~/Google_Drive/Results/ME/Paper/Final_Report/Reps/Rep1/Whippet/\",
+                                      \".diff.ME.microexons\")
+
+
+Delta_F_merge <- merge(Delta_F_whippet, Delta_F_ME, by=c(\"exon_ID\", \"age\"))
+
+length(unique(Delta_F_merge[abs(DeltaPsi.x)>=0.1 & Probability.x>0.9 & abs(DeltaPsi.y)>=0.1 & Probability.y>0.9, exon_ID]))
+```"

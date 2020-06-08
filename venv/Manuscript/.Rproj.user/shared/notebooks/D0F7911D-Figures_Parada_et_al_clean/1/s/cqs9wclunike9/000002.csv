@@ -1,0 +1,47 @@
+"0","```r
+
+
+ME_clusters.table <- cbind(ME_clusters, names(ME_clusters))
+colnames(ME_clusters.table) <- c(\"ME_clusters\", \"ME\")
+
+ME_clusters.table <- data.table(ME_clusters.table)
+ME_clusters.table$ME_clusters <- as.numeric(ME_clusters.table$ME_clusters)
+
+
+ME_cluster_info <- merge(ME_clusters.table, ME_final[, c(\"ME\", \"len_micro_exon_seq_found\", \"U2_scores\")], by=\"ME\")
+ME_cluster_info <- data.table(ME_cluster_info)
+
+
+ME_cluster_info_by <- ME_cluster_info[ , .(asym = sum(len_micro_exon_seq_found %% 3),
+                    mean_U2_score = mean(U2_scores),
+                    total=.N
+                    ), by=\"ME_clusters\"  ]
+
+ME_cluster_info_by[, symetrical_fraction:=(total-asym)/total]
+
+
+ME_cluster_names <- merge(ME_cluster_names, ME_cluster_info_by, by.x=\"ME_cluster\", by.y=\"ME_clusters\")
+
+
+
+
+#ME_cluster_info <- merge(ME_cluster_info_by[, .(ME_clusters=unique(ME_clusters)), by=ME], ME_final[, c(\"ME\", \"len_micro_exon_seq_found\", \"U2_scores\")], by=\"ME\")
+
+
+ 
+
+
+
+
+
+
+Fig5.X.4 <- ggplot(ME_cluster_names) +
+  geom_text(aes(x=symetrical_fraction, y=mean_U2_score, label = ME_cluster.name, colour = ME_cluster.type ), ) +
+  xlab(\"In-frame microexon fraction\") +
+  ylab(\"Mean splicing strength\") +
+    theme(legend.position=\"top\")
+
+
+Fig5.X.4
+  
+```"

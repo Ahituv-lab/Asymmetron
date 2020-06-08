@@ -1,0 +1,26 @@
+"0","```r
+
+ME_clusters <- cutree(hc_rows, k = 24)
+
+PCA_loadings <- data.frame(loadings(result))
+PCA_loadings$ME <- row.names(PCA_loadings)
+
+
+PCA_loadings <- data.table(PCA_loadings)
+PCA_loadings[, `:=`(PC1=-PC1, PC2=-PC2)]
+
+
+PCA_loadings$ME_cluster <- ME_clusters[PCA_loadings$ME]
+
+
+PCA_loadings_stats <- PCA_loadings[ , .(PC1_mean=mean(PC1)) , by=\"ME_cluster\"]
+ME_cluster_loading_order <- PCA_loadings_stats[order(PC1_mean)]$ME_cluster
+
+PCA_loadings$ME_cluster <- factor(PCA_loadings$ME_cluster , levels=ME_cluster_loading_order)
+
+
+ggplot(PCA_loadings) +
+  geom_boxplot(aes(as.factor(ME_cluster) , PC1))
+
+
+```"

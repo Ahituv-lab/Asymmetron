@@ -1,0 +1,7 @@
+"0","```r
+ME_clusters.names <- data.table(ME_clusters)
+ME_clusters.names$ME <- names(ME_clusters)
+ME_clusters.names <- merge(ME_clusters.names,  ME_cluster_names[, c(\"ME_cluster\", \"ME_cluster.name\")],  by.x=\"ME_clusters\", by.y=\"ME_cluster\")
+
+
+```"

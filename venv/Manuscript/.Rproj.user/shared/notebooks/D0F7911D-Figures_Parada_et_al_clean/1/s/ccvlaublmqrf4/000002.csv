@@ -1,0 +1,15 @@
+"0","```r
+library(stringi)
+
+
+
+
+#mat <- stri_split_fixed(ME_cov_filtered$ME_coverages, ',', simplify=T)
+#mat <- `dim<-`(as.numeric(mat), dim(mat))  # convert to numeric and save dims
+#rowsum(mat, na.rm=T)
+
+#sum(mat, na.rm=T)
+
+
+#sapply(strsplit(as.character(ME_cov_filtered$ME_coverages), \",\", fixed=T), function(x) sum(as.numeric(x)))
+```"

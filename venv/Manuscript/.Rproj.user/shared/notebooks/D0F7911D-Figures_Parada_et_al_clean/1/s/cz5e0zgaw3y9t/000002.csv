@@ -1,0 +1,32 @@
+"0","```r
+
+TOTAL.ME_level <- rbind(
+ME_Tissues_clusters_PSI_non_neuronal_by_ME[ , .(ME, age.name=cluster, ME_cluster.name, PSI_mean) ], 
+ME_Tissues_clusters_PSI_neuronal_by_ME )
+
+TOTAL.cluster_level <-  rbind(
+ME_Tissues_clusters_PSI_neuronal_by_ME_cluster,
+ME_Tissues_clusters_PSI_non_neuronal_by_ME_cluster[ , .(age.name=cluster, ME_cluster.name,  name=\"Non neuronal\", PSI_mean) ] )
+
+
+TOTAL.cluster_level$name <- mapvalues(TOTAL.cluster_level$name,
+          from = c(\"forebrain\", \"midbrain\", \"hindbrain\", \"neural tube\", \"whole cortex\"),
+          to = c(\"Forebrain\", \"Midbrain\", \"Hindbrain\", \"Neural tube\", \"Whole cortex\") )
+
+
+TOTAL.cluster_level$name <- factor(TOTAL.cluster_level$name, levels=c(\"Non neuronal\", \"Forebrain\", \"Midbrain\", \"Hindbrain\", \"Neural tube\", \"Whole cortex\") )
+
+
+
+Fig5.A <- ggplot( ) +
+        geom_line(data= TOTAL.ME_level, aes(factor(age.name), PSI_mean, group=ME), colour=\"grey\", alpha=0.5) +
+        geom_line(data = TOTAL.cluster_level, aes(factor(age.name), PSI_mean, group=name, colour=name ), size=1.2 ) +
+        facet_grid( ME_cluster.name ~ .) +
+        labs(colour = \"Mean PSI by\") +
+        ylab(\"PSI\") +
+        xlab(\"\") +
+        theme(panel.background = element_rect(fill = 'white', colour = 'black')) +
+        theme(axis.text.x = element_text(angle = 90), legend.position = \"top\", legend.direction = \"horizontal\")
+
+Fig5.A
+```"

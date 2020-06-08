@@ -1,0 +1,30 @@
+"0","```r
+
+
+Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron[mgi_symbol %in% Pre_synaptic, Location:=\"Presynaptic\"]
+Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron[mgi_symbol %in% Post_synaptic, Location:=\"Postsynaptic\"]
+Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron[mgi_symbol %in% PrePost_synaptic, Location:=\"Both\"]
+
+
+
+ggplot()+
+  geom_point(data=Tasic_unpooled_pooled, aes(mean_DeltaPsi, mean_Probability), color=\"grey\") +  # Final version
+  geom_point(data=Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron, aes(mean_DeltaPsi, mean_Probability), color=\"black\") +
+  geom_text_repel(data = Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron[!is.na(Location)],
+                  aes(x=mean_DeltaPsi, y=mean_Probability, colour=Location), 
+                  nudge_y      = 3,
+                  direction    = \"x\",
+                  angle        = 90,
+                  vjust        = 1,
+                  segment.size = 0.2,
+                  label=Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron[!is.na(Location), mgi_symbol]) +
+  
+  ylim(0.5, 1.15) +
+  theme_bw() +
+  xlab(\"\") +
+  xlab(\"Mean delta PSI\") +
+  ylab(\"Mean probability\") +
+  scale_color_manual(values=c( \"darkgoldenrod\",  \"firebrick4\", \"forestgreen\")) +
+  theme(axis.text.x = element_text(angle = 90), legend.position = \"top\", legend.direction = \"horizontal\") +
+  theme(legend.position = \"none\")
+```"

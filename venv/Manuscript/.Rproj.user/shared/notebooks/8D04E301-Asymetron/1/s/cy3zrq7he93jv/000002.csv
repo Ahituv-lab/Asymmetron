@@ -1,0 +1,3 @@
+"0","TOTAL.structural <- rbind(L1_L2_structural_asymmetries, Alu_MIR_structural_asymmetries, Asymmetries_structural_output.txt)"
+"0","TOTAL.structural$Feature <- factor(TOTAL.structural$Feature, levels = c(  ""LINE"", ""L1"", ""L2"", ""SINE"", ""Alu"", ""MIR"", ""LTR""))"
+"0","TOTAL.structural[ , Type:=str_to_title(Type)]"

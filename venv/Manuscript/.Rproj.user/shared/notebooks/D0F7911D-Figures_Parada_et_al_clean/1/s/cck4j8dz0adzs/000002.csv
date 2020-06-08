@@ -1,0 +1,27 @@
+"0","```r
+
+
+
+Mouse_Zebra.IDs.cluster_names <- merge(Mouse_Zebra.IDs, ME_cluster_names[, c(\"ME_cluster.name\", \"ME_cluster.type\")], by=\"ME_cluster.name\")
+Mouse_Zebra_stats  <- Mouse_Zebra.IDs.cluster_names[ , .N , by=c(\"ME_cluster.type\", \"ensemble_zebra\", \"ensemble_mouse\")]
+
+Mouse_Zebra_stats[ , Type:=paste(ensemble_zebra, ensemble_mouse, sep = \"_\") ]
+
+Mouse_Zebra_stats$ME_cluster.type <- factor(Mouse_Zebra_stats$ME_cluster.type,  levels=Mouse_Zebra_stats[!ensemble_zebra  | !ensemble_mouse , sum(N), by=c(\"ME_cluster.type\")][order(V1), ME_cluster.type])
+
+  
+  
+
+Fig7.E <- ggplot(Mouse_Zebra_stats[!ensemble_zebra  | !ensemble_mouse]) +
+  geom_bar(aes(x=ME_cluster.type, y=N, fill=Type), stat = \"identity\", position=\"stack\"  ) + 
+  ylab(\"Number of microexons\") +
+  xlab(\"Microexon clusters\") + 
+   scale_fill_discrete(name = \"Type\", labels = c(\"Missing in both\", \"Missing in zebrafish\", \"Missing in mouse\")) +
+            theme(axis.text.x = element_text(angle = 90), legend.position = \"top\", legend.direction = \"horizontal\") +
+    theme_bw() + 
+  theme(axis.text.x = element_text(angle = 90))
+
+
+Fig7.E
+
+```"

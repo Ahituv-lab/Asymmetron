@@ -1,0 +1,15 @@
+"0","```r
+
+target_genes <- c(\"Gabrg2\", \"Nrxn1\", \"Nrxn3\", \"Ptprd\")
+
+ME_cov_filtered_tasic_primary_type[(mgi_symbol %in% target_genes) & (ME %in% Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron$exon_ID)]
+ME_cov_filtered_tasic_primary_type[is.na(PSI), `:=`(lower=NA, upper=NA) ]
+
+
+ggplot(ME_cov_filtered_tasic_primary_type[ mgi_symbol %in% target_genes & ME %in% Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron$exon_ID, ]  ) +
+  geom_pointrange(aes(x=primary_type, y=PSI, colour= broad_type, group=broad_type, ymin=lower, ymax=upper))+
+  facet_grid( paste0( mgi_symbol, ME) ~ . ) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0, vjust = 0.5)) +
+  theme(axis.text.x = element_text(angle = 90), legend.position = \"top\", legend.direction = \"horizontal\")
+```"

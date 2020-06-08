@@ -1,0 +1,78 @@
+"0","```r
+
+
+Biological_Process <- fread(\"../PPI/enrichment.Process.tsv\")
+Cellular_Component <- fread(\"../PPI/enrichment.Component.tsv\")
+GO_Reactome <- fread(\"../PPI/enrichment.RCTM.tsv\")
+
+
+nervous_system_development <- unlist(strsplit(Biological_Process[`term description`==\"nervous system development\"]$`matching proteins in your network (labels)`, \",\"))
+vesicle_mediated_transport <- unlist(strsplit(Biological_Process[`term description`==\"vesicle-mediated transport\"]$`matching proteins in your network (labels)`, \",\"))
+cytoskeleton_organization <- unlist(strsplit(Biological_Process[`term description`==\"cytoskeleton organization\"]$`matching proteins in your network (labels)`, \",\"))
+synapse_assembly <- unlist(strsplit(Biological_Process[`term description`==\"synapse assembly\"]$`matching proteins in your network (labels)`, \",\"))
+signal_transduction <- unlist(strsplit(Biological_Process[`term description`==\"signal transduction\"]$`matching proteins in your network (labels)`, \",\"))
+
+synapse <- unlist(strsplit(Cellular_Component[`term description`==\"synapse\"]$`matching proteins in your network (labels)`, \",\"))
+somatodendritic_compartment <- unlist(strsplit(Cellular_Component[`term description`==\"somatodendritic compartment\"]$`matching proteins in your network (labels)`, \",\"))
+postsynapse <- unlist(strsplit(Cellular_Component[`term description`==\"postsynapse\"]$`matching proteins in your network (labels)`, \",\"))
+presynapse <- unlist(strsplit(Cellular_Component[`term description`==\"presynapse\"]$`matching proteins in your network (labels)`, \",\"))
+growth_cone <- unlist(strsplit(Cellular_Component[`term description`==\"growth cone\"]$`matching proteins in your network (labels)`, \",\"))
+
+GO_Biological_Process <- rbind(
+Delta_HNMF_whippet_ME_age_diff_total_PPI[ mapped_gene %in% nervous_system_development, .(mapped_gene, exon_ID, diff_age, GO=var2str(nervous_system_development)) ],
+Delta_HNMF_whippet_ME_age_diff_total_PPI[ mapped_gene %in% vesicle_mediated_transport, .(mapped_gene, exon_ID, diff_age, GO=var2str(vesicle_mediated_transport)) ],
+Delta_HNMF_whippet_ME_age_diff_total_PPI[ mapped_gene %in% cytoskeleton_organization, .(mapped_gene, exon_ID, diff_age, GO=var2str(cytoskeleton_organization)) ],
+Delta_HNMF_whippet_ME_age_diff_total_PPI[ mapped_gene %in% synapse_assembly, .(mapped_gene, exon_ID, diff_age, GO=var2str(synapse_assembly)) ],
+Delta_HNMF_whippet_ME_age_diff_total_PPI[ mapped_gene %in% signal_transduction, .(mapped_gene, exon_ID, diff_age, GO=var2str(signal_transduction)) ] )
+
+GO_Cellular_Component <- rbind(
+Delta_HNMF_whippet_ME_age_diff_total_PPI[ mapped_gene %in% synapse, .(mapped_gene, exon_ID, diff_age, GO=var2str(synapse)) ],
+Delta_HNMF_whippet_ME_age_diff_total_PPI[ mapped_gene %in% somatodendritic_compartment, .(mapped_gene, exon_ID, diff_age, GO=var2str(somatodendritic_compartment)) ],
+Delta_HNMF_whippet_ME_age_diff_total_PPI[ mapped_gene %in% postsynapse, .(mapped_gene, exon_ID, diff_age, GO=var2str(postsynapse)) ],
+Delta_HNMF_whippet_ME_age_diff_total_PPI[ mapped_gene %in% presynapse, .(mapped_gene, exon_ID, diff_age, GO=var2str(presynapse)) ],
+Delta_HNMF_whippet_ME_age_diff_total_PPI[ mapped_gene %in% growth_cone, .(mapped_gene, exon_ID, diff_age, GO=var2str(growth_cone)) ] )
+
+
+
+
+GO_Biological_Process_stats <-  GO_Biological_Process[ , .(N=.N),  by=c(\"GO\", \"diff_age\")]
+GO_Biological_Process_stats[ , Total:=sum(N), by =\"GO\"]
+GO_Biological_Process_stats[, fraction:=N/Total ]
+diff_age_levels <- GO_Biological_Process_stats[ , .(mean=median(diff_age)), by=\"GO\"][order(-mean)]$GO
+GO_Biological_Process_stats$GO <- factor(GO_Biological_Process_stats$GO, levels= diff_age_levels)
+
+
+
+Sup_GO_time.A <- ggplot(GO_Biological_Process_stats) +
+  geom_tile(aes( diff_age, GO, fill = fraction)) +
+    geom_text(aes(diff_age, GO, label = N), color=\"white\") +
+  scale_fill_gradient(low=\"grey\", high=\"red\" )+
+  theme_bw()+
+  labs(fill = \"Gene fraction\") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0),
+    axis.title = element_text(colour = NA),
+    strip.text = element_text(hjust = 0.5))
+
+
+
+GO_Cellular_Component_stats <-  GO_Cellular_Component[ , .(N=.N),  by=c(\"GO\", \"diff_age\")]
+GO_Cellular_Component_stats[ , Total:=sum(N), by =\"GO\"]
+GO_Cellular_Component_stats[, fraction:=N/Total ]
+diff_age_levels <- GO_Cellular_Component_stats[ , .(mean=median(diff_age)), by=\"GO\"][order(-mean)]$GO
+GO_Cellular_Component_stats$GO <- factor(GO_Cellular_Component_stats$GO, levels= diff_age_levels)
+
+
+
+Sup_GO_time.B <- ggplot(GO_Cellular_Component_stats) +
+  geom_tile(aes( diff_age, GO, fill = fraction)) +
+  geom_text(aes(diff_age, GO, label = N), color=\"white\") +
+  scale_fill_gradient(low=\"grey\", high=\"red\" )+
+  theme_bw()+
+  labs(fill = \"Gene fraction\") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0),
+    axis.title = element_text(colour = NA),
+    strip.text = element_text(hjust = 0.5))
+
+
+
+```"

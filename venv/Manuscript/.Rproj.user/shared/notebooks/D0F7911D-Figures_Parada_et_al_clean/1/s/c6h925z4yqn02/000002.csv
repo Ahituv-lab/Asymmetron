@@ -1,0 +1,11 @@
+"0","```r
+Tissues_name <- as.character(metadata$Biosample.term.name)
+names(Tissues_name) <- as.character(metadata$File.accession)
+
+Tissues_age <- as.character(metadata$Biosample.Age)
+names(Tissues_age) <- as.character(metadata$File.accession)
+
+Tissue_date <- as.character(metadata$Experiment.date.released)
+names(Tissue_date) <- as.character(metadata$File.accession)
+
+```"

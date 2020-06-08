@@ -1,0 +1,29 @@
+"0","```r
+ME_clusters_PSI
+
+```"
+"1","                                          ME   FILE_NAME        PSI ME_clusters diff_age change_dir Total Diff_SKM
+     1:          chr10_+_101864522_101864547 ENCFF001RTD 0.02823905           6       NA         NA   638    FALSE
+     2:          chr10_+_101864522_101864547 ENCFF001RTN 0.02870317           6       NA         NA   638    FALSE
+     3:          chr10_+_101864522_101864547 ENCFF002EZU 0.00000000           6       NA         NA   638    FALSE
+     4:          chr10_+_101864522_101864547 ENCFF002EZW 0.00000000           6       NA         NA   638    FALSE
+     5:          chr10_+_101864522_101864547 ENCFF002EZY 0.00000000           6       NA         NA   638    FALSE
+    ---                                                                                                           
+751107: chrX_GL456233_random_+_329061_329089  SRR1805827 0.05555556           3       NA         NA   339    FALSE
+751108: chrX_GL456233_random_+_329061_329089  SRR1805828 0.00000000           3       NA         NA   339    FALSE
+751109: chrX_GL456233_random_+_329061_329089  SRR1805829 0.06250000           3       NA         NA   339    FALSE
+751110: chrX_GL456233_random_+_329061_329089  SRR1812033 0.02604021           3       NA         NA   339    FALSE
+751111: chrX_GL456233_random_+_329061_329089  SRR1812034 0.00000000           3       NA         NA   339    FALSE
+        Diff_Heart Diff_AG
+     1:      FALSE   FALSE
+     2:      FALSE   FALSE
+     3:      FALSE   FALSE
+     4:      FALSE   FALSE
+     5:      FALSE   FALSE
+    ---                   
+751107:      FALSE   FALSE
+751108:      FALSE   FALSE
+751109:      FALSE   FALSE
+751110:      FALSE   FALSE
+751111:      FALSE   FALSE
+"

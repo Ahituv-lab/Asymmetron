@@ -1,0 +1,91 @@
+"0","```r
+
+###Abstract
+
+
+Bulk_RNA_SEQ.Table <-  table(grepl(\"ENC\",  unique(ME_cov_filtered[, FILE_NAME])))
+
+Total_Bulk_RNA_seq <- sum(Bulk_RNA_SEQ.Table)
+Total_scRNA_seq <-nrow(tasic_metadata)
+
+Total_microexon.number <- length(ME_final[ , unique(ME)])
+#HNMF_microexons.number <- length(Delta_HNMF_whippet_ME_age_diff_total_PPI[ , unique(exon_ID)])
+
+
+
+diff_spliced.brain_dev <- length(unique(Delta_HNM_whippet_ME_age_diff_total$exon_ID , Delta_F_whippet_ME_age_diff_total$exon_ID))
+
+
+diff_spliced.brain_dev.novel <-  length(unique(Delta_HNM_whippet_ME_age_diff_total[ ! exon_ID %in% c(microexons_Vastdb, microexons_GENCODE) ,  exon_ID  ], Delta_F_whippet_ME_age_diff_total[ ! exon_ID %in% c(microexons_Vastdb, microexons_GENCODE) ,  exon_ID  ]))
+
+
+### Introduction
+
+Total_microexon.number.not_gencode <- length(ME_final[ !ME %in% microexons_GENCODE , unique(ME)])
+Total_microexon.number.not_gencode.percentage <- (Total_microexon.number.not_gencode / Total_microexon.number)*100
+
+
+diff_spliced.brain_dev.not_vastdb <-  length(unique(Delta_HNM_whippet_ME_age_diff_total[ ! exon_ID %in% c(microexons_Vastdb) ,  exon_ID  ], Delta_F_whippet_ME_age_diff_total[ ! exon_ID %in% c(microexons_Vastdb) ,  exon_ID  ]))
+
+
+diff_spliced.brain_dev.not_vastdb.percentage <- (diff_spliced.brain_dev.not_vastdb/diff_spliced.brain_dev)*100
+
+
+
+conserved_zebra <-  length(unique(Mouse_Zebra.IDs[ , ME.zebra]))
+
+
+conserved_zebra.not_ensembl <- length(unique(Mouse_Zebra.IDs[ensemble_zebra==FALSE, ME.zebra]))
+
+
+
+
+#Results 
+
+
+sym_percentage.neuronal_neuromuscular_muscular <- ME_cluster_names[ ME_cluster.type %in% c(\"Neuronal\", \"Neuro-Muscular\", \"Muscular\") , 100- (sum(asym)/sum(total))*100]
+
+
+Delta_HNM_whippet_ME_age_diff_total
+Delta_HNMF_whippet_ME_age_diff_total
+
+HNMF_microexons.not_vastdb.number <- nrow(Delta_HNMF_whippet_ME_age_diff_total_PPI[!exon_ID %in% microexons_Vastdb, ])
+HNMF_microexons.not_vastdb.percentage <- round((HNMF_microexons.not_vastdb.number/HNMF_microexons.number)*100, 2)
+
+
+Novel_gencode.number <- nrow(ME_final[ , .N, by=ME ][ !ME %in% microexons_GENCODE, ])
+Novel_gencode.percentage <- (Novel_gencode.number / Total_microexon.number) *100
+
+
+Novel_vastdb.number <- nrow(ME_final[ , .N, by=ME ][ !ME %in% microexons_Vastdb, ])
+Novel_vastdb.percentage <- (Novel_vastdb.number / Total_microexon.number) *100
+
+
+MHN_diff.whippet_ME <- length( unique(Delta_HNM_whippet[ abs(DeltaPsi)>=0.1 &  Probability >= 0.9 & exon_ID %in%  Delta_HNM_ME[ abs(DeltaPsi)>=0.1 &  Probability >= 0.9 ,  exon_ID ]   ,  exon_ID ]))
+F_diff.whippet_ME <- length( unique(Delta_F_whippet[ abs(DeltaPsi)>=0.1 &  Probability >= 0.9 & exon_ID %in%  Delta_F_ME[ abs(DeltaPsi)>=0.1 &  Probability >= 0.9 ,  exon_ID ]   ,  exon_ID ]))
+
+
+diff_heart <- nrow(Delta_Heart_whippet_ME[diff_high==TRUE, ])
+diff_SKM <- nrow(Delta_SKM_whippet_ME[diff_high==TRUE, ])
+diff_AG <- nrow(Delta_AG_whippet_ME[diff_high==TRUE, ])
+
+
+
+
+Delta_HNMF_whippet_ME_age_diff_total[ , type:=\"Annotated\"  ]
+Delta_HNMF_whippet_ME_age_diff_total[!exon_ID %in% microexons_Vastdb, type:=\"Missing in VastDB\"   ]
+Delta_HNMF_whippet_ME_age_diff_total[!exon_ID %in% microexons_GENCODE, type:=\"Missing in GENCODE\"   ]
+Delta_HNMF_whippet_ME_age_diff_total[!exon_ID %in% microexons_GENCODE & !exon_ID %in% microexons_Vastdb , type:=\"Novel\"   ]
+
+table(Delta_HNMF_whippet_ME_age_diff_total$type)
+ME_sizes <- ME_final.rep1$len_micro_exon_seq_found
+names(ME_sizes) <- ME_final.rep1$ME
+
+
+Delta_HNMF_whippet_ME_age_diff_total[ type==\"Novel\", .N , by=c(\"type\", \"ME_len\") ]
+
+
+
+
+Sig_GABAergic_Neuron_vs_Glutamatergic_Neuron[ sig_unpool==TRUE ,  ]
+```"

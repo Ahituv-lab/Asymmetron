@@ -1,0 +1,25 @@
+"0","```r
+
+neuronal_ME_HNMF  <- unique(rbind(Delta_HNM_whippet_ME_age_diff_total[, c(\"exon_ID\", \"Gene\")], Delta_F_whippet_ME_age_diff_total[, c(\"exon_ID\", \"Gene\")] ))
+
+
+
+
+neuronal_ME_HNMF[ , type:=\"Annotated\"  ]
+
+neuronal_ME_HNMF[!exon_ID %in% microexons_Vastdb, type:=\"Missing in VastDB\"   ]
+
+neuronal_ME_HNMF[!exon_ID %in% microexons_GENCODE, type:=\"Missing in GENCODE\"   ]
+
+neuronal_ME_HNMF[!exon_ID %in% microexons_GENCODE & !exon_ID %in% microexons_Vastdb , type:=\"Novel\"   ]
+
+
+
+
+neuronal_ME_HNMF_stats <- neuronal_ME_HNMF[ , .N , by=\"type\"]
+
+neuronal_ME_HNMF_stats[, Total:=sum(N)]
+
+neuronal_ME_HNMF_stats[, Percentage:=N*100/Total]
+
+```"

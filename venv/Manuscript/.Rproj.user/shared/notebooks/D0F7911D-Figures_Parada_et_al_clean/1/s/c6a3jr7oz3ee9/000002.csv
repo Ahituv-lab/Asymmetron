@@ -1,0 +1,7 @@
+"0","```r
+length(unique(Mouse_Zebra.IDs$ME.mouse))
+length(unique(Mouse_Zebra.IDs$ME.zebra))
+
+round((Mouse_Zebra_stats[ensemble_mouse==FALSE, sum(N) ] * 100) / length(unique(Mouse_Zebra.IDs$ME.mouse)), 1)
+round((Mouse_Zebra_stats[ensemble_zebra==FALSE, sum(N) ] * 100 ) / length(unique(Mouse_Zebra.IDs$ME.zebra)), 1)
+```"

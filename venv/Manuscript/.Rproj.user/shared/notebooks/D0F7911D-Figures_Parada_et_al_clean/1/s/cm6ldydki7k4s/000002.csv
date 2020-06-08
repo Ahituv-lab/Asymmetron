@@ -1,0 +1,75 @@
+"0","```r
+Zebra.16Mo_vs_4Mo.TOTAL <- diff_zebra(\"../../Zebrafish/Final_Report/Whippet/Delta/16Mo_vs_4Mo-TOTAL.diff.microexons\",
+                                \"../../Zebrafish/Final_Report/Whippet/Delta/16Mo_vs_4Mo-TOTAL.diff.ME.microexons\", 
+                                \"16Mo_vs_4Mo-TOTAL\")
+
+
+
+Zebra.20Mo_vs_16Mo.ZT16 <- diff_zebra(\"../../Zebrafish/Final_Report/Whippet/Delta/20Mo_vs_16Mo-ZT16.diff.microexons\",
+                                \"../../Zebrafish/Final_Report/Whippet/Delta/20Mo_vs_16Mo-ZT16.diff.ME.microexons\", 
+                                \"20Mo_vs_16Mo-ZT16\")
+
+
+Zebra.20Mo_vs_4M.ZT16 <- diff_zebra(\"../../Zebrafish/Final_Report/Whippet/Delta/20Mo_vs_4M-ZT16.diff.microexons\",
+                                \"../../Zebrafish/Final_Report/Whippet/Delta/20Mo_vs_4M-ZT16.diff.ME.microexons\", 
+                                \"20Mo_vs_4M-ZT16\")
+
+
+
+Zebra.16Mo_vs_4Mo.ZT16 <- diff_zebra(\"../../Zebrafish/Final_Report/Whippet/Delta/16Mo_vs_4Mo-ZT16.diff.microexons\",
+                                \"../../Zebrafish/Final_Report/Whippet/Delta/16Mo_vs_4Mo-ZT16.diff.ME.microexons\", 
+                                \"16Mo_vs_4Mo-ZT16\")
+
+
+
+Zebra.20Mo_vs_16Mo.ZT4 <- diff_zebra(\"../../Zebrafish/Final_Report/Whippet/Delta/20Mo_vs_16Mo-ZT4.diff.microexons\",
+                                \"../../Zebrafish/Final_Report/Whippet/Delta/20Mo_vs_16Mo-ZT4.diff.ME.microexons\", 
+                                \"20Mo_vs_16Mo-ZT4\")
+
+
+Zebra.20Mo_vs_4M.ZT4 <- diff_zebra(\"../../Zebrafish/Final_Report/Whippet/Delta/20Mo_vs_4M-ZT4.diff.microexons\",
+                                \"../../Zebrafish/Final_Report/Whippet/Delta/20Mo_vs_4M-ZT4.diff.ME.microexons\", 
+                                \"20Mo_vs_4M-ZT4\")
+
+
+
+Zebra.16Mo_vs_4Mo.ZT4 <- diff_zebra(\"../../Zebrafish/Final_Report/Whippet/Delta/16Mo_vs_4Mo-ZT4.diff.microexons\",
+                                \"../../Zebrafish/Final_Report/Whippet/Delta/16Mo_vs_4Mo-ZT4.diff.ME.microexons\", 
+                                \"16Mo_vs_4Mo-ZT4\")
+
+
+
+
+Zebra.ZT16_vs_ZT4.20M <- diff_zebra(\"../../Zebrafish/Final_Report/Whippet/Delta/ZT16_vs_ZT4-20Mo.diff.microexons\",
+                                \"../../Zebrafish/Final_Report/Whippet/Delta/ZT16_vs_ZT4-20Mo.diff.ME.microexons\", 
+                                \"ZT16_vs_ZT4-20Mo\")
+
+Zebra.ZT16_vs_ZT4.16M <- diff_zebra(\"../../Zebrafish/Final_Report/Whippet/Delta/ZT16_vs_ZT4-16Mo.diff.microexons\",
+                                \"../../Zebrafish/Final_Report/Whippet/Delta/ZT16_vs_ZT4-16Mo.diff.ME.microexons\", 
+                                \"ZT16_vs_ZT4-16Mo\")
+
+Zebra.ZT16_vs_ZT4.4M <- diff_zebra(\"../../Zebrafish/Final_Report/Whippet/Delta/ZT16_vs_ZT4-4Mo.diff.microexons\",
+                                \"../../Zebrafish/Final_Report/Whippet/Delta/ZT16_vs_ZT4-4Mo.diff.ME.microexons\", 
+                                \"ZT16_vs_ZT4-4Mo\")
+
+
+
+
+Zebra.TOTAL_diff <- rbind(
+Zebra.20Mo_vs_16Mo.ZT16[diff!=\"NA\"],
+Zebra.20Mo_vs_4M.ZT16[diff!=\"NA\"],
+Zebra.16Mo_vs_4Mo.ZT16[diff!=\"NA\"],
+Zebra.20Mo_vs_16Mo.ZT4[diff!=\"NA\"],
+Zebra.20Mo_vs_4M.ZT4[diff!=\"NA\"],
+Zebra.16Mo_vs_4Mo.ZT4[diff!=\"NA\"],
+Zebra.ZT16_vs_ZT4.20M[diff!=\"NA\"],
+Zebra.ZT16_vs_ZT4.16M[diff!=\"NA\"],
+Zebra.ZT16_vs_ZT4.4M[diff!=\"NA\"] )
+
+
+Zebra.TOTAL_diff <- Zebra.TOTAL_diff[ , lapply(.SD, paste0, collapse=\",\") , by=\"exon_ID\"]
+
+
+Mouse_Zebra.IDs[ME.zebra %in% Zebra.TOTAL_diff$exon_ID]
+
+```"

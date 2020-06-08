@@ -1,0 +1,19 @@
+"0","```r
+#Tissue_clusters <- cutree(hc_cols, k = 18)
+#Tissue_clusters <- cbind(Tissue_clusters, Tissues_name[names(Tissue_clusters)], Tissues_age[names(Tissue_clusters)], Tissue_date[names(Tissue_clusters)]) 
+
+#colnames(Tissue_clusters) <- c(\"cluster\", \"name\", \"age\", \"date\")
+
+#Tissue_clusters <- data.frame(Tissue_clusters)
+
+#Tissue_clusters_sum[which(grepl(\"hindbrain|midbrain|forebrain|neural\ tube\", Tissue_clusters_sum$name)), ]
+
+#Tissue_clusters$name <- factor(Tissue_clusters$name, level=c( \"skeletal muscle tissue\", \"heart\", \"thymus\", \"spleen\", \"liver\",  \"adrenal gland\", \"intestine\", \"stomach\", \"lung\",  \"kidney\", \"bladder\", \"limb\", \"embryonic facial prominence\", \"forebrain\", \"hindbrain\", \"midbrain\", \"neural tube\", \"whole cortex\"))
+
+
+#Tissue_clusters$age <- factor(Tissue_clusters$age, levels = as.character(sort(as.numeric(levels(Tissue_clusters$age)))))
+
+
+
+
+```"

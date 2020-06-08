@@ -1,0 +1,13 @@
+"0","```r
+
+#ref Slc4a10 https://www.frontiersin.org/articles/10.3389/fncel.2015.00223/full
+#ref Ank3 https://www.sciencedirect.com/science/article/pii/S0896627314009088
+#ref KCNMA1 https://www.sciencedirect.com/science/article/pii/S0896627313001852
+#ref Kif3a https://www.sciencedirect.com/science/article/pii/S089662730300062X
+# ref DLGAP https://molecularbrain.biomedcentral.com/articles/10.1186/s13041-017-0324-9
+
+
+Pre_synaptic <- c( \"Ptprd\" , \"Ppfia2\", \"Dlgap1\", \"Gabrg2\", \"Kcnma1\", \"Kif3a\", \"Cadps\") 
+Post_synaptic <- c( \"Nrxn3\" , \"Nrxn1\")
+PrePost_synaptic <- c(\"Ank3\",\"Slc4a10\")
+```"

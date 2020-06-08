@@ -1,0 +1,75 @@
+"0","```r
+
+
+
+
+ME_clusters_table <- data.frame(ME_clusters)
+
+ME_clusters_table$ME <- row.names(ME_clusters_table)
+ME_clusters_table <- data.table(ME_clusters_table)
+
+
+ME_clusters_PSI <-  data.table(merge(Tissue_PSI_matrix_melt_ppca, ME_clusters_table , by=c(\"ME\")))
+
+
+#ME_clusters_PSI <- ME_clusters_PSI[, c(\"ME\", \"FILE_NAME\", \"ME_clusters\", \"PSI\")]
+
+
+ME_Tissues_clusters_PSI<- merge(ME_clusters_PSI, PCA, by.x=\"FILE_NAME\", by.y=\"File.accession\")
+
+ME_Tissues_clusters_PSI[, Tissue_clusters:=cluster]
+
+PCA_loadings_stats$ME_cluster <- factor(PCA_loadings_stats$ME_cluster)
+ME_Tissues_clusters_PSI$ME_clusters <- factor(ME_Tissues_clusters_PSI$ME_clusters)
+
+ME_Tissues_clusters_PSI <- merge(ME_Tissues_clusters_PSI, PCA_loadings_stats, by.x=\"ME_clusters\", by.y=\"ME_cluster\" )
+
+ME_Tissues_clusters_PSI$Tissue_clusters <- factor(ME_Tissues_clusters_PSI$Tissue_clusters, levels=PCA[, mean(PC1), by=\"cluster\" ][order(V1)]$cluster) 
+
+
+
+sub_ME_Tissues_clusters_PSI <- ME_Tissues_clusters_PSI[abs(PC1_mean)>0, ]
+sub_ME_Tissues_clusters_PSI <- data.table(sub_ME_Tissues_clusters_PSI)
+sub_ME_Tissues_clusters_PSI$ME_clusters <- factor(sub_ME_Tissues_clusters_PSI$ME_clusters , levels=ME_cluster_loading_order )
+
+
+sub_ME_Tissues_clusters_PSI_aggregated <-  sub_ME_Tissues_clusters_PSI[, list(PSI=mean(PSI, na.rm = TRUE)), by=list(ME, ME_clusters,  Tissue_clusters) ]
+sub_ME_Tissues_clusters_PSI_aggregated_mean <-  sub_ME_Tissues_clusters_PSI_aggregated[, list(PSI= mean(PSI, na.rm=TRUE) ), by=list(ME_clusters,  Tissue_clusters) ]
+
+
+ggplot( ) +
+        geom_line(data= sub_ME_Tissues_clusters_PSI_aggregated, aes(factor(Tissue_clusters), PSI, group=ME), colour=\"grey\") +
+        geom_line(data = sub_ME_Tissues_clusters_PSI_aggregated_mean, aes(factor(Tissue_clusters), PSI, group=ME_clusters),  colour=\"red\" ) +
+        facet_grid( ME_clusters ~ .) +
+        xlab(\"Sample clusters (sorted by PC1)\") +
+        theme(panel.background = element_rect(fill = 'white', colour = 'black'))
+
+
+col1 <- c(\"E1\", \"E2\", \"E3\", \"E4\", \"E5\", \"E6\", \"I1\", \"I2\", \"I3\", \"M1\", \"M2\", \"M3\")
+col2 <- c(\"N1\", \"N2\", \"N3\", \"N4\", \"NM1\", \"NM2\", \"NM3\", \"NN1\", \"O1\", \"O2\", \"WN1\", \"WN2\")
+
+
+sub_ME_Tissues_clusters_PSI_aggregated$ME_cluster <- as.numeric(as.character(sub_ME_Tissues_clusters_PSI_aggregated$ME_clusters)) 
+sub_ME_Tissues_clusters_PSI_aggregated_mean$ME_cluster <- as.numeric(as.character(sub_ME_Tissues_clusters_PSI_aggregated_mean$ME_clusters)) 
+
+plot_grid(
+ggplot( ) +
+        geom_line(data= merge(sub_ME_Tissues_clusters_PSI_aggregated, ME_cluster_names, by.x=\"ME_cluster\",  by.y=\"ME_cluster\")[ME_cluster.name %in% col1] , aes(factor(Tissue_clusters), PSI, group=ME), colour=\"grey\") +
+        geom_line(data = merge(sub_ME_Tissues_clusters_PSI_aggregated_mean, ME_cluster_names, by.x=\"ME_cluster\",  by.y=\"ME_cluster\")[ME_cluster.name %in% col1], aes(factor(Tissue_clusters), PSI, group=ME_clusters),  colour=\"red\" ) +
+        facet_grid( ME_cluster.name ~ .) +
+        xlab(\"Sample clusters (sorted by PC1)\") +
+        theme(panel.background = element_rect(fill = 'white', colour = 'black')),
+
+ggplot( ) +
+        geom_line(data= merge(sub_ME_Tissues_clusters_PSI_aggregated, ME_cluster_names, by.x=\"ME_cluster\",  by.y=\"ME_cluster\")[ME_cluster.name %in% col2] , aes(factor(Tissue_clusters), PSI, group=ME), colour=\"grey\") +
+        geom_line(data = merge(sub_ME_Tissues_clusters_PSI_aggregated_mean, ME_cluster_names, by.x=\"ME_cluster\",  by.y=\"ME_cluster\")[ME_cluster.name %in% col2], aes(factor(Tissue_clusters), PSI, group=ME_clusters),  colour=\"red\" ) +
+        facet_grid( ME_cluster.name ~ .) +
+        xlab(\"Sample clusters (sorted by PC1)\") +
+        theme(panel.background = element_rect(fill = 'white', colour = 'black'))
+
+)
+
+
+
+
+```"
