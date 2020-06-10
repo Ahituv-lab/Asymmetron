@@ -34,7 +34,7 @@ It encompasses four functions:
 	--orientation: Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations.
 	--bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
 	--threshold: Threshold of p-value of consecutive patterns to save in new BED file.
-        --plots: Returns the associated plots of the asymmetries for each file.
+    --plots: Returns the associated plots of the asymmetries for each file.
 #### Outputs:
         -Table of strand asymmetries for all patterns for each motif.
         -BED files with the statistically significant consecutive regions. One file for each pattern for each file inputted.
