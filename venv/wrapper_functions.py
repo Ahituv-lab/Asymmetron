@@ -136,11 +136,14 @@ def check_valid_pattern(value):
     Returns the pattern.
     """
     chars = set(value)
-    if not chars.issubset(("+", "-", ",", " ", ".")):
-        msg = "{} is an invalid pattern. Please enter a pattern consisting of + or - only".format(value)
+    if not chars.issubset(("+", "-", ",", " ", ".")) and value != "alt":
+        msg = "{} is an invalid pattern. Please enter a pattern consisting of + or - only. Insert \"alt\" for " \
+              "alternating patterns " \
+              "".format(value)
         raise argparse.ArgumentTypeError(msg)
     return value
 
+print(check_valid_pattern("alt"))
 
 def check_valid_probability(value):
     """

@@ -445,8 +445,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     probability["+"]=total_plus/float(total_plus+total_minus)
     probability["-"] = 1-probability["+"]
     probability_pattern = np.prod([probability[k] for k in list(pattern)])
-    consecutive_threshold= next(x for x, val in enumerate(range(len(DataL))) if (probability_pattern**x)*number_of_tests < threshold)
-
+    consecutive_threshold= next(x for x in range(len(DataL)) if (probability_pattern**x)*number_of_tests < threshold)
 
     # Filter for number of consecutive occurences that meet the threshold criterion and are within the distance window
     DataL_significant = []
@@ -459,6 +458,10 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         distance = max(0, int(DataL[index][1]) - int(DataL[index -1][2]))
         if occs[i]-occs[i-1] == n and (distance >= min_distance and distance < max_distance):
             counter += 1
+            p_value = (probability_pattern**counter)*number_of_tests
+            print("p_value", p_value)
+            for i in range(index,index+n):
+                DataL[i].append(p_value)
             DataL_temp.extend(DataL[index:index+n])
         else:
             consecutiveL[counter]+=1
@@ -509,7 +512,7 @@ if __name__ == "__main__":
         DataL = []
         for line in f.readlines():
             DataL.append(line.strip().split("\t"))
-    out = extract_pattern(DataL, ".", 1, 4, 2)
+    out = extract_pattern(DataL, "+-", 1, 4, 0.5)
     print("The following dictionary includes the number of consecutive appearances of the pattern, e.g. when looking "
           "for +- in +-+-+---+- the result should be {1:1}, {3:1}", out[0])
     print("The distances between consecutive appearances of the pattern are: ", out[1] )
