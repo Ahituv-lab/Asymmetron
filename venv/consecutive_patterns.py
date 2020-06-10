@@ -147,7 +147,7 @@ def consecutive_patterns_parser():
     parser.add_argument("-b", "--bins", help="Optional argument. Split output data and graphs in the specified number of bins. Default = 1", type=int, default=1)  # Needs rephrasing
     parser.add_argument("-p", "--plots", help="Optional flag. Display output plots", action="store_true")
     parser.add_argument("-o", "--orientation", help="Optional argument. Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations. Can enter multiple paths as a comma separated string, e.g. \"path1, path2\"")
-    parser.add_argument("-t", "--threshold", help="Optional argument. Threshold of p-value of consecutive patterns to save in new BED file.", type=float, default=0.05)
+    parser.add_argument("-t", "--threshold", help="Optional argument. Threshold of p-value of consecutive patterns to save in new BED file.", type=wf.check_valid_probability, default=0.05)
     args = parser.parse_args()
     return args
 
