@@ -6,6 +6,8 @@ Copyright 2020. All rights reserved.
 
 ## Installation
 
+conda create --name asymmetron pybedtools python=3.5 seaborn
+
 ## Introduction
 DNA strand specificity can have a major effect on numerous biological functions, including DNA replication, mRNA transcription and transcription factor binding. The directionality of these processes results in the inhomogeneous distribution of genomic sequences relative to the two complementary DNA strands. By studying systematically strand asymmetries we can identify novel DNA elements, improve our comprehension regarding their interactions with one another and advance our understanding regarding the contribution of underlying processes in mutagenesis and evolution. To date, there is no versatile tool to perform analysis of strand asymmetries across biological problems. 
 
