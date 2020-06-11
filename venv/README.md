@@ -12,7 +12,7 @@ Copyright 2020. All rights reserved.
 
 2.- Create a conda virtual enviroment with the necesary dependencies 
 
-	conda create --name asymmetron pybedtools python=3.5 seaborn
+	conda create --name asymmetron pybedtools python=3.5 seaborn numpy
 
 3.- Activate virtual enviroment
 	
