@@ -5,10 +5,16 @@
 Copyright 2020. All rights reserved.
 
 ## Installation
-	
+
+1.- Clone github repository
+
 	git clone https://github.com/Ahituv-lab/Asymmetron
-	
+
+2.- Create a conda virtual enviroment with the necesary dependencies 
+
 	conda create --name asymmetron pybedtools python=3.5 seaborn
+
+3.- Activate virtual enviroment
 	
 	conda activate asymmetron
 
