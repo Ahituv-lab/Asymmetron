@@ -150,7 +150,6 @@ def overlap(path1, path2):
     DataL1 = BedTool(path1).sort()
     DataL2 = BedTool(path2).sort()
     overlap = DataL1.intersect(DataL2, wao=True)
-    print(overlap)
     Overlap_df = overlap.to_dataframe()
     Strand1 = list(Overlap_df.iloc[:, 5])
     Strand2 = list(Overlap_df.iloc[:, 11])
@@ -180,7 +179,7 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
 
     closest_df = closest.to_dataframe()
     Strand1 = list(closest_df.iloc[:, 5])
-    Strand2 = list(closest_df.iloc[:, 10])
+    Strand2 = list(closest_df.iloc[:, 11])
     Distance = [abs(i) for i in list(closest_df.iloc[:, -1])]
     Distance, Strand1, Strand2 = zip(
         *((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance, Strand1, Strand2) if
