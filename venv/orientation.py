@@ -7,11 +7,10 @@ def fun4(motif_no_annotation, motif_annotation):
     """
     This function generates the annotated file and saves it as an output"
     """
-    print(motif_annotation, motif_no_annotation)
     for path in motif_no_annotation:
         for path2 in motif_annotation:
             Annotation_data=functions.strand_annotate_third_BED_overlap(path,path2)
-            path_out = "ASYMMETRON"+path+"_ANNOTATED_"+path2
+            path_out = "asymmetron_"+path.split("/")[-1]+"_ANNOTATED_"+path2.split("/")[-1]
             with open(path_out, "w") as f:
                 for i in Annotation_data:
                     f.write('\t'.join([str(x) for x in i])+'\n')

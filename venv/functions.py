@@ -127,7 +127,7 @@ def strand_annotate_third_BED_overlap(unnotated_path, annotated_path):
           zip(Chromosome, Start, End, ID, Strand) if strand in ["+", "-"]))
     DataL = [];
     for i in range(len(Chromosome)):
-        DataL.append([Chromosome[i], Start[i], End[i], ID[i], Strand[i]])
+        DataL.append([Chromosome[i], Start[i], End[i], ID[i],".", Strand[i]])
     return DataL
 
 
