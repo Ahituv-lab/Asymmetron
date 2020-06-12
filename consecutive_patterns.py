@@ -69,7 +69,7 @@ def fun1(args):
                 consecutive_control = []
                 times_found_control = []
 
-            if plots == True:
+            if plots:
                 # Plot number of consecutive occurrences of the pattern
                 consecutive_total = list(consecutive)
                 times_found_total = list(times_found)
@@ -79,10 +79,10 @@ def fun1(args):
 
                 print(consecutive_control_total, consecutive_total)
                 if consecutive_control_total != [] and consecutive_total != []:
-                    max_consecutive = max(max(consecutive_control_total), max(consecutive_total));
-                elif consecutive_total != []:
-                    max_consecutive = max(consecutive_total);
-                elif consecutive_control_total != []:
+                    max_consecutive = max(max(consecutive_control_total), max(consecutive_total))
+                elif consecutive_total:
+                    max_consecutive = max(consecutive_total)
+                elif consecutive_control_total:
                     max_consecutive = max(consecutive_control_total)
                 else:
                     max_consecutive = 0;
@@ -112,7 +112,7 @@ def fun1(args):
                                                                      str(patterns[i])))
 
                 # We want to show biases in distances of consecutive
-                occsL_filtered = [];
+                occsL_filtered = []
                 occs_controlL_filtered = []
                 for occ in occsL[i]:
                     if min_distance <= occ <= max_distance:
