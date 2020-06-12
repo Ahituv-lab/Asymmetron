@@ -18,8 +18,8 @@ def size(path):
         return Sizes
 
 # Genic bins (We use 10 bins here)
-Data_plus=reader("gencode.v33.annotation.bed.protein_coding.formatted.plus")
-Data_minus=reader("gencode.v33.annotation.bed.protein_coding.formatted.minus")
+Data_plus=reader("gencode.v33.annotation.bed.genes_protein_coding.formatted.plus")
+Data_minus=reader("gencode.v33.annotation.bed.genes_protein_coding.formatted.minus")
 bins=10
 for binned in range(1,bins+1):
         datafile1=open("gencode.v33.annotation.bed.protein_coding.formatted_bin_"+str(binned)+".txt","w")
@@ -33,7 +33,7 @@ for binned in range(1,bins+1):
                 size_bin = size /bins
                 start_bin = start + (binned-1)*size_bin
                 end_bin = start + (binned-1)*size_bin + size_bin
-                datafile1.write(chrom+'\t'+str(start_bin)+'\t'+str(end_bin)+'\t'+str(size)+'\t'+str(v[4])+'\n')
+                datafile1.write(chrom+'\t'+str(start_bin)+'\t'+str(end_bin)+'\t'+str(size)+'\t'+"."+'\t'+str(v[5])+'\n')
         
 	#For minus oriented genes
         for v in Data_minus:
@@ -44,7 +44,7 @@ for binned in range(1,bins+1):
                 size_bin = size /bins
                 start_bin = start - (binned-1)*size_bin
                 end_bin = start - (binned-1)*size_bin - size_bin
-                datafile1.write(chrom+'\t'+str(end_bin)+'\t'+str(start_bin)+'\t'+str(size)+'\t'+str(v[4])+'\n')
+                datafile1.write(chrom+'\t'+str(end_bin)+'\t'+str(start_bin)+'\t'+str(size)+'\t'+"."+'\t'+str(v[5])+'\n')
 datafile1.close()
 
 # Upstream 1kB
@@ -59,7 +59,7 @@ for v in Data_plus:
                 start_bin = start + (binned-1)*size_bin
                 end_bin = start + (binned-1)*size_bin + size_bin
                 if start-1000>0:
-                        datafile1.write(chrom+'\t'+str(start-1000)+'\t'+str(start)+'\t'+str(size)+'\t'+str(v[4])+'\n')
+                        datafile1.write(chrom+'\t'+str(start-1000)+'\t'+str(start)+'\t'+str(size)+'\t'+"."+'\t'+str(v[5])+'\n')
 
 # For minus oriented genes
 for v in Data_minus:
@@ -70,7 +70,7 @@ for v in Data_minus:
                 size_bin = size /bins
                 start_bin = start - (binned-1)*size_bin
                 end_bin = start - (binned-1)*size_bin - size_bin
-                datafile1.write(chrom+'\t'+str(end)+'\t'+str(end+1000)+'\t'+str(size)+'\t'+str(v[4])+'\n')
+                datafile1.write(chrom+'\t'+str(end)+'\t'+str(end+1000)+'\t'+str(size)+'\t'+"."+'\t'+str(v[5])+'\n')
 datafile1.close()
 
 
@@ -85,7 +85,7 @@ for v in Data_plus:
                 size_bin = size /bins
                 start_bin = start + (binned-1)*size_bin
                 end_bin = start + (binned-1)*size_bin + size_bin
-                datafile1.write(chrom+'\t'+str(end)+'\t'+str(end+1000)+'\t'+str(size)+'\t'+str(v[4])+'\n')
+                datafile1.write(chrom+'\t'+str(end)+'\t'+str(end+1000)+'\t'+str(size)+'\t'+"."+'\t'+str(v[5])+'\n')
 
 # For minus oriented genes
 for v in Data_minus:
@@ -97,6 +97,6 @@ for v in Data_minus:
                 start_bin = start - (binned-1)*size_bin
                 end_bin = start - (binned-1)*size_bin - size_bin
                 if start-1000>0:
-                        datafile1.write(chrom+'\t'+str(start-1000)+'\t'+str(start)+'\t'+str(size)+'\t'+str(v[4])+'\n')
+                        datafile1.write(chrom+'\t'+str(start-1000)+'\t'+str(start)+'\t'+str(size)+'\t'+"."+'\t'+str(v[5])+'\n')
 datafile1.close()
 
