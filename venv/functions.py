@@ -32,7 +32,7 @@ def read_BED(path, last_col=False):
         Data = [];
         with open(path) as f:
             for line in f:
-                Data.append(line.strip().split()[:5])
+                Data.append(line.strip().split()[:6])
         return Data
 
     elif last_col == True:
@@ -40,28 +40,11 @@ def read_BED(path, last_col=False):
         Score = [];
         with open(path) as f:
             for line in f:
-                Data.append(line.strip().split()[:5])
+                Data.append(line.strip().split()[:6])
                 Score.append(float(line.strip().split()[-1]))
         return Data, Score
     else:
         print("ERROR")
-
-
-def readVCFtoBED(path):
-    """
-    This function converts a VCF file to BED
-    Not important, just for compatibility with multiple input types
-    """
-    DataBED = [];
-    with open(path)as f:
-        for line in f:
-            if line[0] == "#":
-                var = line.strip().split()
-                chrom = "chr" + var[0].replace("chr", "").replace("Chr", "").replace("CHR", "")
-                pos = int(var[1])  # VCF is 0-based coordinate system, BED is 1-based coordinate system
-                ID = var[2]
-                DataBED.append([chrom, pos - 1, pos, ID])
-    return DataBED
 
 
 def binner(min_size, max_size, bin_no):
@@ -159,8 +142,8 @@ def overlap(path1, path2):
     DataL2 = BedTool(path2).sort()
     overlap = DataL1.intersect(DataL2, wao=True)
     Overlap_df = overlap.to_dataframe()
-    Strand1 = list(Overlap_df.iloc[:, 4])
-    Strand2 = list(Overlap_df.iloc[:, 9])
+    Strand1 = list(Overlap_df.iloc[:, 5])
+    Strand2 = list(Overlap_df.iloc[:, 10])
     p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = orientation(Strand1, Strand2)
     return p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent
 
@@ -172,7 +155,7 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
        Then calculates asymmetry through orientation function for proximal pairs
        # the flags it uses from here https://bedtools.readthedocs.io/en/latest/content/tools/closest.html
        if bins==True then return not the counts but the lists of counts to bin them
-       """
+    """
     # Finds the occurrences within the proximity limits and saves their pairwise orientation.
     DataL1 = BedTool(path1).sort()
     DataL2 = BedTool(path2).sort()
@@ -186,8 +169,8 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
         closest = DataL1.closest(DataL2, D='ref')
 
     closest_df = closest.to_dataframe()
-    Strand1 = list(closest_df.iloc[:, 4])
-    Strand2 = list(closest_df.iloc[:, 9])
+    Strand1 = list(closest_df.iloc[:, 5])
+    Strand2 = list(closest_df.iloc[:, 10])
     Distance = [abs(i) for i in list(closest_df.iloc[:, -1])]
     Distance, Strand1, Strand2 = zip(
         *((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance, Strand1, Strand2) if
@@ -391,12 +374,13 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     :param threshold:
     :return: A list of all occurences of the pattern meeting the minimum distance requirements
     """
+    DataL=[list(line) for line in DataL]
     n = len(pattern)
 
     # Create a string with all signs (5th column in the sorted BED file)
     signs = ""
     for line in DataL:
-        signs += line[4]
+        signs += line[5]
 
     # Calculate alternating pattern
     if pattern == ".":
@@ -406,7 +390,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         counter = 0
         for i in range(1, len(DataL)):
             distance = max(0, int(DataL[i][1]) - int(DataL[i-1][2]))
-            if DataL[i][4] != DataL[i -1][4] and (distance >= min_distance and distance < max_distance):
+            if DataL[i][5] != DataL[i -1][5] and (distance >= min_distance and distance < max_distance):
                 counter += 1
                 DataL_temp.append(DataL[i])
             else:
@@ -459,7 +443,6 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         if occs[i]-occs[i-1] == n and (distance >= min_distance and distance < max_distance):
             counter += 1
             p_value = (probability_pattern**counter)*number_of_tests
-            print("p_value", p_value)
             for i in range(index,index+n):
                 DataL[i].append(p_value)
             DataL_temp.extend(DataL[index:index+n])
@@ -490,7 +473,7 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     DataL = list(BedTool(path,False).sort())
 
     # Here we want to shuffle the strand column
-    ColL = [k[4] for k in DataL]
+    ColL = [k[5] for k in DataL]
     shuffle(ColL)
     DataL_random=[]
     for i in range(len(DataL)):
@@ -512,7 +495,7 @@ if __name__ == "__main__":
         DataL = []
         for line in f.readlines():
             DataL.append(line.strip().split("\t"))
-    out = extract_pattern(DataL, "+-", 1, 4, 0.5)
+    out = extract_pattern(DataL, "+-", 1, 5, 0.5)
     print("The following dictionary includes the number of consecutive appearances of the pattern, e.g. when looking "
           "for +- in +-+-+---+- the result should be {1:1}, {3:1}", out[0])
     print("The distances between consecutive appearances of the pattern are: ", out[1] )
