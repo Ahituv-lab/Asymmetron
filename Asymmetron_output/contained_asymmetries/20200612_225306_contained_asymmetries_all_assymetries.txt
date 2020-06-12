@@ -1,2 +1,0 @@
-Feature_1	Feature_2	plus_plus	minus_minus	plus_minus	minus_plus	p_value_same_opposite	p-value_same_opposite_Bonferoni_corrected	Ratio_same_opposite	p_value_divergent_convergent	p_value_divergent_convergent Bonferoni corrected	Ratio divergent convergent
-gencode.v33.annotation.bed.protein_coding_1k_lines	All_G4.bed	2816	2777	2837	2810	0.6171396874642601	0.6171396874642601	0.4975978647686833	0.7293530655710263	0.7293530655710263	0.5023906499026032
