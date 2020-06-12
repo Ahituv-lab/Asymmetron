@@ -70,9 +70,9 @@ def separate_on_score(path_score, path, number_of_bins,number_of_files,expected_
     StepsL = binner(min(ScoreL), max(ScoreL), number_of_bins)
 
     # Separates the DataL based on the ScoreL bins intro groups.
-    DataStepsL = [];ScoresStepsL = [];
+    DataStepsL = [];ScoresStepsL = []
     for step in StepsL:
-        DataStep = [];ScoreStep = [];
+        DataStep = [];ScoreStep = []
         for i in range(len(ScoreL)):
             if ScoreL[i] >= step[0] and ScoreL[i] <= step[1]:
                 DataStep += [DataL[i]]
