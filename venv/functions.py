@@ -292,19 +292,21 @@ def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, 
     """
     datafile = open(output_table, "w")
     datafile.write(
-        "Feature 1" + '\t' + "Feature 2" + "\t" + "plus-plus" + '\t' + "minus-minus" + '\t' + "plus-minus" + '\t' + "minus-plus" + '\t' + "p-value same opposite" + '\t' + "p-value same opposite Bonferoni corrected" + '\t' + "Ratio same opposite" + '\t' + "p-value divergent convergent" + '\t' + "p-value divergent convergent Bonferoni corrected" + '\t' + "Ratio divergent convergent" + '\n')
+        "Feature_1" + '\t' + "Feature_2" + "\t" + "plus_plus" + '\t' + "minus_minus" + '\t' + "plus_minus" + '\t' + "minus_plus" + '\t' + "p_value_same_opposite" + '\t' + "p-value_same_opposite_Bonferoni_corrected" + '\t' + "Ratio_same_opposite" + '\t' + "p_value_divergent_convergent" + '\t' + "p_value_divergent_convergent Bonferoni corrected" + '\t' + "Ratio divergent convergent" + '\n')
     for i in range(len(NamesL_pairs)):
         datafile.write(
             NamesL_pairs[i][0] + '\t' + NamesL_pairs[i][1] + '\t' + str(p_pL[i]) + '\t' + str(m_mL[i]) + '\t' + str(
                 p_mL[i]) + '\t' + str(m_pL[i]) + '\t' + str(p_valsL[i]) + '\t' + str(p_vals_BonferoniL[i]) + '\t' + str(
                 RatiosL[i]) + '\t' + str(p_valsL_divergent_convergent[i]) + '\t' + str(
                 p_valsL_divergent_convergent_BonferoniL[i]) + '\t' + str(RatiosL_divergent_convergent[i]) + '\n')
+
+        #print(NamesL_pairs[i][0] + '\t' + NamesL_pairs[i][1] + '\t' + str(p_pL[i]) + '\t' + str(m_mL[i]) + '\t' + str(p_mL[i]) + '\t' + str(m_pL[i]) + '\t' + str(p_valsL[i]) + '\t' + str(p_vals_BonferoniL[i]) + '\t' + str(RatiosL[i]) + '\t' + str(p_valsL_divergent_convergent[i]) + '\t' + str(p_valsL_divergent_convergent_BonferoniL[i]) + '\t' + str(RatiosL_divergent_convergent[i]))
     datafile.close()
     return
 
 def table_bins_gen(Score_names,Ratio_Bins,Ratio_Convergent_Divergent_Bins,Binom_Test_Same_Opposite_Bins,Binom_Test_Same_Opposite_Bonferoni_Bins,Binom_Test_Convergent_Divergent_Bins,Binom_Test_Convergent_Divergent_Bonferoni_Bins,output_table):
     datafile = open(output_table, "w")
-    datafile.write("Score Range Min"+'\t'+str("Score Range Max")+'\t'+"Feature 1"+'\t'+"Feature 2"+"\t"+"Ratio same opposite"+'\t'+"Ratio divergent convergent" + '\n')
+    datafile.write("Score_Range_Min"+'\t'+str("Score_Range_Max")+'\t'+"Feature_1"+'\t'+"Feature_2"+"\t"+"Ratio_same_opposite"+'\t'+"Ratio_divergent_convergent" + '\n')
     for i in range(len(Score_names)):
         datafile.write(str(round(Score_names[i][0],0))+"-"+str(round(Score_names[i][1],0))+'\t'+str(Ratio_Bins[i])+'\t'+str(Ratio_Convergent_Divergent_Bins[i])+'\t'+str(Binom_Test_Same_Opposite_Bins[i])+'\t'+str(Binom_Test_Same_Opposite_Bonferoni_Bins[i])+'\t'+str(Binom_Test_Convergent_Divergent_Bins[i])+'\t'+str(Binom_Test_Convergent_Divergent_Bonferoni_Bins[i])+'\n')
 

@@ -83,7 +83,7 @@ def fun2(args):
                 visualizations.barplot_single_gen(Ratio_Convergent_Divergent_Bins, [(int(round(score_name[0],0)),int(round(score_name[1],0))) for score_name in Score_names], "Strand Asymmetry","Score", wf.output_path("contained_asymmetries","png", "convergent_divergent_orientation_separated_score", names_pairs[i][0],names_pairs[i][1]))
 
         # generates table <- this should be done for all pairs.
-        functions.table_gen(names_pairs, p_pL, m_mL, p_mL, m_pL, p_val_same_oppositeL, p_val_same_opposite_BonferoniL, Ratio_same_oppositeL, p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL,wf.output_path("contained_asymmetries","txt","table", names_pairs[i][0],names_pairs[i][1]))
+        functions.table_gen(names_pairs, p_pL, m_mL, p_mL, m_pL, p_val_same_oppositeL, p_val_same_opposite_BonferoniL, Ratio_same_oppositeL, p_val_conv_divergL,p_val_conv_diver_BonferoniL,Ratio_conv_divergL,wf.output_path("contained_asymmetries","txt","all_assymetries"))
 
         return
 
