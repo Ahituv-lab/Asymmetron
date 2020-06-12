@@ -103,10 +103,10 @@ def contained_asymmetries_parser():
         parser.add_argument("-p", "--plots", help="Optional flag. Display output plots", action="store_true")
         parser.add_argument("-ea", "--expected_asym",
 	                    help="Optional argument. The expected asymmetry bias between the regions and the motifs. Default is 0.5",
-	                    type=float, default=0.5)
+	                    type=wf.check_valid_probability, default=0.5)
         parser.add_argument("-ec", "--expected_asym_conv_div",
 	                    help="Optional argument. The expected convergent / divergent asymmetry bias between the regions and the motifs. Default is 0.5.",
-	                    type=float, default=0.5)
+	                    type=wf.check_valid_probability, default=0.5)
         parser.add_argument("-s", "--score",
 	                    help="Optional flag. If provided, assumes the last column of the region files is a scoring metric and uses it to subdivide the analysis into quartiles",
 	                    action="store_true")

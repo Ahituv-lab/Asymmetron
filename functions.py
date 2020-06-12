@@ -1,7 +1,9 @@
 ## ASYMMETRON ###
-import itertools, math
+import itertools
 import numpy as np
+import warnings
 from scipy.stats import binom_test
+
 try:
     from pybedtools import BedTool
 except:
@@ -10,6 +12,7 @@ try:
     import visualizations
 except:
     print("visualisations not imported")
+
 
 
 # Google drive linke with the draft https://docs.google.com/document/d/1elnyyHShRcY5X406qk9O2-odU5yb7F15vWtwmSzrmrw/edit
@@ -56,7 +59,7 @@ def binner(min_size, max_size, bin_no):
     return Bins
 
 
-def separate_on_score(path_score, path, number_of_bins,number_of_files,expected_asym,expected_asym_c_d):
+def separate_on_score(path_score, path, number_of_bins, number_of_files, expected_asym, expected_asym_c_d):
     """
     path_score: is the path to the BED file with last column containing the scores.
     path: the path to the second BED file.
@@ -70,9 +73,11 @@ def separate_on_score(path_score, path, number_of_bins,number_of_files,expected_
     StepsL = binner(min(ScoreL), max(ScoreL), number_of_bins)
 
     # Separates the DataL based on the ScoreL bins intro groups.
-    DataStepsL = [];ScoresStepsL = []
+    DataStepsL = [];
+    ScoresStepsL = []
     for step in StepsL:
-        DataStep = [];ScoreStep = []
+        DataStep = [];
+        ScoreStep = []
         for i in range(len(ScoreL)):
             if ScoreL[i] >= step[0] and ScoreL[i] <= step[1]:
                 DataStep += [DataL[i]]
@@ -81,29 +86,35 @@ def separate_on_score(path_score, path, number_of_bins,number_of_files,expected_
         ScoresStepsL += [ScoreStep]
 
     # Calculates the asymmetry for same / opposite and convergent / divergent asymmetry for each bin.
-    Ratio_Same_Opposite = [];Ratio_Convergent_Divergent=[];
-    Binom_Test_Same_Opposite=[]; Binom_Test_Same_Opposite_Bonferoni=[];
-    Binom_Test_Convergent_Divergent=[];Binom_Test_Convergent_Divergent_Bonferoni=[];
+    Ratio_Same_Opposite = [];
+    Ratio_Convergent_Divergent = [];
+    Binom_Test_Same_Opposite = [];
+    Binom_Test_Same_Opposite_Bonferoni = [];
+    Binom_Test_Convergent_Divergent = [];
+    Binom_Test_Convergent_Divergent_Bonferoni = [];
     for step in range(len(StepsL)):
-        p_p_step, m_m_step, p_m_step, m_p_step, same_strand_step, opposite_strand_step, convergent_step, divergent_step = overlap(DataStepsL[step], DataL2)
+        p_p_step, m_m_step, p_m_step, m_p_step, same_strand_step, opposite_strand_step, convergent_step, divergent_step = overlap(
+            DataStepsL[step], DataL2)
         if same_strand_step + opposite_strand_step != 0:
             Ratio_Same_Opposite.append(same_strand_step / float(same_strand_step + opposite_strand_step))
         else:
             Ratio_Same_Opposite.append(0.5)
 
-        if p_m_step+m_p_step != 0:
-            Ratio_Convergent_Divergent.append(p_m_step/ float(p_m_step+ m_p_step))
+        if p_m_step + m_p_step != 0:
+            Ratio_Convergent_Divergent.append(p_m_step / float(p_m_step + m_p_step))
 
         binom_same_opposite = binom_test(same_strand_step, same_strand_step + opposite_strand_step, expected_asym)
-        binom_same_opposite_Bonferoni = min(1,binom_same_opposite*number_of_files)
+        binom_same_opposite_Bonferoni = min(1, binom_same_opposite * number_of_files)
 
         binom_convergent_divergent = binom_test(p_m_step, p_m_step + m_p_step, expected_asym_c_d)
-        binom_convergent_divergent_Bonferoni = min(1,binom_convergent_divergent*number_of_files)
+        binom_convergent_divergent_Bonferoni = min(1, binom_convergent_divergent * number_of_files)
 
-        Binom_Test_Same_Opposite.append(binom_same_opposite);Binom_Test_Same_Opposite_Bonferoni.append(binom_same_opposite_Bonferoni);
-        Binom_Test_Convergent_Divergent.append(binom_convergent_divergent);Binom_Test_Convergent_Divergent_Bonferoni.append(binom_convergent_divergent_Bonferoni)
+        Binom_Test_Same_Opposite.append(binom_same_opposite);
+        Binom_Test_Same_Opposite_Bonferoni.append(binom_same_opposite_Bonferoni);
+        Binom_Test_Convergent_Divergent.append(binom_convergent_divergent);
+        Binom_Test_Convergent_Divergent_Bonferoni.append(binom_convergent_divergent_Bonferoni)
 
-    return Ratio_Same_Opposite,Ratio_Convergent_Divergent,StepsL,Binom_Test_Same_Opposite,Binom_Test_Same_Opposite_Bonferoni,Binom_Test_Convergent_Divergent,Binom_Test_Convergent_Divergent_Bonferoni
+    return Ratio_Same_Opposite, Ratio_Convergent_Divergent, StepsL, Binom_Test_Same_Opposite, Binom_Test_Same_Opposite_Bonferoni, Binom_Test_Convergent_Divergent, Binom_Test_Convergent_Divergent_Bonferoni
 
 
 def strand_annotate_third_BED_overlap(unnotated_path, annotated_path):
@@ -127,7 +138,7 @@ def strand_annotate_third_BED_overlap(unnotated_path, annotated_path):
           zip(Chromosome, Start, End, ID, Strand) if strand in ["+", "-"]))
     DataL = [];
     for i in range(len(Chromosome)):
-        DataL.append([Chromosome[i], Start[i], End[i], ID[i],".", Strand[i]])
+        DataL.append([Chromosome[i], Start[i], End[i], ID[i], ".", Strand[i]])
     return DataL
 
 
@@ -178,19 +189,24 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
     p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = orientation(Strand1, Strand2)
 
     # Calculate the distance distributions for all orientations
-    Distances_orientations = get_distance_orientations(Distance,Strand1,Strand2,window_min,window_max)
+    Distances_orientations = get_distance_orientations(Distance, Strand1, Strand2, window_min, window_max)
 
-    p_pL_bin = [];m_mL_bin = []; # Same orientation
-    p_mL_bin = [];m_pL_bin = []; # Opposite orientation
-    same_strandL_bin = []; opposite_strandL_bin = []; # Combined same / opposite orientations
-    convergentL_bin = [];divergentL_bin = [];
+    p_pL_bin = [];
+    m_mL_bin = [];  # Same orientation
+    p_mL_bin = [];
+    m_pL_bin = [];  # Opposite orientation
+    same_strandL_bin = [];
+    opposite_strandL_bin = [];  # Combined same / opposite orientations
+    convergentL_bin = [];
+    divergentL_bin = [];
 
     Bins = [];
     if bins != None:
         # Performs the same analysis for each bin.
         Bins = binner(window_min, window_max, bins)
         for index, bin_i in enumerate(Bins):
-            Strand1Bin = [];Strand2Bin = [];
+            Strand1Bin = [];
+            Strand2Bin = [];
             min_bin, max_bin = bin_i
             for k in range(len(Distance)):
                 if Distance[k] >= min_bin and Distance[k] < max_bin:
@@ -199,33 +215,41 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
 
             p_p_bin, m_m_bin, p_m_bin, m_p_bin, same_strand_bin, opposite_strand_bin, convergent_bin, divergent_bin = orientation(
                 Strand1Bin, Strand2Bin)
-            p_pL_bin.append(p_p_bin);m_mL_bin.append(m_m_bin); #Same orientation, per bin
-            p_mL_bin.append(p_m_bin);m_pL_bin.append(m_p_bin); #Opposite orientation per bin
-            same_strandL_bin.append(same_strand_bin);opposite_strandL_bin.append(opposite_strand_bin);
-            convergentL_bin.append(convergent_bin);divergentL_bin.append(divergent_bin)
+            p_pL_bin.append(p_p_bin);
+            m_mL_bin.append(m_m_bin);  # Same orientation, per bin
+            p_mL_bin.append(p_m_bin);
+            m_pL_bin.append(m_p_bin);  # Opposite orientation per bin
+            same_strandL_bin.append(same_strand_bin);
+            opposite_strandL_bin.append(opposite_strand_bin);
+            convergentL_bin.append(convergent_bin);
+            divergentL_bin.append(divergent_bin)
 
-    return (Distances_orientations, p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent), (Bins,p_pL_bin,m_mL_bin,p_mL_bin,m_pL_bin,same_strandL_bin,opposite_strandL_bin,convergentL_bin,divergentL_bin)
+    return (Distances_orientations, p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent), (
+    Bins, p_pL_bin, m_mL_bin, p_mL_bin, m_pL_bin, same_strandL_bin, opposite_strandL_bin, convergentL_bin,
+    divergentL_bin)
 
 
-def get_distance_orientations(DistanceL,Strand1L,Strand2L,window_min,window_max):
-    same_strandL_distance=[];opposite_strandL_distance=[];
-    divergentL_distance=[];convergentL_distance=[];
+def get_distance_orientations(DistanceL, Strand1L, Strand2L, window_min, window_max):
+    same_strandL_distance = [];
+    opposite_strandL_distance = [];
+    divergentL_distance = [];
+    convergentL_distance = [];
     for index in range(len(Strand1L)):
-        if (DistanceL[index]< window_max and DistanceL[index] >= window_min):
+        if (DistanceL[index] < window_max and DistanceL[index] >= window_min):
             sign1 = Strand1L[index]
             sign2 = Strand2L[index]
             if sign1 in ["+", "-"] and sign2 in ["+", "-"]:
                 if sign1 == sign2:
-                     same_strandL_distance.append(DistanceL[index])
+                    same_strandL_distance.append(DistanceL[index])
                 else:
-                     opposite_strandL_distance.append(DistanceL[index])
+                    opposite_strandL_distance.append(DistanceL[index])
 
-                     if sign1 == "+" and sign2 == "-":
-                         convergentL_distance.append(DistanceL[index])
-                     elif sign1 == "-" and sign2 == "+":
-                         divergentL_distance.append(DistanceL[index])
+                    if sign1 == "+" and sign2 == "-":
+                        convergentL_distance.append(DistanceL[index])
+                    elif sign1 == "-" and sign2 == "+":
+                        divergentL_distance.append(DistanceL[index])
 
-    return (same_strandL_distance,opposite_strandL_distance,divergentL_distance,convergentL_distance)
+    return (same_strandL_distance, opposite_strandL_distance, divergentL_distance, convergentL_distance)
 
 
 def orientation(sign1L, sign2L):
@@ -300,59 +324,68 @@ def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, 
                 RatiosL[i]) + '\t' + str(p_valsL_divergent_convergent[i]) + '\t' + str(
                 p_valsL_divergent_convergent_BonferoniL[i]) + '\t' + str(RatiosL_divergent_convergent[i]) + '\n')
 
-        #print(NamesL_pairs[i][0] + '\t' + NamesL_pairs[i][1] + '\t' + str(p_pL[i]) + '\t' + str(m_mL[i]) + '\t' + str(p_mL[i]) + '\t' + str(m_pL[i]) + '\t' + str(p_valsL[i]) + '\t' + str(p_vals_BonferoniL[i]) + '\t' + str(RatiosL[i]) + '\t' + str(p_valsL_divergent_convergent[i]) + '\t' + str(p_valsL_divergent_convergent_BonferoniL[i]) + '\t' + str(RatiosL_divergent_convergent[i]))
+        # print(NamesL_pairs[i][0] + '\t' + NamesL_pairs[i][1] + '\t' + str(p_pL[i]) + '\t' + str(m_mL[i]) + '\t' + str(p_mL[i]) + '\t' + str(m_pL[i]) + '\t' + str(p_valsL[i]) + '\t' + str(p_vals_BonferoniL[i]) + '\t' + str(RatiosL[i]) + '\t' + str(p_valsL_divergent_convergent[i]) + '\t' + str(p_valsL_divergent_convergent_BonferoniL[i]) + '\t' + str(RatiosL_divergent_convergent[i]))
     datafile.close()
     return
 
-def table_bins_gen(Score_names,Ratio_Bins,Ratio_Convergent_Divergent_Bins,Binom_Test_Same_Opposite_Bins,Binom_Test_Same_Opposite_Bonferoni_Bins,Binom_Test_Convergent_Divergent_Bins,Binom_Test_Convergent_Divergent_Bonferoni_Bins,output_table):
+
+def table_bins_gen(Score_names, Ratio_Bins, Ratio_Convergent_Divergent_Bins, Binom_Test_Same_Opposite_Bins,
+                   Binom_Test_Same_Opposite_Bonferoni_Bins, Binom_Test_Convergent_Divergent_Bins,
+                   Binom_Test_Convergent_Divergent_Bonferoni_Bins, output_table):
     datafile = open(output_table, "w")
-    datafile.write("Score_Range_Min"+'\t'+str("Score_Range_Max")+'\t'+"Feature_1"+'\t'+"Feature_2"+"\t"+"Ratio_same_opposite"+'\t'+"Ratio_divergent_convergent" + '\n')
+    datafile.write("Score_Range_Min" + '\t' + str(
+        "Score_Range_Max") + '\t' + "Feature_1" + '\t' + "Feature_2" + "\t" + "Ratio_same_opposite" + '\t' + "Ratio_divergent_convergent" + '\n')
     for i in range(len(Score_names)):
-        datafile.write(str(round(Score_names[i][0],0))+"-"+str(round(Score_names[i][1],0))+'\t'+str(Ratio_Bins[i])+'\t'+str(Ratio_Convergent_Divergent_Bins[i])+'\t'+str(Binom_Test_Same_Opposite_Bins[i])+'\t'+str(Binom_Test_Same_Opposite_Bonferoni_Bins[i])+'\t'+str(Binom_Test_Convergent_Divergent_Bins[i])+'\t'+str(Binom_Test_Convergent_Divergent_Bonferoni_Bins[i])+'\n')
+        datafile.write(str(round(Score_names[i][0], 0)) + "-" + str(round(Score_names[i][1], 0)) + '\t' + str(
+            Ratio_Bins[i]) + '\t' + str(Ratio_Convergent_Divergent_Bins[i]) + '\t' + str(
+            Binom_Test_Same_Opposite_Bins[i]) + '\t' + str(Binom_Test_Same_Opposite_Bonferoni_Bins[i]) + '\t' + str(
+            Binom_Test_Convergent_Divergent_Bins[i]) + '\t' + str(
+            Binom_Test_Convergent_Divergent_Bonferoni_Bins[i]) + '\n')
 
     datafile.close()
     return
 
-def table_consecutive(ConsecutiveL,namesL,path_out):
 
+def table_consecutive(ConsecutiveL, namesL, path_out):
     for k in range(len(ConsecutiveL)):
-        if ConsecutiveL[k]==[]:
-            ConsecutiveL[k]={}
+        if ConsecutiveL[k] == []:
+            ConsecutiveL[k] = {}
 
-    consecutives_all = ([max(k.keys()) for k in ConsecutiveL if k!={}])
-    if consecutives_all!=[]:
-       max_consecutive = max(consecutives_all);
+    consecutives_all = ([max(k.keys()) for k in ConsecutiveL if k != {}])
+    if consecutives_all != []:
+        max_consecutive = max(consecutives_all);
     else:
-      max_consecutive = 0;
+        max_consecutive = 0;
 
     with open(path_out, 'w') as output:
-        output.write(str("Number of consecutive occurrences")+'\t'+'\t'.join([str(x) for x in range(1,max_consecutive+1)])+'\n')
+        output.write(str("Number of consecutive occurrences") + '\t' + '\t'.join(
+            [str(x) for x in range(1, max_consecutive + 1)]) + '\n')
 
         for i in range(len(ConsecutiveL)):
-            if ConsecutiveL[i]!={}:
-                ConsecutiveLT = sorted(ConsecutiveL[i].items()) 
-                consecutive, times_found = zip(*ConsecutiveLT) 
+            if ConsecutiveL[i] != {}:
+                ConsecutiveLT = sorted(ConsecutiveL[i].items())
+                consecutive, times_found = zip(*ConsecutiveLT)
                 consecutiveL = list(consecutive)
-                times_foundL = list(times_found)            
+                times_foundL = list(times_found)
             else:
-                consecutiveL=[];times_foundL=[];
+                consecutiveL = [];
+                times_foundL = [];
 
-            for k in range(1,max_consecutive+1):
-               if k not in consecutiveL:
-                   consecutiveL=consecutiveL[:k-1]+[k]+consecutiveL[k-1:]
-                   times_foundL=times_foundL[:k-1]+[0]+times_foundL[k-1:]
-           
-            output.write(str(namesL[i])+'\t'+'\t'.join([str(x) for x in times_foundL])+'\n')
+            for k in range(1, max_consecutive + 1):
+                if k not in consecutiveL:
+                    consecutiveL = consecutiveL[:k - 1] + [k] + consecutiveL[k - 1:]
+                    times_foundL = times_foundL[:k - 1] + [0] + times_foundL[k - 1:]
+
+            output.write(str(namesL[i]) + '\t' + '\t'.join([str(x) for x in times_foundL]) + '\n')
     return
 
 
-
-def write_BED_out(DataL,path_out):
+def write_BED_out(DataL, path_out):
     # Write significant results in an output file
     with open(path_out, 'w') as output_file:
         for line in DataL:
-            output_file.write('\t'.join([str(x) for x in list(line)])+'\n')
-    return 
+            output_file.write('\t'.join([str(x) for x in list(line)]) + '\n')
+    return
 
 
 def find_sub_str(my_str, sub_str):
@@ -374,9 +407,17 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     :param max_distance: Maximum distance between two motifs. If two occurences of the motif do not have this minimum
                          distance, they break the pattern
     :param threshold:
-    :return: A list of all occurences of the pattern meeting the minimum distance requirements
+    :return consecutiveL: A dictionary where keys are the number of consecutive appearances of the pattern and values
+                          how many times they appeared, e.g. {3:2} means that there were there were two instances in the
+                          file where the pattern appeared three consecutive times
+    :return distancesL: A list which includes the distances between consecutive appearances of the pattern
+    :return DataL_significant: A list of list (same format as DataL), which includes all rows of the initial file that
+                               were found to be part of a significant appearance of the pattern. e.g. if rows 10-20
+                               include 5 conesecutive appearances of the pattern, which gives a p-value higher than
+                               the threshold, then those rows will be included in DataL_significant. The
+                               calculated p-value is appended at the end of each row.
     """
-    DataL=[list(line) for line in DataL]
+    DataL = [list(line) for line in DataL]
     n = len(pattern)
 
     # Create a string with all signs (5th column in the sorted BED file)
@@ -385,14 +426,14 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         signs += line[5]
 
     # Calculate alternating pattern
-    if pattern == ".":
+    if pattern == "alt":
         DataL_alternating = []
         DataL_temp = []
         DataL_temp.append(DataL[0])
         counter = 0
         for i in range(1, len(DataL)):
-            distance = max(0, int(DataL[i][1]) - int(DataL[i-1][2]))
-            if DataL[i][5] != DataL[i -1][5] and (distance >= min_distance and distance < max_distance):
+            distance = max(0, int(DataL[i][1]) - int(DataL[i - 1][2]))
+            if DataL[i][5] != DataL[i - 1][5] and (distance >= min_distance and distance < max_distance):
                 counter += 1
                 DataL_temp.append(DataL[i])
             else:
@@ -427,68 +468,91 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     number_of_tests = len(DataL)
     total_plus = signs.count("+")
     total_minus = signs.count("-")
-    probability={}
-    probability["+"]=total_plus/float(total_plus+total_minus)
-    probability["-"] = 1-probability["+"]
+    probability = {}
+    probability["+"] = total_plus / float(total_plus + total_minus)
+    probability["-"] = 1 - probability["+"]
     probability_pattern = np.prod([probability[k] for k in list(pattern)])
-    consecutive_threshold= next(x for x in range(len(DataL)) if (probability_pattern**x)*number_of_tests < threshold)
+    # Warn the user if probability_pattern == 1
+    if probability_pattern == 1:
+        msg = "The probability of this pattern  being found at any given point of the file was calculated to be 1. " \
+              "This usually would happen in degenerate cases (e.g. looking for pattern \"+\" in a file consisting " \
+              "only of + and could result in unpredictable outputs"
+        warnings.warn(msg)
+    # Lowest consecutive number of patterns that with probability of appearning lower than the threshold (p-value)
+    from math import ceil, log
+    consecutive_threshold = ceil(log(threshold/number_of_tests)/log(probability_pattern))
+
 
     # Filter for number of consecutive occurences that meet the threshold criterion and are within the distance window
     DataL_significant = []
     counter = 1
-    DataL_temp = DataL[occs[0]:occs[0]+n];
+    DataL_temp = DataL[occs[0]:occs[0] + n];
     from collections import defaultdict
-    consecutiveL= defaultdict(int);
+    consecutiveL = defaultdict(int);
     for i in range(1, len(occs)):
         index = occs[i]
-        distance = max(0, int(DataL[index][1]) - int(DataL[index -1][2]))
-        if occs[i]-occs[i-1] == n and (distance >= min_distance and distance < max_distance):
+        distance = max(0, int(DataL[index][1]) - int(DataL[index - 1][2]))
+        if occs[i] - occs[i - 1] == n and (distance >= min_distance and distance < max_distance):
             counter += 1
-            p_value = (probability_pattern**counter)*number_of_tests
-            for i in range(index,index+n):
-                DataL[i].append(p_value)
-            DataL_temp.extend(DataL[index:index+n])
+            DataL_temp.extend(DataL[index:index + n])
         else:
-            consecutiveL[counter]+=1
+            consecutiveL[counter] += 1
             if counter >= consecutive_threshold:
-                # Could also dump to file here to save on memory
+                # Add p_value to list for the number of consecutive occurences of the pattern
+                p_value = (probability_pattern ** counter) * number_of_tests
+                for line in DataL_temp:
+                    line.append(p_value)
                 DataL_significant.extend(DataL_temp)
             DataL_temp.clear()
             counter = 1
 
     # Add last lines
     if counter >= consecutive_threshold:
+        p_value = (probability_pattern ** counter) * number_of_tests
+        for line in DataL_temp:
+            line.append(p_value)
         DataL_significant.extend(DataL_temp)
         consecutiveL[counter] += 1
 
     distancesL = []
-    for i in range(len(occs)-1):
+    for i in range(len(occs) - 1):
         index = occs[i]
-        index_next = occs[i+1]
-        distance = max(0, int(DataL[occs[i+1]][1]) - int(DataL[occs[i]+n-1][2]))
+        index_next = occs[i + 1]
+        distance = max(0, int(DataL[occs[i + 1]][1]) - int(DataL[occs[i] + n - 1][2]))
         distancesL.append(distance)
 
-    return consecutiveL,distancesL,DataL_significant
+    return consecutiveL, distancesL, DataL_significant
+
 
 def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     from random import shuffle
-    DataL = list(BedTool(path,False).sort())
+    DataL = list(BedTool(path, False).sort())
 
     # Here we want to shuffle the strand column
     ColL = [k[5] for k in DataL]
     shuffle(ColL)
-    DataL_random=[]
+    DataL_random = []
     for i in range(len(DataL)):
         line = DataL[i][:-1] + [ColL[i]]
         DataL_random.append(line)
 
-    consecutiveL=[];occsL=[];DataL_significantL=[];consecutive_controlL=[];occs_controlL=[];DataL_significant_controlL=[];
+    consecutiveL = [];
+    occsL = [];
+    DataL_significantL = [];
+    consecutive_controlL = [];
+    occs_controlL = [];
+    DataL_significant_controlL = [];
     for pattern in patternsL:
-        consecutive,occs, DataL_significant = extract_pattern(DataL, pattern, min_distance, max_distance, threshold)
-        consecutive_control,occs_control, DataL_significant_control = extract_pattern(DataL_random, pattern, min_distance, max_distance, threshold)
-        consecutiveL.append(consecutive);occsL.append(occs);consecutive_controlL.append(consecutive_control);occs_controlL.append(occs_control);
+        consecutive, occs, DataL_significant = extract_pattern(DataL, pattern, min_distance, max_distance, threshold)
+        consecutive_control, occs_control, DataL_significant_control = extract_pattern(DataL_random, pattern,
+                                                                                       min_distance, max_distance,
+                                                                                       threshold)
+        consecutiveL.append(consecutive);
+        occsL.append(occs);
+        consecutive_controlL.append(consecutive_control);
+        occs_controlL.append(occs_control);
         DataL_significantL.append(DataL_significant);
-    return DataL_significantL,consecutiveL,occsL,consecutive_controlL,occs_controlL
+    return DataL_significantL, consecutiveL, occsL, consecutive_controlL, occs_controlL
 
 
 # Ensures that code below is not run when this file is imported into another file
@@ -500,26 +564,8 @@ if __name__ == "__main__":
     out = extract_pattern(DataL, "+-", 1, 5, 0.5)
     print("The following dictionary includes the number of consecutive appearances of the pattern, e.g. when looking "
           "for +- in +-+-+---+- the result should be {1:1}, {3:1}", out[0])
-    print("The distances between consecutive appearances of the pattern are: ", out[1] )
+    print("The distances between consecutive appearances of the pattern are: ", out[1])
     print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the "
           "threshold and distance requirements\n", out[2])
 
-#print(asymmetries_single("test_extract_pattern.bed","+-", 0, 3, 2))
-# test area
-# works
-# print overlap(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"))
-# works
-# print proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),0,500,False,False,False)
-# works
-# print proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),0,500,True,False,False)
-# works
-# print proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),0,500,False,True,False)
-# works
-# print strand_annotate_third_BED_overlap(read_BED("Myeloid.indels"),read_BED("Ensembl.genes_hg19_TSSs.bed"))
-# works
-# DataL,ScoreL=read_BED("MCF7_RepliStrand.leading_lagging.bed",True)
-# separate_on_score(ScoreL,DataL,10)
-# works - minor error with extra bin, needs fixing
-# Strand1,Strand2,DistancesL=proximal(read_BED("All_G4.bed"),read_BED("Ensembl.genes_hg19_TSSs.bed"),"G4","hg19_TSS",0,500,False,False,10)
-# print len(Strand1),len(Strand2),len(DistancesL)
-# asymmetries_single(read_BED("All_G4.bed"),0,1000,["++--"],0,False,0.0001,"test")
+

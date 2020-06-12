@@ -2,6 +2,7 @@ import os
 import time
 import argparse
 import configparser
+import glob
 
 # Catch number of bins negative or 0 --> check_positive_int
 # Catch distance limits have to be >=0 --> check_positive_int
@@ -58,7 +59,8 @@ def path_checker(paths):
 
        This functions takes the input paths given by the user, verifies that they exist and returns a list of paths
     """
-    pathsL = [x.strip() for x in paths.split(',')]
+    pathsL = [glob.glob(x.strip()) for x in paths.split(',')]
+    pathsL = [path for glob_paths in pathsL for path in glob_paths]  # Convert paths to simple list
     for path in pathsL:
         if not os.path.exists(path):
             err= "File \"" + path + "\" was not found"
@@ -82,39 +84,6 @@ def name_splitter(names, paths):
         namesL = [os.path.basename(x) for x in paths];
     return namesL
 
-# def sanitize(paths, orientation, names):
-#     """
-#     All three parameters are entered by the user in string format. If multiple paths are given, they are in "path1, path2",
-#     comma-seperated format. If orientation or names is given as an optional argument by the user, there needs to be one file
-#     for each corresponding path.
-#
-#     This function takes the three inputs, converts them to lists of paths and verifies that each each orientation or name
-#     file, corresponds to one path file. If orientation or names was not given, they are set to none
-#
-#     :param paths: String of paths entered by the user. If multiple, as comma-seperated string.
-#     :param orientation: String of orientation files entered by the user
-#     :param names: String of names entered by the user. Each name must correspond to a file entered in --paths
-#     :return: A tuple consisting of the three input arguments in list form
-#     """
-#     paths = path_checker(paths)  # Converts the input to a list of paths. List can include only one element, if one path is given by the user
-#     # Converts the input to a list of path for the orientation files. If this optional argument was not given, the variable is set to None
-#     try:
-#         orientation_paths = path_checker(orientation)
-#     except AttributeError:
-#         orientation_paths = None
-#     # Converts the input to a list of names. If this optional argument was not given, the variable is set to none
-#     try:
-#         names = name_splitter(names)
-#     except AttributeError:
-#         names = None
-#     print(paths, orientation_paths, names)
-#     if names is not None:
-#         if len(paths) != len(names):
-#             err = "Please enter the same number of arguments for paths and names"
-#             raise InputError(err)
-#     return paths, orientation_paths, names
-
-
 def check_positive_int(value):
     """
     Checks if the value is a non-zero integer. Raises an argparser error otherwise. Returns the integer
@@ -136,7 +105,7 @@ def check_valid_pattern(value):
     Returns the pattern.
     """
     chars = set(value)
-    if not chars.issubset(("+", "-", ",", " ", ".")) and value != "alt":
+    if not (chars.issubset(("+", "-", ",", " ", ".")) or value == "alt"):
         msg = "{} is an invalid pattern. Please enter a pattern consisting of + or - only. Insert \"alt\" for " \
               "alternating patterns " \
               "".format(value)
@@ -157,11 +126,6 @@ def check_valid_probability(value):
     except:
         msg = "{} is an invalid value. Please enter a probability between 0 and 1.".format(value)
         raise argparse.ArgumentTypeError(msg)
-
-
-
-
-
 
 
 if __name__ == "__main__":
