@@ -567,5 +567,3 @@ if __name__ == "__main__":
     print("The distances between consecutive appearances of the pattern are: ", out[1])
     print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the "
           "threshold and distance requirements\n", out[2])
-
-
