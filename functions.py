@@ -150,9 +150,10 @@ def overlap(path1, path2):
     DataL1 = BedTool(path1).sort()
     DataL2 = BedTool(path2).sort()
     overlap = DataL1.intersect(DataL2, wao=True)
+    print(overlap)
     Overlap_df = overlap.to_dataframe()
     Strand1 = list(Overlap_df.iloc[:, 5])
-    Strand2 = list(Overlap_df.iloc[:, 10])
+    Strand2 = list(Overlap_df.iloc[:, 11])
     p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = orientation(Strand1, Strand2)
     return p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent
 
