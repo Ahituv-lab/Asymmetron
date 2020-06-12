@@ -1,4 +1,4 @@
-import sys,os
+import os
 import numpy as np
 import functions
 import orientation
@@ -9,7 +9,6 @@ try:
 except:
     print("visualisations not imported")
 
-from collections import Counter
 
 def fun1(args):
 
@@ -31,7 +30,7 @@ def fun1(args):
     if ort is not None:
         paths_after_orientation=[]
         for path in paths:
-            name_orientation=orientation.fun4(path,ort)
+            name_orientation= orientation.fun4(path, ort)
             paths_after_orientation.append([name_orientation])  # Are the square brackets here needed?
         paths = paths_after_orientation
     

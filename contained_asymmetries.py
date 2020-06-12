@@ -1,4 +1,3 @@
-import sys,os
 import functions
 import orientation
 import argparse
@@ -27,7 +26,7 @@ def fun2(args):
             wf.path_checker(orientation_motifs)  # Test if orientation_motifs path exists
             paths_after_orientation=[]
             for path in motifsL:
-                 name_orientation=orientation.fun4(orientation,path)
+                 name_orientation= orientation.fun4(orientation, path)
                  paths_after_orientation.append([name_orientation])
             motifsL = paths_after_orientation
 
