@@ -143,7 +143,7 @@ def check_valid_pattern(value):
         raise argparse.ArgumentTypeError(msg)
     return value
 
-print(check_valid_pattern("alt"))
+#print(check_valid_pattern("alt"))
 
 def check_valid_probability(value):
     """
