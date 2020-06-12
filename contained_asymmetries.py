@@ -36,19 +36,19 @@ def fun2(args):
     motif_region_pairs, names_pairs = functions.pairs_generator(motifsL, regionsL, motifsL_names, regionsL_names)
 
     # Save the results for the final table
-    p_pL = [];
+    p_pL = []
     m_mL = []  # Same orientation
-    p_mL = [];
+    p_mL = []
     m_pL = []  # Opposite orientation
-    same_strandL = [];
+    same_strandL = []
     opposite_strandL = []  # Summed
-    convergentL = [];
+    convergentL = []
     divergentL = []
-    p_val_same_oppositeL = [];
+    p_val_same_oppositeL = []
     p_val_same_opposite_BonferoniL = []
-    Ratio_same_oppositeL = [];
+    Ratio_same_oppositeL = []
     Ratio_conv_divergL = []
-    p_val_conv_divergL = [];
+    p_val_conv_divergL = []
     p_val_conv_diver_BonferoniL = []
 
     # Perform all comparisons of each pair
@@ -57,14 +57,14 @@ def fun2(args):
         p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = functions.overlap(
             motif_region_pairs[i][0], motif_region_pairs[i][1])
 
-        p_pL.append(p_p);
-        m_mL.append(m_m);  # Same strand orientation
-        p_mL.append(p_m);
-        m_pL.append(m_p);  # Opposite strand orientation
+        p_pL.append(p_p)
+        m_mL.append(m_m)  # Same strand orientation
+        p_mL.append(p_m)
+        m_pL.append(m_p)  # Opposite strand orientation
 
-        same_strandL.append(same_strand);
+        same_strandL.append(same_strand)
         opposite_strandL.append(opposite_strand)
-        convergentL.append(convergent);
+        convergentL.append(convergent)
         divergentL.append(divergent)
 
         # same vs opposite analysis

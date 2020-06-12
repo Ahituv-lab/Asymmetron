@@ -14,8 +14,6 @@ except:
     print("visualisations not imported")
 
 
-
-# Google drive linke with the draft https://docs.google.com/document/d/1elnyyHShRcY5X406qk9O2-odU5yb7F15vWtwmSzrmrw/edit
 def pairs_generator(pathL1, pathL2, NamesL1, NamesL2):
     """
     Takes as input two sets of lists (comma separated, provided by the user
@@ -31,16 +29,16 @@ def read_BED(path, last_col=False):
     last_col=True: If an extra column for a score (e.g. replication timing or gene expression) is given
     This function returns a list of lists with the BED file information and the list of scores.
     """
-    if last_col == False:
-        Data = [];
+    if not last_col:
+        Data = []
         with open(path) as f:
             for line in f:
                 Data.append(line.strip().split()[:6])
         return Data
 
-    elif last_col == True:
-        Data = [];
-        Score = [];
+    elif last_col:
+        Data = []
+        Score = []
         with open(path) as f:
             for line in f:
                 Data.append(line.strip().split()[:6])
@@ -73,25 +71,25 @@ def separate_on_score(path_score, path, number_of_bins, number_of_files, expecte
     StepsL = binner(min(ScoreL), max(ScoreL), number_of_bins)
 
     # Separates the DataL based on the ScoreL bins intro groups.
-    DataStepsL = [];
+    DataStepsL = []
     ScoresStepsL = []
     for step in StepsL:
-        DataStep = [];
+        DataStep = []
         ScoreStep = []
         for i in range(len(ScoreL)):
-            if ScoreL[i] >= step[0] and ScoreL[i] <= step[1]:
+            if step[0] <= ScoreL[i] <= step[1]:
                 DataStep += [DataL[i]]
                 ScoreStep += [ScoreL[i]]
         DataStepsL += [DataStep]
         ScoresStepsL += [ScoreStep]
 
     # Calculates the asymmetry for same / opposite and convergent / divergent asymmetry for each bin.
-    Ratio_Same_Opposite = [];
-    Ratio_Convergent_Divergent = [];
-    Binom_Test_Same_Opposite = [];
-    Binom_Test_Same_Opposite_Bonferoni = [];
-    Binom_Test_Convergent_Divergent = [];
-    Binom_Test_Convergent_Divergent_Bonferoni = [];
+    Ratio_Same_Opposite = []
+    Ratio_Convergent_Divergent = []
+    Binom_Test_Same_Opposite = []
+    Binom_Test_Same_Opposite_Bonferoni = []
+    Binom_Test_Convergent_Divergent = []
+    Binom_Test_Convergent_Divergent_Bonferoni = []
     for step in range(len(StepsL)):
         p_p_step, m_m_step, p_m_step, m_p_step, same_strand_step, opposite_strand_step, convergent_step, divergent_step = overlap(
             DataStepsL[step], DataL2)
@@ -172,9 +170,9 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
     DataL2 = BedTool(path2).sort()
     if upstream == downstream and upstream == True:
         closest = DataL1.closest(DataL2, D='ref')
-    elif upstream == True:
+    elif upstream is True:
         closest = DataL1.closest(DataL2, D='a', id=False, iu=True)
-    elif downstream == True:
+    elif downstream is True:
         closest = DataL1.closest(DataL2, D='b', iu=False, id=True)
     else:
         closest = DataL1.closest(DataL2, D='ref')
@@ -191,22 +189,22 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
     # Calculate the distance distributions for all orientations
     Distances_orientations = get_distance_orientations(Distance, Strand1, Strand2, window_min, window_max)
 
-    p_pL_bin = [];
-    m_mL_bin = [];  # Same orientation
-    p_mL_bin = [];
-    m_pL_bin = [];  # Opposite orientation
-    same_strandL_bin = [];
-    opposite_strandL_bin = [];  # Combined same / opposite orientations
-    convergentL_bin = [];
-    divergentL_bin = [];
+    p_pL_bin = []
+    m_mL_bin = []  # Same orientation
+    p_mL_bin = []
+    m_pL_bin = []  # Opposite orientation
+    same_strandL_bin = []
+    opposite_strandL_bin = []  # Combined same / opposite orientations
+    convergentL_bin = []
+    divergentL_bin = []
 
     Bins = [];
     if bins != None:
         # Performs the same analysis for each bin.
         Bins = binner(window_min, window_max, bins)
         for index, bin_i in enumerate(Bins):
-            Strand1Bin = [];
-            Strand2Bin = [];
+            Strand1Bin = []
+            Strand2Bin = []
             min_bin, max_bin = bin_i
             for k in range(len(Distance)):
                 if Distance[k] >= min_bin and Distance[k] < max_bin:
@@ -215,25 +213,25 @@ def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False,
 
             p_p_bin, m_m_bin, p_m_bin, m_p_bin, same_strand_bin, opposite_strand_bin, convergent_bin, divergent_bin = orientation(
                 Strand1Bin, Strand2Bin)
-            p_pL_bin.append(p_p_bin);
-            m_mL_bin.append(m_m_bin);  # Same orientation, per bin
-            p_mL_bin.append(p_m_bin);
-            m_pL_bin.append(m_p_bin);  # Opposite orientation per bin
-            same_strandL_bin.append(same_strand_bin);
-            opposite_strandL_bin.append(opposite_strand_bin);
-            convergentL_bin.append(convergent_bin);
+            p_pL_bin.append(p_p_bin)
+            m_mL_bin.append(m_m_bin)  # Same orientation, per bin
+            p_mL_bin.append(p_m_bin)
+            m_pL_bin.append(m_p_bin)  # Opposite orientation per bin
+            same_strandL_bin.append(same_strand_bin)
+            opposite_strandL_bin.append(opposite_strand_bin)
+            convergentL_bin.append(convergent_bin)
             divergentL_bin.append(divergent_bin)
 
     return (Distances_orientations, p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent), (
-    Bins, p_pL_bin, m_mL_bin, p_mL_bin, m_pL_bin, same_strandL_bin, opposite_strandL_bin, convergentL_bin,
-    divergentL_bin)
+        Bins, p_pL_bin, m_mL_bin, p_mL_bin, m_pL_bin, same_strandL_bin, opposite_strandL_bin, convergentL_bin,
+        divergentL_bin)
 
 
 def get_distance_orientations(DistanceL, Strand1L, Strand2L, window_min, window_max):
-    same_strandL_distance = [];
-    opposite_strandL_distance = [];
-    divergentL_distance = [];
-    convergentL_distance = [];
+    same_strandL_distance = []
+    opposite_strandL_distance = []
+    divergentL_distance = []
+    convergentL_distance = []
     for index in range(len(Strand1L)):
         if (DistanceL[index] < window_max and DistanceL[index] >= window_min):
             sign1 = Strand1L[index]
@@ -257,10 +255,10 @@ def orientation(sign1L, sign2L):
     Calculates the orientation combinations
     Should only accept +/- signs
     """
-    p_p = 0;
-    m_m = 0;
-    p_m = 0;
-    m_p = 0;
+    p_p = 0
+    m_m = 0
+    p_m = 0
+    m_p = 0
     for index in range(len(sign1L)):
         sign1 = sign1L[index]
         sign2 = sign2L[index]
@@ -275,10 +273,10 @@ def orientation(sign1L, sign2L):
                     p_m += 1
                 elif sign1 == "-" and sign2 == "+":
                     m_p += 1
-    same_strand = p_p + m_m;
-    opposite_strand = p_m + m_p;
-    convergent = p_m;
-    divergent = m_p;
+    same_strand = p_p + m_m
+    opposite_strand = p_m + m_p
+    convergent = p_m
+    divergent = m_p
     return p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent
 
 
@@ -323,8 +321,6 @@ def table_gen(NamesL_pairs, p_pL, m_mL, p_mL, m_pL, p_valsL, p_vals_BonferoniL, 
                 p_mL[i]) + '\t' + str(m_pL[i]) + '\t' + str(p_valsL[i]) + '\t' + str(p_vals_BonferoniL[i]) + '\t' + str(
                 RatiosL[i]) + '\t' + str(p_valsL_divergent_convergent[i]) + '\t' + str(
                 p_valsL_divergent_convergent_BonferoniL[i]) + '\t' + str(RatiosL_divergent_convergent[i]) + '\n')
-
-        # print(NamesL_pairs[i][0] + '\t' + NamesL_pairs[i][1] + '\t' + str(p_pL[i]) + '\t' + str(m_mL[i]) + '\t' + str(p_mL[i]) + '\t' + str(m_pL[i]) + '\t' + str(p_valsL[i]) + '\t' + str(p_vals_BonferoniL[i]) + '\t' + str(RatiosL[i]) + '\t' + str(p_valsL_divergent_convergent[i]) + '\t' + str(p_valsL_divergent_convergent_BonferoniL[i]) + '\t' + str(RatiosL_divergent_convergent[i]))
     datafile.close()
     return
 
@@ -348,14 +344,14 @@ def table_bins_gen(Score_names, Ratio_Bins, Ratio_Convergent_Divergent_Bins, Bin
 
 def table_consecutive(ConsecutiveL, namesL, path_out):
     for k in range(len(ConsecutiveL)):
-        if ConsecutiveL[k] == []:
+        if not ConsecutiveL[k]:
             ConsecutiveL[k] = {}
 
     consecutives_all = ([max(k.keys()) for k in ConsecutiveL if k != {}])
-    if consecutives_all != []:
-        max_consecutive = max(consecutives_all);
+    if consecutives_all:
+        max_consecutive = max(consecutives_all)
     else:
-        max_consecutive = 0;
+        max_consecutive = 0
 
     with open(path_out, 'w') as output:
         output.write(str("Number of consecutive occurrences") + '\t' + '\t'.join(
@@ -368,8 +364,8 @@ def table_consecutive(ConsecutiveL, namesL, path_out):
                 consecutiveL = list(consecutive)
                 times_foundL = list(times_found)
             else:
-                consecutiveL = [];
-                times_foundL = [];
+                consecutiveL = []
+                times_foundL = []
 
             for k in range(1, max_consecutive + 1):
                 if k not in consecutiveL:
@@ -392,9 +388,10 @@ def find_sub_str(my_str, sub_str):
     start = 0
     while True:
         start = my_str.find(sub_str, start)
-        if start == -1: return
+        if start == -1:
+            return
         yield start
-        start += len(sub_str)  # use start += 1 to find overlapping matches
+        start += len(sub_str)
 
 
 def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
@@ -480,8 +477,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         warnings.warn(msg)
     # Lowest consecutive number of patterns that with probability of appearning lower than the threshold (p-value)
     from math import ceil, log
-    consecutive_threshold = ceil(log(threshold/number_of_tests)/log(probability_pattern))
-
+    consecutive_threshold = ceil(log(threshold / number_of_tests) / log(probability_pattern))
 
     # Filter for number of consecutive occurences that meet the threshold criterion and are within the distance window
     DataL_significant = []
@@ -536,22 +532,22 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
         line = DataL[i][:-1] + [ColL[i]]
         DataL_random.append(line)
 
-    consecutiveL = [];
-    occsL = [];
-    DataL_significantL = [];
-    consecutive_controlL = [];
-    occs_controlL = [];
-    DataL_significant_controlL = [];
+    consecutiveL = []
+    occsL = []
+    DataL_significantL = []
+    consecutive_controlL = []
+    occs_controlL = []
+    DataL_significant_controlL = []
     for pattern in patternsL:
         consecutive, occs, DataL_significant = extract_pattern(DataL, pattern, min_distance, max_distance, threshold)
         consecutive_control, occs_control, DataL_significant_control = extract_pattern(DataL_random, pattern,
                                                                                        min_distance, max_distance,
                                                                                        threshold)
-        consecutiveL.append(consecutive);
-        occsL.append(occs);
-        consecutive_controlL.append(consecutive_control);
-        occs_controlL.append(occs_control);
-        DataL_significantL.append(DataL_significant);
+        consecutiveL.append(consecutive)
+        occsL.append(occs)
+        consecutive_controlL.append(consecutive_control)
+        occs_controlL.append(occs_control)
+        DataL_significantL.append(DataL_significant)
     return DataL_significantL, consecutiveL, occsL, consecutive_controlL, occs_controlL
 
 

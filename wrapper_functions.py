@@ -4,15 +4,6 @@ import argparse
 import configparser
 import glob
 
-# Catch number of bins negative or 0 --> check_positive_int
-# Catch distance limits have to be >=0 --> check_positive_int
-# Patterns needs to only contain +/- --> check_valid_pattern
-# Recognize if one of the input files is using a header for column names
-# Threshold p-value (with Bonferoni correction) how do people insert very small p-values? How do we explain them how to do it?
-# Expected bias needs to be between 0 and 1 --> check_valid_probability QUESTION does 0 or 1 make sense?
-# If user uses Scores it should be float or integer.
-# Set patterns to default if not included in user-input
-# Small file with inputs. Trunctuate path if too long
 
 class Error(Exception):
     """Base class for exceptions in this module."""
@@ -112,7 +103,6 @@ def check_valid_pattern(value):
         raise argparse.ArgumentTypeError(msg)
     return value
 
-#print(check_valid_pattern("alt"))
 
 def check_valid_probability(value):
     """

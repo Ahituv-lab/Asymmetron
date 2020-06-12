@@ -85,7 +85,7 @@ def fun1(args):
                 elif consecutive_control_total:
                     max_consecutive = max(consecutive_control_total)
                 else:
-                    max_consecutive = 0;
+                    max_consecutive = 0
 
                 # Adding the consecutive occurrences not found
                 for k in range(1, max_consecutive + 1):
