@@ -33,7 +33,7 @@ Step 1: Extraction of transcription factor binding sites for the JASPAR non-redu
 
 # Step 2: Identification of transcriptional strand asymmetries for each of the transcription factor genome-wide motif maps using FIMO.
 Protein coding genes were filtered for "gene" and gene_type "protein_coding" using the command:
-cat gencode.v33.annotation.gtf | grep 'gene_type "protein_coding"'  | awk '$3 == "gene" {print $1 "\t" $4 "\t" $5 "\t" $3 "\t"  $7}' > gencode.v33.annotation.bed.protein_coding
+cat gencode.v33.annotation.gtf | grep 'gene_type "protein_coding"'  | awk '$3 == "gene" {print $1 "\t" $4 "\t" $5 "\t" $3 "\t" "." "\t" $7}' > gencode.v33.annotation.bed.protein_coding
 
 The transcriptional strand asymmetry of each transcription factor was calculated with the command:
 python contained_asymmetries.py gencode.v33.annotation.bed.protein_coding TF_X.bed

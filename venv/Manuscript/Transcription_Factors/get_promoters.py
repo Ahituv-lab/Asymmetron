@@ -20,17 +20,17 @@ for k in DataL:
 	# Promoter upstream regions
 	# If the gene is oriented in plus oreintation
 	if orientation=="+":
-		datafile.write(k[0]+'\t'+str(max(0,int(k[1])-1000))+'\t'+str(int(k[1]))+'\t'+k[3]+'\t'+orientation+'\n')
+		datafile.write(k[0]+'\t'+str(max(0,int(k[1])-1000))+'\t'+str(int(k[1]))+'\t'+k[3]+'\t'+"."+'\t'+orientation+'\n')
 	# If the gene is oriented in minus orientation
 	elif orientation=="-":
-		datafile.write(k[0]+'\t'+str(int(k[2]))+'\t'+str(int(k[2])+1000)+'\t'+k[3]+'\t'+orientation+'\n')
+		datafile.write(k[0]+'\t'+str(int(k[2]))+'\t'+str(int(k[2])+1000)+'\t'+k[3]+'\t'+"."+'\t'+orientation+'\n')
 
 	# Promoter downstream regions
 	# If the gene is oriented in plus oreintation
 	if orientation=="+":
-		datafile2.write(k[0]+'\t'+str(int(k[1]))+'\t'+str(int(k[1])+1000)+'\t'+k[3]+'\t'+orientation+'\n')
+		datafile2.write(k[0]+'\t'+str(int(k[1]))+'\t'+str(int(k[1])+1000)+'\t'+k[3]+'\t'+"."+'\t'+orientation+'\n')
 	# If the gene is oriented in minus orientation
 	elif orientation=="-":
-		datafile2.write(k[0]+'\t'+str(max(0,int(k[2])-1000))+'\t'+str(str(k[2]))+'\t'+k[3]+'\t'+orientation+'\n')
+		datafile2.write(k[0]+'\t'+str(max(0,int(k[2])-1000))+'\t'+str(str(k[2]))+'\t'+k[3]+'\t'+"."+'\t'+orientation+'\n')
 datafile.close()
 datafile2.close()
