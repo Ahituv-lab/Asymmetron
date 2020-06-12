@@ -522,7 +522,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
 
 def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     from random import shuffle
-    DataL = list(BedTool(path, False).sort())
+    DataL = list(BedTool(path).sort())
 
     # Here we want to shuffle the strand column
     ColL = [k[5] for k in DataL]
