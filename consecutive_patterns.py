@@ -1,4 +1,4 @@
-import os
+import sys,os
 import numpy as np
 import functions
 import orientation
@@ -9,6 +9,7 @@ try:
 except:
     print("visualisations not imported")
 
+from collections import Counter
 
 def fun1(args):
 
