@@ -174,4 +174,5 @@ cython_debug/
 .Trashes
 ehthumbs.db
 Thumbs.db
-!/Resources/Schematic_Asymmetron.png
+test_extract_pattern.bed
+
