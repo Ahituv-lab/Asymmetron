@@ -16,9 +16,12 @@ except:
 
 def pairs_generator(pathL1, pathL2, NamesL1, NamesL2):
     """
-    Takes as input two sets of lists (comma separated, provided by the user
-    Returns all the combinations of two between them
-    The idea would be to run something like python asymmetron.py -A path1,path2,path3 -B path4,path5,path6 -Names_A Name1,Name2,Name3 -Names_B Name4,Name5,Name6
+    :param pathL1: list of paths
+    :param pathL2: list of paths
+    :param NamesL1: list of names, corresponding to pathsL1
+    :param NamesL2: list of names corresponding to pathsL2
+    :return: tuple of two lists. List 1 consists of all possible combinations of (pathsL1, pathsL2). List 2 consists
+    of the corresponding combinations of names
     """
     return list(itertools.product(pathL1, pathL2)), list(itertools.product(NamesL1, NamesL2))
 

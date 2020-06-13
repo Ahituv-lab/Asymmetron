@@ -1,4 +1,3 @@
-import sys, os
 import functions
 import argparse
 import wrapper_functions as wf
@@ -21,14 +20,12 @@ def fun3(args):
     bins = args.bins
 
     orientation = args.orientation
-    if orientation != None:
+    if orientation is not None:
         paths_after_orientation = []
         for path in motifsAL:
             name_orientation = orientation.fun4(orientation, path)
             paths_after_orientation.append([name_orientation])
         motifsAL = paths_after_orientation
-
-    # I think orientation analysis if user points to file(s) should go here before we start the asymmetries estimations
 
     number_of_files = len(motifsAL) * len(motifsBL)
 
@@ -67,7 +64,7 @@ def fun3(args):
         m_pL.append(m_p)  # opposite orientation data
         p_val_same_oppositeL.append(p_val_same_opposite)
         p_val_same_opposite_BonferoniL.append(p_val_same_opposite_Bonferoni)  # p-values for same vs opposite
-        RatiosL.append(Ratio_same_opposite);  # Ratio of asymmetry for same / opposite analysis
+        RatiosL.append(Ratio_same_opposite)  # Ratio of asymmetry for same / opposite analysis
 
         # convergent vs divergent analysis
         Ratio_conv_diverg, p_val_conv_diverg, p_val_conv_diver_Bonferoni = functions.statistical_evaluation(p_m, m_p,
