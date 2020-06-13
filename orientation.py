@@ -1,4 +1,5 @@
 import sys
+import os
 import functions
 import argparse
 import wrapper_functions as wf
@@ -10,11 +11,12 @@ def fun4(motif_no_annotation, motif_annotation):
     for path in motif_no_annotation:
         for path2 in motif_annotation:
             Annotation_data=functions.strand_annotate_third_BED_overlap(path,path2)
-            path_out = "asymmetron_"+path.split("/")[-1]+"_ANNOTATED_"+path2.split("/")[-1]
+            path_out = wf.output_path("orientation", "bed", os.path.basename(path), os.path.basename(path2))
             with open(path_out, "w") as f:
                 for i in Annotation_data:
                     f.write('\t'.join([str(x) for x in i])+'\n')
     return path_out
+
 
 def orientation_parser():
     parser = argparse.ArgumentParser()

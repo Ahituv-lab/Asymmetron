@@ -23,7 +23,7 @@ def fun2(args):
 
     # Orientation of third file using the motifs
     orientation_motifs = args.orientation_motifs
-    if orientation_motifs != None:
+    if orientation_motifs is not None:
         wf.path_checker(orientation_motifs)  # Test if orientation_motifs path exists
         paths_after_orientation = []
         for path in motifsL:
