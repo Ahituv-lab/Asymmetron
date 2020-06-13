@@ -53,7 +53,12 @@ def read_BED(path, last_col=False):
 
 def binner(min_size, max_size, bin_no):
     """
-    Takes as input the distance range and number of bins and returns the bins in form (min,max) for every bin.
+    :param min_size lower bound of the interval to divide into bins
+    :param max_size upper bound of the interval to divide into bins
+    :param bin_no the interval will be divided into that many bins
+    :returns list of tuples, representing the lower and upper limits of each subinterval after dividing into bins
+
+    This function separates the input interval into bins
     """
     bin_size = float(max_size - min_size) / float(bin_no)
     Bins = [(min_size + bin_size * k, min_size + bin_size * (k + 1)) for k in range(0, bin_no)]
@@ -201,8 +206,8 @@ def proximal(path1, path2, window_min, window_max, upstream=False, downstream=Fa
     convergentL_bin = []
     divergentL_bin = []
 
-    Bins = [];
-    if bins != None:
+    Bins = []
+    if bins is not None:
         # Performs the same analysis for each bin.
         Bins = binner(window_min, window_max, bins)
         for index, bin_i in enumerate(Bins):
@@ -255,8 +260,18 @@ def get_distance_orientations(DistanceL, Strand1L, Strand2L, window_min, window_
 
 def orientation(sign1L, sign2L):
     """
-    Calculates the orientation combinations
-    Should only accept +/- signs
+    This function takes as input two lists of signs and calculates their relative position (same strand,
+    opposite strand, convergent and divergent)
+    :param signs1L list of signs
+    :param signs2L list of sings
+    :return p_p: number of times both corresponding signs were in + strand
+    :return m_m: number of times both corresponding signs were in - strand
+    :return p_m: first sign in + strand, second sign in - strand
+    :return m_p: first sign in - strand, second sign in + strand
+    :return same_strand: sum of p_p+m_m
+    :return opposite_strand: sum of p_m + m_p
+    :return convergent: same as p_m
+    :return divergent: same as m_p
     """
     p_p = 0
     m_m = 0
@@ -301,7 +316,8 @@ def statistical_evaluation(occs_strand1, occs_strand2, number_of_files_scanned, 
     Binomial test: p-value
     Bonferonni correction: p-value
     Ratio of strand asymmetry
-    if the user expects a background bias then that should be given as an expected ratio, different than zero (that would alter our bionimal test, and we could just  change 0.5 to a variable)
+    if the user expects a background bias then that should be given as an expected ratio, different than zero
+    (that would alter our bionimal test, and we could just  change 0.5 to a variable)
     """
     Ratio_strand1_2 = ratio_calc(occs_strand1, occs_strand2)
     p_val_strand1_2 = binom_test(occs_strand1, occs_strand1 + occs_strand2, expected_asym)

@@ -72,7 +72,7 @@ def name_splitter(names, paths):
             err = "If the names argument is used, a name for every corresponding path must be provided"
             raise InputError(err)
     else:
-        namesL = [os.path.basename(x) for x in paths];
+        namesL = [os.path.basename(x) for x in paths]
     return namesL
 
 def check_positive_int(value):
