@@ -49,8 +49,7 @@ def fun3(args):
         motifB = motif_pairs[i][1]
 
         # for a pair of files finds the orientations
-        total_asymmetries, per_bin_asymmetries = functions.proximal(motifA, motifB, names_pairs[i][0],
-                                                                    names_pairs[i][1], min_distance, max_distance,
+        total_asymmetries, per_bin_asymmetries = functions.proximal(motifA, motifB, min_distance, max_distance,
                                                                     upstream=upstream_only, downstream=downstream_only,
                                                                     bins=bins)
         Distances_orientations, p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = total_asymmetries

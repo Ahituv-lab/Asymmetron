@@ -160,7 +160,7 @@ def overlap(path1, path2):
     return p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent
 
 
-def proximal(path1, path2, name1, name2, window_min, window_max, upstream=False, downstream=False, bins=None):
+def proximal(path1, path2, window_min, window_max, upstream=False, downstream=False, bins=None):
     """
        This is the main function of pairwise_asymmetries.py
        Uses pybedtools closest function to find proximal coordinates
