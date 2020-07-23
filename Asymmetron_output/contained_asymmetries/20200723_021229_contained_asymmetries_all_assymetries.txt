@@ -1,0 +1,2 @@
+Feature_1	Feature_2	plus_plus	minus_minus	plus_minus	minus_plus	p_value_same_opposite	p-value_same_opposite_Bonferoni_corrected	Ratio_same_opposite	p_value_divergent_convergent	p_value_divergent_convergent Bonferoni corrected	Ratio divergent convergent
+atlas.clusters.2.0.GRCh38.96.bed.formatted	gencode.v33.annotation.bed.protein_coding	154878	143553	53890	64117	2e-323	2e-323	0.7166276852736781	5.789520916517574e-195	5.789520916517574e-195	0.45666782479005485
