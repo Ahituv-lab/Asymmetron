@@ -450,7 +450,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         DataL_temp = [DataL[0]]
 
         for i in range(1, len(DataL)):
-            distance = max(0, int(DataL[i-1][2]) - int(DataL[i][1]))
+            distance = max(0, int(DataL[i][1]) - int(DataL[i-1][2]))
             if (distance >= min_distance and distance < max_distance):
     
                 if DataL[i-1][5]==DataL[i][5] and DataL[i-1][5] in ["+","-"]:
