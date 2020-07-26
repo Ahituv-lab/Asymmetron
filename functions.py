@@ -433,6 +433,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                                the threshold, then those rows will be included in DataL_significant. The
                                calculated p-value is appended at the end of each row.
     """
+    from collections import defaultdict
     DataL = [list(line) for line in DataL]
     n = len(pattern)
 
@@ -441,27 +442,60 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     for line in DataL:
         signs += line[5]
 
-    # Calculate alternating pattern
-    if pattern == "alt":
-        DataL_alternating = []
-        DataL_temp = []
-        DataL_temp.append(DataL[0])
-        counter = 0
-        for i in range(1, len(DataL)):
-            distance = max(0, int(DataL[i][1]) - int(DataL[i - 1][2]))
-            if DataL[i][5] != DataL[i - 1][5] and (distance >= min_distance and distance < max_distance):
-                counter += 1
-                DataL_temp.append(DataL[i])
-            else:
-                if counter >= threshold:
-                    DataL_alternating.extend(DataL_temp)
-                DataL_temp.clear()
-                DataL_temp.append(DataL[i])
-                counter = 0
-        if counter >= threshold:
-            DataL_alternating.extend(DataL_temp)
+    if pattern == "basic":
 
-        return None, None, DataL_alternating
+        same=0;opposite=0;
+        SameL = defaultdict(int); OppositeL= defaultdict(int);
+        DistancesL_same=[];DistancesL_opposite=[];DataSignificantL=[];
+        DataL_temp = [DataL[0]]
+
+        for i in range(1, len(DataL)):
+            distance = max(0, int(DataL[i-1][2]) - int(DataL[i][1]))
+            if (distance >= min_distance and distance < max_distance):
+    
+                if DataL[i-1][5]==DataL[i][5] and DataL[i-1][5] in ["+","-"]:
+                    same+=1
+                    DistancesL_same.append(distance)
+
+                    if opposite>0:
+                        OppositeL[opposite]+=1
+                        if 0.5**opposite<threshold:
+                            DataSignificantL.extend(DataL_temp)
+                        DataL_temp=[];
+
+                    DataL_temp+=[DataL[i]]
+                    opposite=0;
+                        
+               
+                if (DataL[i-1][5]=="+" and DataL[i][5]=="-") or (DataL[i-1][5]=="-" and DataL[i][5]=="+"): 
+                    opposite+=1
+                    DistancesL_opposite.append(distance)
+
+                    if same>0:
+                        SameL[same]+=1
+                        if 0.5**same<threshold:
+                            DataSignificantL.extend(DataL_temp)
+                        DataL_temp=[];
+                     
+                    DataL_temp+=[DataL[i]]
+                    same=0;
+
+            else:
+            
+                if same > 0:
+                    SameL[same]+=1
+                    if 0.5**same<threshold:
+                        DataSignificantL.extend(DataL_temp)
+
+                if opposite > 0:
+                    OppositeL[opposite]+=1
+                    if 0.5**opposite<threshold:
+                        DataSignificantL.extend(DataL_temp)
+
+                DataL_temp=[];
+                same=0;opposite = 0;
+     	
+        return SameL,OppositeL,DistancesL_same,DistancesL_opposite,DataSignificantL
 
     # Find all occurences of the pattern in the string of signs without accounting for distances
     occs = list(find_sub_str(signs, pattern))
@@ -502,7 +536,6 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     DataL_significant = []
     counter = 1
     DataL_temp = DataL[occs[0]:occs[0] + n];
-    from collections import defaultdict
     consecutiveL = defaultdict(int);
     for i in range(1, len(occs)):
         index = occs[i]
@@ -557,16 +590,30 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     consecutive_controlL = []
     occs_controlL = []
     DataL_significant_controlL = []
-    for pattern in patternsL:
-        consecutive, occs, DataL_significant = extract_pattern(DataL, pattern, min_distance, max_distance, threshold)
-        consecutive_control, occs_control, DataL_significant_control = extract_pattern(DataL_random, pattern,
+
+    if patternsL==["basic"]:
+
+        sameL,oppositeL, DistancesL_same, DistancesL_opposite, DataL_significant = extract_pattern(DataL, "basic", min_distance, max_distance, threshold)
+        consecutiveL.append(sameL);consecutiveL.append(oppositeL);
+        occsL.append(DistancesL_same);occsL.append(DistancesL_opposite);
+        DataL_significantL.append(DataL_significant)
+
+        sameL_c,oppositeL_c, DistancesL_same_c, DistancesL_opposite_c, DataL_significant = extract_pattern(DataL_random, "basic", min_distance, max_distance, threshold)
+        consecutive_controlL.append(sameL_c);consecutive_controlL.append(oppositeL_c);
+        occs_controlL.append(DistancesL_same_c);occsL.append(DistancesL_opposite_c);
+        
+    else:
+        for pattern in patternsL:
+
+            consecutive, occs, DataL_significant = extract_pattern(DataL, pattern, min_distance, max_distance, threshold)
+            consecutive_control, occs_control, DataL_significant_control = extract_pattern(DataL_random, pattern,
                                                                                        min_distance, max_distance,
                                                                                        threshold)
-        consecutiveL.append(consecutive)
-        occsL.append(occs)
-        consecutive_controlL.append(consecutive_control)
-        occs_controlL.append(occs_control)
-        DataL_significantL.append(DataL_significant)
+            consecutiveL.append(consecutive)
+            occsL.append(occs)
+            consecutive_controlL.append(consecutive_control)
+            occs_controlL.append(occs_control)
+            DataL_significantL.append(DataL_significant)
     return DataL_significantL, consecutiveL, occsL, consecutive_controlL, occs_controlL
 
 

@@ -44,14 +44,22 @@ def fun1(args):
                                                                                                                    threshold)
 
         # Table with all the outputs for all strands, number of consecutive occurrences found for each strand pattern
+
+        if patterns==["basic"]:
+            patterns=["same","opposite"]
+
         functions.table_consecutive(consecutiveL, patterns,
                                     wf.output_path("consecutive_patterns", "txt", os.path.basename(path),
-                                                   "_Consecutive_Patterns_Total"))
+                                                   "Consecutive_Patterns_Total"))
 
         for i in range(len(patterns)):
 
             # Write significant results in an output file
-            functions.write_BED_out(DataL_significant[i],
+            if patterns==["same","opposite"]:
+                functions.write_BED_out(DataL_significant,wf.output_path("consecutive_patterns", "bed", os.path.basename(path),"statistically_siginificant", "basic"))
+
+            else:
+                functions.write_BED_out(DataL_significant[i],
                                     wf.output_path("consecutive_patterns", "bed", os.path.basename(path),
                                                    "statistically_siginificant", patterns[i]))
 
@@ -128,6 +136,10 @@ def fun1(args):
 
         if bins > 1:
             Bins = functions.binner(min_distance, max_distance, bins)
+
+            if patterns==["basic"]:
+                patterns=["same","opposite"]
+
             for pat in patterns:
                 consecutiveLL_bin = []
                 occsLL_bin = []
@@ -168,8 +180,8 @@ def consecutive_patterns_parser():
                         help="Enter the path of the file to analyze. Can enter multiple paths as a comma separated string, e.g. \"path1, path2\"")
     parser.add_argument("-n", "--names",
                         help="Optional argument. A name for each of the motif files for more human-readable output. Each name must correspond to a path")  # --patterns eg.. ++/+-+
-    parser.add_argument("-pt", "--patterns", help="Patterns to search, comma separated. Default is ++,--,+-,-+.",
-                        type=wf.check_valid_pattern, default="++,--,+-,-+")
+    parser.add_argument("-pt", "--patterns", help="Patterns to search, comma separated. Default is basic (same / opposite)",
+                        type=wf.check_valid_pattern, default="basic")
     parser.add_argument("-min", "--min_distance", help="Two consecutive motifs with distance lower than the "
                                                        "min_distance will not be considered as significant for the "
                                                        "purpose of this analysis. Default = 0",

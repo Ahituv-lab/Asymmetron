@@ -96,9 +96,9 @@ def check_valid_pattern(value):
     Returns the pattern.
     """
     chars = set(value)
-    if not (chars.issubset(("+", "-", ",", " ", ".")) or value == "alt"):
-        msg = "{} is an invalid pattern. Please enter a pattern consisting of + or - only. Insert \"alt\" for " \
-              "alternating patterns " \
+    if not (chars.issubset(("+", "-", ",", " ", ".")) or value == "basic"):
+        msg = "{} is an invalid pattern. Please enter a pattern consisting of + or - only. Insert \"basic\" for " \
+              "same / opposite orientations " \
               "".format(value)
         raise argparse.ArgumentTypeError(msg)
     return value
