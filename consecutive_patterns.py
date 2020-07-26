@@ -85,7 +85,6 @@ def fun1(args):
                 consecutive_control_total = list(consecutive_control)
                 times_found_control_total = list(times_found_control)
 
-                print(consecutive_control_total, consecutive_total)
                 if consecutive_control_total != [] and consecutive_total != []:
                     max_consecutive = max(max(consecutive_control_total), max(consecutive_total))
                 elif consecutive_total:
@@ -120,19 +119,35 @@ def fun1(args):
                                                                      str(patterns[i])))
 
                 # We want to show biases in distances of consecutive
-                occsL_filtered = []
-                occs_controlL_filtered = []
-                for occ in occsL[i]:
-                    if min_distance <= occ <= max_distance:
-                        occsL_filtered.append(occ)
+                if patterns!=["same","opposite"]:
+                    occsL_filtered = []
+                    occs_controlL_filtered = []
+                    for occ in occsL[i]:
+                        if min_distance <= occ <= max_distance:
+                            occsL_filtered.append(occ)
 
-                for occ_c in occs_controlL[i]:
-                    if min_distance <= occ_c <= max_distance:
-                        occs_controlL_filtered.append(occ_c)
+                    for occ_c in occs_controlL[i]:
+                        if min_distance <= occ_c <= max_distance:
+                            occs_controlL_filtered.append(occ_c)
 
-                visualizations.distribution_gen(occs_controlL_filtered, occsL_filtered,
+                    visualizations.distribution_gen(occs_controlL_filtered, occsL_filtered,
                                                 wf.output_path("consecutive_patterns", "png", os.path.basename(path),
                                                                "distances_inconsecutive_pattern_" + str(patterns[i])))
+
+                else:
+                    occsL_filtered = []
+                    occs_controlL_filtered = []
+                    for occ in occsL[0]:
+                        if min_distance <= occ <= max_distance:
+                            occsL_filtered.append(occ)
+
+                    for occ_c in occs_controlL[0]:
+                        if min_distance <= occ_c <= max_distance:
+                            occs_controlL_filtered.append(occ_c)
+
+                    visualizations.distribution_gen(occs_controlL_filtered, occsL_filtered,
+                                                wf.output_path("consecutive_patterns", "png", os.path.basename(path),
+                                                               "distances_inconsecutive_pattern_" + str("same_opposite")))
 
         if bins > 1:
             Bins = functions.binner(min_distance, max_distance, bins)

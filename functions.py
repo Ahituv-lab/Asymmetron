@@ -460,7 +460,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                     if opposite>0:
                         OppositeL[opposite]+=1
                         if 0.5**opposite<threshold:
-                            DataSignificantL.extend(DataL_temp)
+                            DataSignificantL+=[DataL_temp]
                         DataL_temp=[];
 
                     DataL_temp+=[DataL[i]]
@@ -474,7 +474,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                     if same>0:
                         SameL[same]+=1
                         if 0.5**same<threshold:
-                            DataSignificantL.extend(DataL_temp)
+                            DataSignificantL+=[DataL_temp]
                         DataL_temp=[];
                      
                     DataL_temp+=[DataL[i]]
@@ -485,12 +485,12 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                 if same > 0:
                     SameL[same]+=1
                     if 0.5**same<threshold:
-                        DataSignificantL.extend(DataL_temp)
+                        DataSignificantL+=[DataL_temp]
 
                 if opposite > 0:
                     OppositeL[opposite]+=1
                     if 0.5**opposite<threshold:
-                        DataSignificantL.extend(DataL_temp)
+                        DataSignificantL+=[DataL_temp]
 
                 DataL_temp=[];
                 same=0;opposite = 0;
@@ -599,13 +599,11 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
         DataL_significantL.append(DataL_significant)
 
         sameL_c,oppositeL_c,DistancesL_same_c, DistancesL_opposite_c, DataL_significant_c,same_total_control,opposite_total_control  = extract_pattern(DataL_random, "basic", min_distance, max_distance, threshold)
-        print(DataL_random[:2],DataL[:2])
         consecutive_controlL.append(sameL_c);consecutive_controlL.append(oppositeL_c);
         occs_controlL.append(DistancesL_same_c);occsL.append(DistancesL_opposite_c);
         import scipy.stats as stats
-        print([same_total, same_total_control], [opposite_total, opposite_total_control])
         oddsratio, pvalue = stats.fisher_exact([[same_total, same_total_control], [opposite_total, opposite_total_control]])
-        print(oddsratio,pvalue)
+        print(path,"Odds Ratio:"+str(oddsratio),"p-value:"+str(pvalue))
         
     else:
         for pattern in patternsL:
@@ -624,13 +622,4 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
 
 # Ensures that code below is not run when this file is imported into another file
 if __name__ == "__main__":
-    with open("test_extract_pattern.bed", "r") as f:
-        DataL = []
-        for line in f.readlines():
-            DataL.append(line.strip().split("\t"))
-    out = extract_pattern(DataL, "+-", 1, 5, 0.5)
-    print("The following dictionary includes the number of consecutive appearances of the pattern, e.g. when looking "
-          "for +- in +-+-+---+- the result should be {1:1}, {3:1}", out[0])
-    print("The distances between consecutive appearances of the pattern are: ", out[1])
-    print("The following lines are part of a sequence of consecutive repetitions of the pattern that meet both the "
-          "threshold and distance requirements\n", out[2])
+     pass
