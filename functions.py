@@ -443,7 +443,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         signs += line[5]
 
     if pattern == "basic":
-
+        same_total=0;opposite_total=0;
         same=0;opposite=0;
         SameL = defaultdict(int); OppositeL= defaultdict(int);
         DistancesL_same=[];DistancesL_opposite=[];DataSignificantL=[];
@@ -454,7 +454,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
             if (distance >= min_distance and distance < max_distance):
     
                 if DataL[i-1][5]==DataL[i][5] and DataL[i-1][5] in ["+","-"]:
-                    same+=1
+                    same+=1;same_total+=1
                     DistancesL_same.append(distance)
 
                     if opposite>0:
@@ -468,7 +468,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                         
                
                 if (DataL[i-1][5]=="+" and DataL[i][5]=="-") or (DataL[i-1][5]=="-" and DataL[i][5]=="+"): 
-                    opposite+=1
+                    opposite+=1;opposite_total+=1;
                     DistancesL_opposite.append(distance)
 
                     if same>0:
@@ -495,7 +495,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                 DataL_temp=[];
                 same=0;opposite = 0;
      	
-        return SameL,OppositeL,DistancesL_same,DistancesL_opposite,DataSignificantL
+        return SameL,OppositeL,DistancesL_same,DistancesL_opposite,DataSignificantL,same_total,opposite_total
 
     # Find all occurences of the pattern in the string of signs without accounting for distances
     occs = list(find_sub_str(signs, pattern))
@@ -574,7 +574,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
 
 def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     from random import shuffle
-    DataL = list(BedTool(path).sort())
+    DataL = list(read_BED(path))
 
     # Here we want to shuffle the strand column
     ColL = [k[5] for k in DataL]
@@ -593,14 +593,19 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
 
     if patternsL==["basic"]:
 
-        sameL,oppositeL, DistancesL_same, DistancesL_opposite, DataL_significant = extract_pattern(DataL, "basic", min_distance, max_distance, threshold)
+        sameL,oppositeL, DistancesL_same, DistancesL_opposite, DataL_significant,same_total,opposite_total = extract_pattern(DataL, "basic", min_distance, max_distance, threshold)
         consecutiveL.append(sameL);consecutiveL.append(oppositeL);
         occsL.append(DistancesL_same);occsL.append(DistancesL_opposite);
         DataL_significantL.append(DataL_significant)
 
-        sameL_c,oppositeL_c, DistancesL_same_c, DistancesL_opposite_c, DataL_significant = extract_pattern(DataL_random, "basic", min_distance, max_distance, threshold)
+        sameL_c,oppositeL_c,DistancesL_same_c, DistancesL_opposite_c, DataL_significant_c,same_total_control,opposite_total_control  = extract_pattern(DataL_random, "basic", min_distance, max_distance, threshold)
+        print(DataL_random[:2],DataL[:2])
         consecutive_controlL.append(sameL_c);consecutive_controlL.append(oppositeL_c);
         occs_controlL.append(DistancesL_same_c);occsL.append(DistancesL_opposite_c);
+        import scipy.stats as stats
+        print([same_total, same_total_control], [opposite_total, opposite_total_control])
+        oddsratio, pvalue = stats.fisher_exact([[same_total, same_total_control], [opposite_total, opposite_total_control]])
+        print(oddsratio,pvalue)
         
     else:
         for pattern in patternsL:
