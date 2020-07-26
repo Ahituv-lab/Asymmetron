@@ -40,7 +40,7 @@ It encompasses four functions:
 	--names: Assign a name for each of the inputted BED-formatted files to allow for more human readable output
 	--min_distance: Minimum distance between consecutive occurrences to consider in the analysis. Default is 0.
 	--max_distance: Maximum distance between consecutive occurrences to consider in the analysis. Default is 100.
-	--patterns: Patterns to search, comma separated. Default is ++,--,+-,-+.
+	--patterns: Patterns to search, comma separated. Default is same / opposite orientation analysis.
 	--orientation: Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations.
 	--bins: Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
 	--threshold: Threshold of p-value of consecutive patterns to save in new BED file.
@@ -76,7 +76,7 @@ It encompasses four functions:
 #### Required inputs:
 	motifsA: One or more BED-formatted files
 	motifsB: One or more BED-formatted files
-#### Optional inputs:
+#### Optional inputs
 	--names_A: The name of each of the inputted BED-formatted motif A files.
 	--names_B: The name of each of the inputted BED-formatted motif B files.
 	--upstream_only: Only look for occurrences of motif A upstream of motif B. Incompattible with -downstream.

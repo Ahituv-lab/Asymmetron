@@ -38,7 +38,7 @@ Important information across Asymmetron functions:
 
 This function enables the identification of biases in orientation patterns within the distance limits for a single file.
 The distance limits correspond to the mininum and maximum distances of consecutive features to consider.
-The patterns correspond to any set of "+" and "-" signs e.g. "+-" or "++ etc.
+The patterns correspond to any set of "+" and "-" signs e.g. "+-" or "++ etc. By default the same / opposite strand asymmetry of consecutive occurrences is calculated.
 
 |
 
@@ -80,7 +80,7 @@ Estimate the orientation bias of homotypic occurrences of the CTCF motif:
 
 .. code-block::
    
-   python consecutive_patterns.py MA0139.1.bed –max_distance=100 –patterns=+,-
+   python consecutive_patterns.py MA0139.1.bed –max_distance=100 
 
 |
 
