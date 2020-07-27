@@ -103,7 +103,7 @@ Measure the orientation bias of consecutive miRNA genes within 10kB from each ot
 
 .. code-block::
 
-   python consecutive_patterns.py miRNA_genes.bed –max_distance=10000 –patterns=+,-
+   python consecutive_patterns.py miRNA_genes.bed –max_distance=10000 
 
 |
 

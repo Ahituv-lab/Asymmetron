@@ -8,11 +8,11 @@ try:
     from pybedtools import BedTool
 except:
     print("Pybedtools not imported")
+
 try:
     import visualizations
 except:
     print("visualisations not imported")
-
 
 def pairs_generator(pathL1, pathL2, NamesL1, NamesL2):
     """
@@ -446,7 +446,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         same_total=0;opposite_total=0;
         same=0;opposite=0;
         SameL = defaultdict(int); OppositeL= defaultdict(int);
-        DistancesL_same=[];DistancesL_opposite=[];DataSignificantL=[];
+        DistancesL_same=[];DistancesL_opposite=[];DataSignificantL_same=[];DataSignificantL_opposite=[];
         DataL_temp = [DataL[0]]
 
         for i in range(1, len(DataL)):
@@ -460,7 +460,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                     if opposite>0:
                         OppositeL[opposite]+=1
                         if 0.5**opposite<threshold:
-                            DataSignificantL+=DataL_temp
+                            DataSignificantL_opposite+=DataL_temp
                         DataL_temp=[];
 
                     DataL_temp+=[DataL[i]]
@@ -474,7 +474,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                     if same>0:
                         SameL[same]+=1
                         if 0.5**same<threshold:
-                            DataSignificantL+=DataL_temp
+                            DataSignificantL_same+=DataL_temp
                         DataL_temp=[];
                      
                     DataL_temp+=[DataL[i]]
@@ -485,17 +485,17 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                 if same > 0:
                     SameL[same]+=1
                     if 0.5**same<threshold:
-                        DataSignificantL+=DataL_temp
+                        DataSignificantL_same+=DataL_temp
 
                 if opposite > 0:
                     OppositeL[opposite]+=1
                     if 0.5**opposite<threshold:
-                        DataSignificantL+=DataL_temp
+                        DataSignificantL_opposite+=DataL_temp
 
                 DataL_temp=[];
                 same=0;opposite = 0;
      	
-        return SameL,OppositeL,DistancesL_same,DistancesL_opposite,DataSignificantL,same_total,opposite_total
+        return SameL,OppositeL,DistancesL_same,DistancesL_opposite,DataSignificantL_same,DataSignificantL_opposite,same_total,opposite_total
 
     # Find all occurences of the pattern in the string of signs without accounting for distances
     occs = list(find_sub_str(signs, pattern))
@@ -593,14 +593,15 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
 
     if patternsL==["basic"]:
 
-        sameL,oppositeL, DistancesL_same, DistancesL_opposite, DataL_significant,same_total,opposite_total = extract_pattern(DataL, "basic", min_distance, max_distance, threshold)
+        sameL,oppositeL, DistancesL_same, DistancesL_opposite, DataL_significant_Same,DataL_significant_Opposite,same_total,opposite_total = extract_pattern(DataL, "basic", min_distance, max_distance, threshold)
         consecutiveL.append(sameL);consecutiveL.append(oppositeL);
         occsL.append(DistancesL_same);occsL.append(DistancesL_opposite);
-        DataL_significantL=DataL_significant
+        DataL_significantL.append(DataL_significant_Same)
+        DataL_significantL.append(DataL_significant_Opposite)
 
-        sameL_c,oppositeL_c,DistancesL_same_c, DistancesL_opposite_c, DataL_significant_c,same_total_control,opposite_total_control  = extract_pattern(DataL_random, "basic", min_distance, max_distance, threshold)
+        sameL_c,oppositeL_c,DistancesL_same_c, DistancesL_opposite_c, DataL_significant_c_same,DataL_significant_c_opposite,same_total_control,opposite_total_control  = extract_pattern(DataL_random, "basic", min_distance, max_distance, threshold)
         consecutive_controlL.append(sameL_c);consecutive_controlL.append(oppositeL_c);
-        occs_controlL.append(DistancesL_same_c);occsL.append(DistancesL_opposite_c);
+        occs_controlL.append(DistancesL_same_c);occs_controlL.append(DistancesL_opposite_c);
         import scipy.stats as stats
         oddsratio, pvalue = stats.fisher_exact([[same_total, same_total_control], [opposite_total, opposite_total_control]])
         print(path,"Odds Ratio:"+str(oddsratio),"p-value:"+str(pvalue))
