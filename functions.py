@@ -400,6 +400,7 @@ def write_BED_out(DataL, path_out):
     with open(path_out, 'w') as output_file:
         for line in DataL:
             output_file.write('\t'.join([str(x) for x in list(line)]) + '\n')
+            print('\t'.join([str(x) for x in list(line)]) + '\n')
     return
 
 
@@ -460,7 +461,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                     if opposite>0:
                         OppositeL[opposite]+=1
                         if 0.5**opposite<threshold:
-                            DataSignificantL+=[DataL_temp]
+                            DataSignificantL+=DataL_temp
                         DataL_temp=[];
 
                     DataL_temp+=[DataL[i]]
@@ -474,7 +475,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                     if same>0:
                         SameL[same]+=1
                         if 0.5**same<threshold:
-                            DataSignificantL+=[DataL_temp]
+                            DataSignificantL+=DataL_temp
                         DataL_temp=[];
                      
                     DataL_temp+=[DataL[i]]
@@ -485,12 +486,12 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
                 if same > 0:
                     SameL[same]+=1
                     if 0.5**same<threshold:
-                        DataSignificantL+=[DataL_temp]
+                        DataSignificantL+=DataL_temp
 
                 if opposite > 0:
                     OppositeL[opposite]+=1
                     if 0.5**opposite<threshold:
-                        DataSignificantL+=[DataL_temp]
+                        DataSignificantL+=DataL_temp
 
                 DataL_temp=[];
                 same=0;opposite = 0;
@@ -596,7 +597,7 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
         sameL,oppositeL, DistancesL_same, DistancesL_opposite, DataL_significant,same_total,opposite_total = extract_pattern(DataL, "basic", min_distance, max_distance, threshold)
         consecutiveL.append(sameL);consecutiveL.append(oppositeL);
         occsL.append(DistancesL_same);occsL.append(DistancesL_opposite);
-        DataL_significantL.append(DataL_significant)
+        DataL_significantL=DataL_significant
 
         sameL_c,oppositeL_c,DistancesL_same_c, DistancesL_opposite_c, DataL_significant_c,same_total_control,opposite_total_control  = extract_pattern(DataL_random, "basic", min_distance, max_distance, threshold)
         consecutive_controlL.append(sameL_c);consecutive_controlL.append(oppositeL_c);
