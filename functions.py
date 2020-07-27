@@ -400,7 +400,6 @@ def write_BED_out(DataL, path_out):
     with open(path_out, 'w') as output_file:
         for line in DataL:
             output_file.write('\t'.join([str(x) for x in list(line)]) + '\n')
-            print('\t'.join([str(x) for x in list(line)]) + '\n')
     return
 
 
