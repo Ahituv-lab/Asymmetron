@@ -42,9 +42,10 @@ The patterns correspond to any set of "+" and "-" signs e.g. "+-" or "++ etc. By
 
 |
 
-By shuffling the strand annotations in the file we create a null distribution which accounts for potential biases in the number of "+" and "-" and biases in the distances of consecutive occurrences of the feature.
+By shuffling the strand annotations in the file we create a null distribution which accounts for potential biases in the number of "+" and "-" and biases in the distances of consecutive occurrences of the feature. 
 Next, we estimate the expected number of N consecutive occurrences of the pattern of interest.
 We compare the expected number of N consecutive occurrences of the pattern of interest to the observed occurrences in the file.
+For the same / opposite comparison, statistical significance for same versus opposite orientation preference for consecutive occurrences is estimated with Fisher's Exact test between the real and the simulated data.
 
 |
 
@@ -86,7 +87,7 @@ Estimate the orientation bias of homotypic occurrences of the CTCF motif:
 
 II. Estimate the orientation bias of consecutive miRNA genes.
 
-|
+
 
 Download and extract the miRNA genes from gencode annotation:
 
@@ -103,7 +104,16 @@ Measure the orientation bias of consecutive miRNA genes within 10kB from each ot
 
 .. code-block::
 
-   python consecutive_patterns.py miRNA_genes.bed –max_distance=10000 
+   python consecutive_patterns.py miRNA_genes.bed --max_distance=10000 
+
+This type of analysis will print the odds ratio and p-value, in this case miRNA genes tend to be in the same orientation (Odds Ratio > 1, Fisher Exact Test: p-value=6.342e-14):
+
+.. code-block:
+
+   Odds Ratio:3.4322072413270717 p-value:6.342108235123232e-14
+
+The outputs also include the number of consecutive occurrences of miRNA genes and BED-formatted files of the statistically significant consecutive occurrences.
+
 
 |
 
