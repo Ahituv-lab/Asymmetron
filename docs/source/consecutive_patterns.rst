@@ -43,7 +43,7 @@ consecutive_patterns
      - Maximum distance between consecutive occurrences to consider in the analysis. Default is 100.
 
    * - --patterns   
-     - Patterns to search, comma separated. Default is ++,--,+-,-+.
+     - Patterns to search, comma separated. Default is same / opposite strand orientation analysis. 
 
    * - --orientation
      - Orient file(s) relative to annotated BED-formated file(s) and perform the analysis for the un-annotated file with the new annotations.
