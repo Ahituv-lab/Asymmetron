@@ -49,7 +49,7 @@ For the same / opposite comparison, statistical significance for same versus opp
 
 |
 
-Potential biological questions:
+**Potential biological questions:**
 
 * How many times do you find three or more occurrences of motif A in the real versus in the simulated data.
 
@@ -136,7 +136,7 @@ The accompanying p-value is estimated by binomial testing and is adjusted for mu
 
 |
 
-Potential biological questions:
+**Potential biological questions:**
 
 * Is there nucleotide composition asymmetry in an organism of interest?
 
@@ -259,7 +259,8 @@ In the above example we provide a simple example to illustrate how we calculate 
 
 |
 
-Potential biological questions:
+
+**Potential biological questions:**
 
 
 * Do transcription factor motif pairs display orientation preferences relative to each other?
