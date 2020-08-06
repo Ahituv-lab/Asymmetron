@@ -259,7 +259,7 @@ def get_distance_orientations(DistanceL, Strand1L, Strand2L, window_min, window_
 
 
 def orientation(sign1L, sign2L):
-    """
+    "orientation""
     This function takes as input two lists of signs and calculates their relative position (same strand,
     opposite strand, convergent and divergent)
     :param signs1L list of signs

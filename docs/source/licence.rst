@@ -58,7 +58,7 @@ You may add Your own copyright statement to Your modifications and may provide a
 
 END OF TERMS AND CONDITIONS
 
-Copyright [2020] [Ilias Georgakopoulos-Soares]
+Copyright [2020] [Ilias Georgakopoulos-Soares, Ioannis Mouratidis, Guillermo E. Parada, Navneet Matharu, Martin Hemberg, Nadav Ahituv]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
