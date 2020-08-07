@@ -40,7 +40,7 @@ Below we provide:
 
 This function enables the identification of biases in orientation patterns within the distance limits for a single file.
 The distance limits correspond to the mininum and maximum distances of consecutive features to consider.
-The patterns correspond to any set of "+" and "-" signs e.g. "+-" or "++ etc. By default the same / opposite strand asymmetry of consecutive occurrences is calculated.
+The patterns by default correspond to same / opposite orientation but they also represent any set of "+" and "-" signs e.g. "+-" or "++ etc. By default the same / opposite strand asymmetry of consecutive occurrences is calculated.
 
 |
 

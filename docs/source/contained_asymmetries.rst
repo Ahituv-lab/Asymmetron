@@ -64,7 +64,7 @@ contained_asymmetries
 
 **Outputs:**
 
-* Table containing strand asymmetries of ++/+-/-+/-- orientations, same-strand, opposite strand, p-value, p-value with Bonferoni correction.
+* Table containing strand asymmetries of for same strand and opposite strand orientations, p-value, p-value with Bonferoni correction.
 
 * Barplot of strand asymmetries for each pair of comparisons.
 
