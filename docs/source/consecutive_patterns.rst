@@ -67,3 +67,10 @@ consecutive_patterns
 * Barplots of expected and observed consecutive occurrences of each of the patterns.
 * Plots showing the distribution of consecutive occurrences for each pattern.
 * Heatmap of subdivisions of the signal in distances across all patterns if --bins is selected.
+
+|
+
+.. note::
+
+   The results from files consisting of palindromic motifs will not show strand asymmetries.
+
