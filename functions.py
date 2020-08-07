@@ -179,9 +179,9 @@ def proximal(path1, path2, window_min, window_max, upstream=False, downstream=Fa
     if upstream == downstream and upstream == True:
         closest = DataL1.closest(DataL2, D='ref')
     elif upstream is True:
-        closest = DataL1.closest(DataL2, D='a', id=False, iu=True)
+        closest = DataL1.closest(DataL2, D='ref', id=False, iu=True)
     elif downstream is True:
-        closest = DataL1.closest(DataL2, D='b', iu=False, id=True)
+        closest = DataL1.closest(DataL2, D='ref', iu=False, id=True)
     else:
         closest = DataL1.closest(DataL2, D='ref')
 
