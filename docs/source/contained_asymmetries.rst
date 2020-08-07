@@ -72,4 +72,10 @@ contained_asymmetries
 
 * Table of strand asymmetries for same / opposite and convergent / divergent asymmetries per bin, associated p-vaues and p-values Bonferoni correction.
 
+|
+
+.. note::
+
+   The results from files consisting of palindromic motifs will not show strand asymmetries.
+
 
