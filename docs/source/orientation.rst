@@ -16,7 +16,7 @@ orientation
    * - Argument
      - Explanation
 
-   * - --motif_no_annotation
+   * - motif_no_annotation
      - Un-annotated file to which strand assignment will be added.
    * - motif_annotation
      - Strand-annotated file used to extract strand annotation from.
@@ -27,5 +27,5 @@ orientation
 
 **Output:**
 
-* Un-annotated BED formatted motif with annotation based on -motif_annotation file.
+* Un-annotated BED formatted motif with annotation based on motif_annotation file.
 

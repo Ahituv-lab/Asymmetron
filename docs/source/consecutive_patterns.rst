@@ -18,8 +18,8 @@ consecutive_patterns
    * - Argument
      - Explanation
 
-   * - --paths
-     -  paths: One or more BED-formatted files.
+   * - paths
+     - One or more BED-formatted files.
 
 
 

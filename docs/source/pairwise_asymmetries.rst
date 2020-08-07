@@ -80,4 +80,9 @@ pairwise_asymmetries
 
 * Barplot of strand-asymmetries across the bins for same versus opposite and convergent versus divergent strand orientations.
 
+|
+
+.. note::
+
+   The results from files consisting of palindromic motifs will not show strand asymmetries.
 
