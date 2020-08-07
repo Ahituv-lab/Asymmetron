@@ -10,6 +10,10 @@
 
 2.- Create a conda virtual enviroment with the necesary dependencies 
 
+	conda config --add channels defaults
+	conda config --add channels bioconda
+	conda config --add channels conda-forge
+
 	conda create --name asymmetron pybedtools python=3.5 seaborn numpy
 
 3.- Activate virtual enviroment
