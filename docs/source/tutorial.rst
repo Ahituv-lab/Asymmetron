@@ -20,13 +20,15 @@ Below we provide:
 
 |
 
-Important information across Asymmetron functions:
+.. note::
 
-* All input files for Asymmetron should be in BED format.
+   Important information across Asymmetron functions:
 
-* All outputs are saved in the folder Asymmetron_output with a timestamp of when they were created.
+   * All input files for Asymmetron should be in BED format.
 
-* All functions can be run for single files or for sets of files that are comma separated.
+   * All outputs are saved in the folder Asymmetron_output with a timestamp of when they were created.
+
+   * All functions can be run for single files or for sets of files that are comma separated.
 
 |
 
