@@ -196,7 +196,6 @@ def proximal(path1, path2, window_min, window_max, upstream=False, downstream=Fa
         *((dist, strand2, strand1) for dist, strand1, strand2 in zip(Distance_init, Strand1_init, Strand2_init) if
           abs(dist) < window_max and abs(dist) >= window_min and dist < 0 ))
     Distance = list(Distance1_temp)+list(Distance2_temp)
-    print(Distance)
     Strand1 = list(Strand1)+list(Strand1_temp)
     Strand2 = list(Strand2)+list(Strand2_temp)
     p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = orientation(Strand1, Strand2)
