@@ -191,10 +191,10 @@ def proximal(path1, path2, window_min, window_max, upstream=False, downstream=Fa
     Distance = [abs(i) for i in list(closest_df.iloc[:, -1])]
     Distance, Strand1, Strand2 = zip(
         *((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance, Strand1, Strand2) if
-          dist < window_max and dist >= window_min and dist >= 0))
+          abs(dist) < window_max and abs(dist) >= window_min and dist >= 0))
     Distance_temp, Strand1_temp, Strand2_temp = zip(
         *((dist, strand2, strand1) for dist, strand1, strand2 in zip(Distance, Strand1, Strand2) if
-          dist < window_max and dist >= window_min and dist < 0 ))
+          abs(dist) < window_max and abs(dist) >= window_min and dist < 0 ))
     Distance.append(Distance_temp)
     Strand1.append(Strand1_temp)
     Strand2.append(Strand2_temp)
