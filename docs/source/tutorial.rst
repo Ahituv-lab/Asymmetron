@@ -83,7 +83,7 @@ Estimate the orientation bias of homotypic occurrences of the CTCF motif:
 
 .. code-block::
    
-   python consecutive_patterns.py MA0139.1.bed –max_distance=100 
+   python consecutive_patterns.py MA0139.1.bed --max_distance=100 
 
 |
 

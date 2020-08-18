@@ -65,7 +65,7 @@ pairwise_asymmetries
    * - --bins
      - Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
 
-   * - --plots
+   * - \--plots
      - Returns the associated plots of the asymmetries for each file.
 
 
