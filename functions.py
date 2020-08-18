@@ -186,21 +186,19 @@ def proximal(path1, path2, window_min, window_max, upstream=False, downstream=Fa
         closest = DataL1.closest(DataL2, D='ref')
 
     closest_df = closest.to_dataframe()
-    Strand1 = list(closest_df.iloc[:, 5])
-    Strand2 = list(closest_df.iloc[:, 11])
-    Distance = [i for i in list(closest_df.iloc[:, -1])]
+    Strand1_init = list(closest_df.iloc[:, 5])
+    Strand2_init = list(closest_df.iloc[:, 11])
+    Distance_init = [i for i in list(closest_df.iloc[:, -1])]
     Distance1_temp, Strand1, Strand2 = zip(
-        *((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance, Strand1, Strand2) if
+        *((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance_init, Strand1_init, Strand2_init) if
           abs(dist) < window_max and abs(dist) >= window_min and dist >= 0))
     Distance2_temp, Strand1_temp, Strand2_temp = zip(
-        *((dist, strand2, strand1) for dist, strand1, strand2 in zip(Distance, Strand1, Strand2) if
+        *((dist, strand2, strand1) for dist, strand1, strand2 in zip(Distance_init, Strand1_init, Strand2_init) if
           abs(dist) < window_max and abs(dist) >= window_min and dist < 0 ))
-    Distance = list(Distance1_temp)
-    Distance.append(list(Distance2_temp))
-    Strand1 = list(Strand1)
-    Strand1.append(list(Strand1_temp))
-    Strand2 = list(Strand2)
-    Strand2.append(list(Strand2_temp))
+    Distance = list(Distance1_temp)+list(Distance2_temp)
+    print(Distance)
+    Strand1 = list(Strand1)+list(Strand1_temp)
+    Strand2 = list(Strand2)+list(Strand2_temp)
     p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = orientation(Strand1, Strand2)
 
     # Calculate the distance distributions for all orientations

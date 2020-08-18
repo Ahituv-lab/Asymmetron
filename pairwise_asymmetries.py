@@ -141,8 +141,8 @@ def pairwise_asymmetries_parser():
                         help="Two consecutive motifs with distance lower than the min_distance will not be considered as significant for the purpose of this analysis. Default = 1")
     parser.add_argument("-max", "--max_distance", type=wf.check_positive_int, default=100,
                         help="Two consecutive motifs with distance higher than the max_distance will not be considered as significant for the purpose of this analysis. Default = 100")
-    parser.add_argument("-b", "--bins", type=wf.check_positive_int, default=1,
-                        help="Optional argument. Split output data and graphs in the specified number of bins. Default = 1")
+    parser.add_argument("-b", "--bins", type=wf.check_positive_int, default=None,
+                        help="Optional argument. Split output data and graphs in the specified number of bins. Default = None")
     direction = parser.add_mutually_exclusive_group()
     direction.add_argument("-up", "--upstream_only", action="store_true",
                            help="Perform the analysis only for occurrences of motif A upstream of occurrences of motif B, within the distance limits")
