@@ -197,8 +197,8 @@ def proximal(path1, path2, window_min, window_max, upstream=False, downstream=Fa
           abs(dist) < window_max and abs(dist) >= window_min and dist < 0 ))
     Distance = list(Distance1_temp)
     Distance.append(list(Distance2_temp))
-    Strand1.append(list(Strand1_temp))
-    Strand2.append(list(Strand2_temp))
+    Strand1 = list(Strand1).append(list(Strand1_temp))
+    Strand2 = list(Strand2).append(list(Strand2_temp))
     p_p, m_m, p_m, m_p, same_strand, opposite_strand, convergent, divergent = orientation(Strand1, Strand2)
 
     # Calculate the distance distributions for all orientations
