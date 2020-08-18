@@ -62,7 +62,7 @@ pairwise_asymmetries
    * - --max_distance
      - Maximum distance to consider in the analysis. Default is 100.
 
-   * - --bins
+   * - ---bins
      - Number of bins to subdivide the analysis in. Default is 1, which does not perform this analysis.
 
    * - \-\-plots
