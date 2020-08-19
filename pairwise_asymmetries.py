@@ -84,7 +84,6 @@ def fun3(args):
                                                       names_pairs[i][0], names_pairs[i][1]))
 
             same_strandL_distance, opposite_strandL_distance, divergentL_distance, convergentL_distance = Distances_orientations
-            print(same_strandL_distance)
             visualizations.distnace_distribution_gen(same_strandL_distance, opposite_strandL_distance, "Same",
                                                      "Opposite", min_distance, max_distance,
                                                      wf.output_path("pairwise_asymmetries", "png",
