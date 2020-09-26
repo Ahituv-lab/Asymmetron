@@ -324,6 +324,14 @@ Find their pairwise orientation preferences with Asymmetron:
 
    python pairwise_asymmetries.py Alu.bed L1.bed --max_distance=5000
 
+
+|
+
+.. note::
+
+   The identification of the closest element is performed relative to the first file provided. The results are therefore influenced by the order of the files.
+
+
 |
 
 **4. Assignment of strand orientation to un-assigned file.**

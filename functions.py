@@ -191,10 +191,10 @@ def proximal(path1, path2, window_min, window_max, upstream=False, downstream=Fa
     Distance_init = [i for i in list(closest_df.iloc[:, -1])]
     Distance1_temp, Strand1, Strand2 = zip(
         *((dist, strand1, strand2) for dist, strand1, strand2 in zip(Distance_init, Strand1_init, Strand2_init) if
-          abs(dist) < window_max and abs(dist) >= window_min and dist >= 0))
+          abs(dist) <= window_max and abs(dist) >= window_min and dist >= 0))
     Distance2_temp, Strand1_temp, Strand2_temp = zip(
         *((dist, strand2, strand1) for dist, strand1, strand2 in zip(Distance_init, Strand1_init, Strand2_init) if
-          abs(dist) < window_max and abs(dist) >= window_min and dist < 0 ))
+          abs(dist) <= window_max and abs(dist) >= window_min and dist < 0 ))
     Distance = list(Distance1_temp)+list(Distance2_temp)
     Strand1 = list(Strand1)+list(Strand1_temp)
     Strand2 = list(Strand2)+list(Strand2_temp)
@@ -221,7 +221,7 @@ def proximal(path1, path2, window_min, window_max, upstream=False, downstream=Fa
             Strand2Bin = []
             min_bin, max_bin = bin_i
             for k in range(len(Distance)):
-                if Distance[k] >= min_bin and Distance[k] < max_bin:
+                if Distance[k] >= min_bin and Distance[k] <= max_bin:
                     Strand1Bin.append(Strand1[k])
                     Strand2Bin.append(Strand2[k])
 
@@ -247,7 +247,7 @@ def get_distance_orientations(DistanceL, Strand1L, Strand2L, window_min, window_
     divergentL_distance = []
     convergentL_distance = []
     for index in range(len(Strand1L)):
-        if (DistanceL[index] < window_max and DistanceL[index] >= window_min):
+        if (DistanceL[index] <= window_max and DistanceL[index] >= window_min):
             sign1 = Strand1L[index]
             sign2 = Strand2L[index]
             if sign1 in ["+", "-"] and sign2 in ["+", "-"]:
@@ -457,7 +457,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
 
         for i in range(1, len(DataL)):
             distance = max(0, int(DataL[i][1]) - int(DataL[i-1][2]))
-            if (distance >= min_distance and distance < max_distance):
+            if (distance >= min_distance and distance <= max_distance):
     
                 if DataL[i-1][5]==DataL[i][5] and DataL[i-1][5] in ["+","-"]:
                     same+=1;same_total+=1
@@ -511,7 +511,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         index = occs[i]
         for j in range(n - 1):
             distance = max(0, int(DataL[index + j + 1][1]) - int(DataL[index + j][2]))
-            if distance < min_distance or distance >= max_distance:
+            if distance <= min_distance or distance >= max_distance:
                 occs[i] = None
                 break
     occs = [x for x in occs if x is not None]
@@ -546,7 +546,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     for i in range(1, len(occs)):
         index = occs[i]
         distance = max(0, int(DataL[index][1]) - int(DataL[index - 1][2]))
-        if occs[i] - occs[i - 1] == n and (distance >= min_distance and distance < max_distance):
+        if occs[i] - occs[i - 1] == n and (distance >= min_distance and distance <= max_distance):
             counter += 1
             DataL_temp.extend(DataL[index:index + n])
         else:
