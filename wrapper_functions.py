@@ -52,7 +52,8 @@ def bed_file_validate(paths):
                     pass
                 else:
                     line = line.split("\t")
-                    if len(line) < 6 or not set(line[5]).issubset(("+", "-", ".")):
+                    if len(line) < 6 or not set(line[5]).issubset(("+", "-", ".", "\n")) or int(line[1]) < 0 or int(
+                            line[2]) < 0:
                         err = "File \"" + path + "\" not compatible. Please see the documentation in readthedocs for " \
                                                  "the appropriate file format. The problem was encountered in the " \
                                                  "following line: " + str(line)
