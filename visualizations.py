@@ -14,21 +14,6 @@ def plot_styler():
         ax.xaxis.set_ticks_position('bottom')
         return
 
-def histogram_gen(strand1L,strand2L,bins_used,output):
-        """ 
-        Accepts the strand asymmetries  per bin and generates histograms
-        """
-        plot_styler()
-        RatiosL=[ratio_calc(strand1L[i],strand2L[i]) for i in range(len(strand1L))]
-        plt.bar(range(1,len(strand1L)+1,1),RatiosL,align="center",color="lightblue")
-        plt.xticks(range(len(bins)),bins)
-        plt.xlabel("Bins (Distance)")
-        plt.ylabel("Strand Asymmetry Ratio")
-        plt.tight_layout()
-        plt.savefig(output)
-        plt.close()
-        return
-
 
 def barplot_gen(strand1,strand2,name1,name2,output):
         """ 
