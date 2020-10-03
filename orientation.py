@@ -24,7 +24,7 @@ def orientation_parser():
 
 def orientation_wrapper(args):
     """Wrapper calling fun4 with the appropriate arguments"""
-    motif_no_annotation = wf.path_checker(args.motif_no_annotation)
+    motif_no_annotation = wf.path_checker(args.motif_no_annotation, no_annotation=True)
     motif_annotation = wf.path_checker(args.motif_annotation)
     for path1 in motif_no_annotation:
         for path2 in motif_annotation:

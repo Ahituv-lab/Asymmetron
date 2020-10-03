@@ -1,7 +1,10 @@
 import itertools,math
 import numpy as np
 from scipy.stats import binom_test
-from pybedtools import BedTool
+try:
+    from pybedtools import BedTool
+except:
+    print("Pybedtools not imported")
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt

@@ -62,7 +62,7 @@ def bed_file_validate(paths):
 
 
 
-def path_checker(paths):
+def path_checker(paths, no_annotation = False):
     """:param paths Input given by the user as a string of paths, comma seperated
        :return a list of all paths given by the user (a list with one element if only one path was given)
 
@@ -70,6 +70,8 @@ def path_checker(paths):
     """
     pathsL = [glob.glob(x.strip()) for x in paths.split(',')]
     pathsL = [path for glob_paths in pathsL for path in glob_paths]  # Convert paths to simple list
+    if no_annotation is False:
+        bed_file_validate(pathsL)
     for path in pathsL:
         if not os.path.exists(path):
             err= "File \"" + path + "\" was not found"
