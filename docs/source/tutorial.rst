@@ -330,6 +330,8 @@ Find their pairwise orientation preferences with Asymmetron:
 .. note::
 
    The identification of the closest element is performed relative to the first file provided. The results are therefore influenced by the order of the files.
+   
+   In a case of a tie, all instances are reported.
 
 
 |
