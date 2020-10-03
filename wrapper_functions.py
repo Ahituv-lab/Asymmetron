@@ -50,7 +50,8 @@ def bed_file_validate(paths):
                 if line[0] == "-":
                     pass
                 elif len(line.split("\t")) < 6:
-                    raise InputError("BED file not compatible")
+                    err = "File \"" + path + "\" not compatible"
+                    raise InputError(err)
     return
 
 
@@ -130,8 +131,8 @@ def check_valid_probability(value):
 
 
 if __name__ == "__main__":
-    print(output_path("consecutive_patterns", "bed", "test", "test2"))
-
+    # print(output_path("consecutive_patterns", "bed", "test", "test2"))
+    print(bed_file_validate(["test.txt"]))
 
 
 
