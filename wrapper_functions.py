@@ -43,6 +43,17 @@ def output_path(fun_name, extension, *args):
     return "Asymmetron_output/" + fun_name + "/" + time_stamp + fun_name + "_" + "_".join(args)+ "." + extension
 
 
+def bed_file_validate(paths):
+    for path in paths:
+        with open(path) as my_bed_file:
+            for line in my_bed_file.readlines():
+                if line[0] == "-":
+                    pass
+                elif len(line.split("\t")) < 6:
+                    raise InputError("BED file not compatible")
+    return
+
+
 
 def path_checker(paths):
     """:param paths Input given by the user as a string of paths, comma seperated
