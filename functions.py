@@ -131,7 +131,7 @@ def strand_annotate_third_BED_overlap(unnotated_path, annotated_path):
     Returns the unnotated file, with strand annotation
     """
     DataL_unnotated = BedTool(unnotated_path)
-    DataL_annotated = BedTool(annotated_path)
+    DataL_annotated = read_BED(annotated_path)
     Overlap_strand = DataL_unnotated.intersect(DataL_annotated, wao=True)
     Overlap_strand_df = Overlap_strand.to_dataframe()
     Chromosome = list(Overlap_strand_df.iloc[:, 0])
@@ -139,9 +139,11 @@ def strand_annotate_third_BED_overlap(unnotated_path, annotated_path):
     End = list(Overlap_strand_df.iloc[:, 2])
     ID = list(Overlap_strand_df.iloc[:, 3])
     Strand = list(Overlap_strand_df.iloc[:, -2])
-    Chromosome, Start, End, ID, Strand = zip(
-        *((chrom, start, end, id_used, strand) for chrom, start, end, id_used, strand in
-          zip(Chromosome, Start, End, ID, Strand) if strand in ["+", "-"]))
+    Start_Annotated = list(Overlap_strand_df.iloc[:, -6])
+    End_Annotated = list(Overlap_strand_df.iloc[:, -5])
+    Chromosome, Start, End, ID, Strand, Start_Annotated, End_Annotated = zip(
+        *((chrom, start, end, id_used, strand, start_annot, end_annot) for chrom, start, end, id_used, strand, start_annot, end_annot in
+          zip(Chromosome, Start, End, ID, Strand, Start_Annotated, End_Annotated) if strand in ["+", "-"]))
     DataL = [];
     for i in range(len(Chromosome)):
         DataL.append([Chromosome[i], Start[i], End[i], ID[i], ".", Strand[i]])
