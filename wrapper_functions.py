@@ -44,14 +44,19 @@ def output_path(fun_name, extension, *args):
 
 
 def bed_file_validate(paths):
+
     for path in paths:
         with open(path) as my_bed_file:
             for line in my_bed_file.readlines():
-                if line[0] == "-":
+                if line[0] == "#":
                     pass
-                elif len(line.split("\t")) < 6:
-                    err = "File \"" + path + "\" not compatible"
-                    raise InputError(err)
+                else:
+                    line = line.split("\t")
+                    if len(line) < 6 or not set(line[5]).issubset(("+", "-", ".")):
+                        err = "File \"" + path + "\" not compatible. Please see the documentation in readthedocs for " \
+                                                 "the appropriate file format. The problem was encountered in the " \
+                                                 "following line: " + str(line)
+                        raise InputError(err)
     return
 
 
