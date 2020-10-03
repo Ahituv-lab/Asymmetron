@@ -30,6 +30,8 @@ Below we provide:
 
    * All functions can be run for single files or for sets of files that are comma separated.
 
+   * All distance limits are inclusive i.e.  d_min <= d <= d_max.
+
 |
 
 
