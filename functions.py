@@ -146,12 +146,12 @@ def strand_annotate_third_BED_overlap(unnotated_path, annotated_path):
           zip(Chromosome, Start, End, ID, Strand, Start_Annotated, End_Annotated) if strand in ["+", "-"]))
     DataL = []
     for i in range(len(Chromosome)):
-        if Chromosome[i] == DataL[-1, 0] and Start[i] == DataL[-1, 1] and End[i] == DataL[-1, 2]:
-            center_previous = (DataL[-1, 1] + DataL[-1, 2])/2
+        if Chromosome[i] == DataL[-1][0] and Start[i] == DataL[-1][1] and End[i] == DataL[-1][2]:
+            center_previous = (DataL[-1][1] + DataL[-1][2])/2
             center_current = (Start[i]+End[i])/2
             center_annotated = (Start_Annotated[i] + End_Annotated[i]) / 2
             if abs(center_annotated - center_previous) > abs(center_annotated - center_current):
-                DataL[-1, :] = [Chromosome[i], Start[i], End[i], ID[i], ".", Strand[i]]
+                DataL[-1] = [Chromosome[i], Start[i], End[i], ID[i], ".", Strand[i]]
             else:
                 pass
         else:
