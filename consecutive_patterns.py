@@ -197,6 +197,9 @@ def consecutive_patterns_parser():
     parser.add_argument("-t", "--threshold",
                         help="Optional argument. Threshold of p-value of consecutive patterns to save in new BED file.",
                         type=wf.check_valid_probability, default=0.05)
+    parser.add_argument("-sim", "--simulation",
+                        help="Number of simulations used to calculate the p-value",
+                        type=wf.check_positive_int, default=100)
     args = parser.parse_args()
     return args
 
