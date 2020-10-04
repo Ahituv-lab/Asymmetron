@@ -591,15 +591,12 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
 
 def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     from random import shuffle
+    simulations = 10
     DataL = list(read_BED(path))
 
     # Here we want to shuffle the strand column
     ColL = [k[5] for k in DataL]
-    shuffle(ColL)
-    DataL_random = []
-    for i in range(len(DataL)):
-        line = DataL[i][:-1] + [ColL[i]]
-        DataL_random.append(line)
+    ColL_copy = [k[5] for k in DataL]
 
     consecutiveL = []
     occsL = []
@@ -608,33 +605,67 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
     occs_controlL = []
     DataL_significant_controlL = []
 
+     
+    consecutive_controlL=[];occs_controlL=[];DataL_significant_controlL=[];sameL_c=[];oppositeL_c=[];
     if patternsL==["basic"]:
 
+
+        bias_template=0;bias_non_template=0;
         sameL,oppositeL, DistancesL_same, DistancesL_opposite, DataL_significant_Same,DataL_significant_Opposite,same_total,opposite_total = extract_pattern(DataL, "basic", min_distance, max_distance, threshold)
         consecutiveL.append(sameL);consecutiveL.append(oppositeL);
         occsL.append(DistancesL_same);occsL.append(DistancesL_opposite);
         DataL_significantL.append(DataL_significant_Same)
         DataL_significantL.append(DataL_significant_Opposite)
 
-        sameL_c,oppositeL_c,DistancesL_same_c, DistancesL_opposite_c, DataL_significant_c_same,DataL_significant_c_opposite,same_total_control,opposite_total_control  = extract_pattern(DataL_random, "basic", min_distance, max_distance, threshold)
-        consecutive_controlL.append(sameL_c);consecutive_controlL.append(oppositeL_c);
-        occs_controlL.append(DistancesL_same_c);occs_controlL.append(DistancesL_opposite_c);
-        import scipy.stats as stats
-        oddsratio, pvalue = stats.fisher_exact([[same_total, same_total_control], [opposite_total, opposite_total_control]])
-        print(path,"Odds Ratio:"+str(oddsratio),"p-value:"+str(pvalue))
-        
+        Ratio_same_opposite = same_total/float(same_total+opposite_total)
+
+        for simulation in range(simulations):
+
+            shuffle(ColL_copy)
+            DataL_random = []
+            for i in range(len(DataL)):
+                line = DataL[i][:-1] + [ColL_copy[i]]
+                DataL_random.append(line)
+            
+            same_c,opposite_c,Distances_same_c, Distances_opposite_c, Data_significant_c_same,Data_significant_c_opposite,same_total_control,opposite_total_control  = extract_pattern(DataL_random, "basic", min_distance, max_distance, threshold)
+            
+
+            # only keep significant control occurrences consecutive for one simulation
+            if simulation == simulations:
+                consecutive_controlL.append(same_c);consecutive_controlL.append(opposite_c);
+                occs_controlL.append(Data_significant_c_same);occs_controlL.append(Data_significant_c_opposite);
+
+            Ratio_same_opposite_c = same_total_control/float(same_total_control+opposite_total_control)
+            if Ratio_same_opposite>Ratio_same_opposite_c:
+                bias_non_template+=1
+            else:
+                bias_template+=1
+
+        p_val= min(2*min(bias_non_template/float(bias_non_template+bias_template),bias_non_template/float(bias_non_template+bias_template)),1)  
+
     else:
         for pattern in patternsL:
 
             consecutive, occs, DataL_significant = extract_pattern(DataL, pattern, min_distance, max_distance, threshold)
-            consecutive_control, occs_control, DataL_significant_control = extract_pattern(DataL_random, pattern,
-                                                                                       min_distance, max_distance,
-                                                                                       threshold)
             consecutiveL.append(consecutive)
+          
+            for simulation in range(simulations):
+                shuffle(ColL_copy)
+                DataL_random = []
+                for i in range(len(DataL)):
+                    line = DataL[i][:-1] + [ColL_copy[i]]
+                    DataL_random.append(line)
+
+                consecutive_control, occs_control, DataL_significant_control = extract_pattern(DataL_random, pattern,min_distance, max_distance,threshold)
+
+                if simulation == simulations:
+                    occs_controlL.append(occs_control)
+                    consecutive_controlL.append(consecutive_control)
+
             occsL.append(occs)
-            consecutive_controlL.append(consecutive_control)
-            occs_controlL.append(occs_control)
             DataL_significantL.append(DataL_significant)
+
+    
     return DataL_significantL, consecutiveL, occsL, consecutive_controlL, occs_controlL
 
 
