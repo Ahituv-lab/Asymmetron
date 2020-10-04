@@ -199,7 +199,7 @@ def consecutive_patterns_parser():
                         type=wf.check_valid_probability, default=0.05)
     parser.add_argument("-sim", "--simulation",
                         help="Number of simulations used to calculate the p-value",
-                        type=wf.check_positive_int, default=100)
+                        type=wf.check_positive_int, default=1000)
     args = parser.parse_args()
     return args
 
