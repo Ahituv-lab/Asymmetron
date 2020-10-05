@@ -590,6 +590,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
 
 
 def asymmetries_single(path, patternsL, min_distance, max_distance, threshold,simulations):
+    print("consecutive asymmetries running on " +str(simulations)+" simulations")
     from random import shuffle
     DataL = list(read_BED(path))
 
@@ -609,7 +610,7 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold,si
     if patternsL==["basic"]:
 
 
-        bias_template=0;bias_non_template=0;
+        bias_same=0;bias_opposite=0;
         sameL,oppositeL, DistancesL_same, DistancesL_opposite, DataL_significant_Same,DataL_significant_Opposite,same_total,opposite_total = extract_pattern(DataL, "basic", min_distance, max_distance, threshold)
         consecutiveL.append(sameL);consecutiveL.append(oppositeL);
         occsL.append(DistancesL_same);occsL.append(DistancesL_opposite);
@@ -636,14 +637,16 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold,si
 
             Ratio_same_opposite_c = same_total_control/float(same_total_control+opposite_total_control)
             if Ratio_same_opposite>Ratio_same_opposite_c:
-                bias_non_template+=1
+                bias_same+=1
             else:
-                bias_template+=1
+                bias_opposite+=1
 
-        p_val= min(2*min(bias_non_template/float(bias_non_template+bias_template),bias_non_template/float(bias_non_template+bias_template)),1)  
+        p_val= min(2*min(max(1,bias_same)/float(bias_same+bias_opposite),max(1,bias_opposite)/float(bias_same+bias_opposite)),1)  
+        print("empirical p-value is "+str(p_val))
 
     else:
         for pattern in patternsL:
+            consecutive_surplus=0;consecutive_shortage=0;
 
             consecutive, occs, DataL_significant = extract_pattern(DataL, pattern, min_distance, max_distance, threshold)
             consecutiveL.append(consecutive)
@@ -656,13 +659,22 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold,si
                     DataL_random.append(line)
 
                 consecutive_control, occs_control, DataL_significant_control = extract_pattern(DataL_random, pattern,min_distance, max_distance,threshold)
+                if sum(consecutive_control.values())>sum(consecutive.values()):
+                    consecutive_shortage+=1
+                else:
+                    consecutive_surplus+=1
 
-                if simulation == simulations:
+                if simulation+1 == simulations:
                     occs_controlL.append(occs_control)
                     consecutive_controlL.append(consecutive_control)
 
+
             occsL.append(occs)
             DataL_significantL.append(DataL_significant)
+
+            p_val= min(2*min(max(1,consecutive_surplus)/float(consecutive_surplus+consecutive_shortage),max(1,consecutive_shortage)/float(consecutive_surplus+consecutive_shortage)),1)
+            print(consecutive_surplus,consecutive_shortage)
+            print("empirical p-value for pattern " +str(pattern)+" is "+str(p_val))
 
     
     return DataL_significantL, consecutiveL, occsL, consecutive_controlL, occs_controlL
