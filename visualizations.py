@@ -37,7 +37,6 @@ def barplot_pair_lists_gen(x_tickL,List1,List2,name1,name2,x_label,title_legend,
         This should be an option for the user if he wants to generate vizualizations too.
         """
         plot_styler()
-        print(x_tickL)
         plt.bar(range(1,len(List1)*3+1,3),List1,label=name1,align="center")
         plt.bar(range(2,len(List2)*3+1,3),List2,label=name2,align="center")
         plt.xticks(range(1,len(List1)*3+1,3),x_tickL,rotation=90,fontsize=9)
@@ -55,7 +54,7 @@ def barplot_single_gen(List1,List1_names,y_label,x_label,output):
         """
         plot_styler()
         plt.bar(range(1,len(List1)*1+1,1),List1,align="center")
-        plt.xticks(range(1,len(List1)*1+1),[List1_names[k] for k in range(1,len(List1_names)*3+1)],rotation=90)
+        plt.xticks(range(1,len(List1)*3+1),[List1_names[k] for k in range(0,len(List1_names)*1,3)],rotation=90)
         plt.ylabel(y_label)
         plt.xlabel(x_label)
         plt.tight_layout()

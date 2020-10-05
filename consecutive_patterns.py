@@ -23,6 +23,7 @@ def fun1(args):
     patterns = [x.strip() for x in args.patterns.split(',')]
     bins = args.bins
     threshold = args.threshold
+    simulations = args.simulations
 
     ConsecutiveD_Total = []
     # A simple way to integrate orientation in the flags here. Probably needs a lot of improvement though.
@@ -41,7 +42,8 @@ def fun1(args):
                                                                                                                    patterns,
                                                                                                                    min_distance,
                                                                                                                    max_distance,
-                                                                                                                   threshold)
+                                                                                                                   threshold,
+                                                                                                                   simulations)
 
         # Table with all the outputs for all strands, number of consecutive occurrences found for each strand pattern
 
@@ -123,7 +125,7 @@ def fun1(args):
                         if min_distance <= occ <= max_distance:
                             occsL_filtered.append(occ)
 
-                    for occ_c in occs_controlL[i]:
+                    for occ_c in occs_controlL[i]: 
                         if min_distance <= occ_c <= max_distance:
                             occs_controlL_filtered.append(occ_c)
 
@@ -197,7 +199,7 @@ def consecutive_patterns_parser():
     parser.add_argument("-t", "--threshold",
                         help="Optional argument. Threshold of p-value of consecutive patterns to save in new BED file.",
                         type=wf.check_valid_probability, default=0.05)
-    parser.add_argument("-sim", "--simulation",
+    parser.add_argument("-sim", "--simulations",
                         help="Number of simulations used to calculate the p-value",
                         type=wf.check_positive_int, default=1000)
     args = parser.parse_args()

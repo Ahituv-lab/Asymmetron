@@ -54,6 +54,9 @@ consecutive_patterns
    * - --threshold
      - Threshold of p-value of consecutive patterns to save in new BED file.
 
+   * - --simulations
+     - Number of simulations to perform from which the empirical p-value is derived. Default is N=100.
+
    * - --plots
      - Returns the associated plots of the asymmetries for each file.
 

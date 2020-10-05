@@ -12,7 +12,7 @@ except:
 try:
     import visualizations
 except:
-    print("visualisations not imported")
+    print("visualizations not imported")
 
 def pairs_generator(pathL1, pathL2, NamesL1, NamesL2):
     """
@@ -589,9 +589,8 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
     return consecutiveL, distancesL, DataL_significant
 
 
-def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
+def asymmetries_single(path, patternsL, min_distance, max_distance, threshold,simulations):
     from random import shuffle
-    simulations = 10
     DataL = list(read_BED(path))
 
     # Here we want to shuffle the strand column
@@ -631,9 +630,9 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold):
             
 
             # only keep significant control occurrences consecutive for one simulation
-            if simulation == simulations:
+            if simulation+1 == simulations:
                 consecutive_controlL.append(same_c);consecutive_controlL.append(opposite_c);
-                occs_controlL.append(Data_significant_c_same);occs_controlL.append(Data_significant_c_opposite);
+                occs_controlL.append(Distances_same_c);occs_controlL.append(Distances_opposite_c);
 
             Ratio_same_opposite_c = same_total_control/float(same_total_control+opposite_total_control)
             if Ratio_same_opposite>Ratio_same_opposite_c:
