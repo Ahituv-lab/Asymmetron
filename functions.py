@@ -522,7 +522,7 @@ def extract_pattern(DataL, pattern, min_distance, max_distance, threshold):
         index = occs[i]
         for j in range(n - 1):
             distance = max(0, int(DataL[index + j + 1][1]) - int(DataL[index + j][2]))
-            if distance <= min_distance or distance >= max_distance:
+            if distance < min_distance or distance > max_distance:
                 occs[i] = None
                 break
     occs = [x for x in occs if x is not None]
