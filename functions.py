@@ -641,7 +641,8 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold,si
             else:
                 bias_opposite+=1
 
-        p_val= min(2*min(max(1,bias_same)/float(bias_same+bias_opposite),max(1,bias_opposite)/float(bias_same+bias_opposite)),1)  
+        bias = min(bias_same,bias_opposite)
+        p_val= min(2*(max(1+bias)/float(simulations+1)),1)
         print("empirical p-value is "+str(p_val))
 
     else:
