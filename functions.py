@@ -232,7 +232,7 @@ def proximal(path1, path2, window_min, window_max, upstream=False, downstream=Fa
             Strand2Bin = []
             min_bin, max_bin = bin_i
             for k in range(len(Distance)):
-                if Distance[k] >= min_bin and Distance[k] <= max_bin:
+                if Distance[k] >= min_bin and Distance[k] < max_bin:
                     Strand1Bin.append(Strand1[k])
                     Strand2Bin.append(Strand2[k])
 
