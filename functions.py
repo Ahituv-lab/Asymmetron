@@ -642,7 +642,7 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold,si
                 bias_opposite+=1
 
         bias = min(bias_same,bias_opposite)
-        p_val= min(2*(max(1+bias)/float(simulations+1)),1)
+        p_val= min(2*(1+bias)/float(simulations+1),1)
         print("empirical p-value is "+str(p_val))
 
     else:
@@ -669,14 +669,13 @@ def asymmetries_single(path, patternsL, min_distance, max_distance, threshold,si
                     occs_controlL.append(occs_control)
                     consecutive_controlL.append(consecutive_control)
 
-
             occsL.append(occs)
             DataL_significantL.append(DataL_significant)
 
-            p_val= min(2*min(max(1,consecutive_surplus)/float(consecutive_surplus+consecutive_shortage),max(1,consecutive_shortage)/float(consecutive_surplus+consecutive_shortage)),1)
+            bias = min(consecutive_surplus,consecutive_shortage)
+            p_val= min(2*(1+bias)/float(simulations+1),1)
             print(consecutive_surplus,consecutive_shortage)
             print("empirical p-value for pattern " +str(pattern)+" is "+str(p_val))
-
     
     return DataL_significantL, consecutiveL, occsL, consecutive_controlL, occs_controlL
 
