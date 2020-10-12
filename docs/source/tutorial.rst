@@ -329,7 +329,7 @@ Find their pairwise orientation preferences with Asymmetron:
 
    The identification of the closest element is performed relative to the first file provided. The results are therefore influenced by the order of the files.
    
-   In a case of a tie, all instances are reported.
+   In the case of a tie, the sign of the annotated region whose center is the closest to the center of the un-annotated region is used.
 
 
 |
