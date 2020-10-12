@@ -29,3 +29,8 @@ orientation
 
 * Un-annotated BED formatted motif with annotation based on motif_annotation file.
 
+|
+
+.. note::
+  
+  The identification of the closest element is performed relative to elements of the first file provided and the results are influenced by the order of the input files.
