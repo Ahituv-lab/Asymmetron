@@ -33,4 +33,4 @@ orientation
 
 .. note::
   
-  The identification of the closest element is performed relative to elements of the first file provided and the results are influenced by the order of the input files.
+  In the case of multiple overlaps, we assign the sign of the annotated region whose center is the closest to the center of the un-annotated region.
