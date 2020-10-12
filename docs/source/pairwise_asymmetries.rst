@@ -84,10 +84,12 @@ pairwise_asymmetries
 
 .. note::
 
-   The results from files consisting of palindromic motifs will not show strand asymmetries.
+  * The results from files consisting of palindromic motifs will not show strand asymmetries.
+  
+  * The identification of the closest element is performed relative to elements of the first file provided and the results are influenced by the order of the input files.
    
    
-.. note::
-The identification of the closest element is performed relative to elements of the first file provided and the results are influenced by the order of the input files.
+
+
 
 
